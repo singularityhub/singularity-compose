@@ -27,23 +27,48 @@ class Instance(object):
        name, volumes, build directory, and any ports or environment variables
        relevant to the instance.
     '''
-
     def __init__(self, name, params={}):
-        self.validate_params(params)
-        self.name = set_name(name)
+        self.name = set_name(name, params)
+        self.set_context(params)
+        self.set_volumes(params)
 
-    def set_name(self, name):
-        '''set the filename to read the recipe from. If not provided, defaults
-           to singularity-compose.yml
+    def set_name(self, name, params):
+        '''set the instance name. First priority goes to name  parameter, then 
+           to name in file
         '''
-        pwd = os.path.basename(os.path.dirname(os.path.abspath(self.filename)))
-        self.name = (name or pwd).lower()
+        self.name = params.get('name', name)
         
-
-    def validate_params(self, params):
-        '''validate parameters from the singularity-compose.yml.
+    def set_context(self, params):
+        '''set and validate parameters from the singularity-compose.yml,
+           including build (context and recipe)
         '''
+        # build, build context, are required
+        if "build" not in params:
+            bot.exit("build section missing for %s" % self.name)
 
+        if "context" not in params['build']:
+            bot.exit("build.context section missing for %s" % self.name)
+
+        self.context = params['build']['context']
+
+        # The context folder must exist
+        if not os.path.exists(self.context):
+            bot.exit("build.context %s does not exist." % self.context)
+ 
+        recipe = params['build'].get('recipe', 'Singularity')
+        self.recipe = os.path.join(self.context, recipe)
+
+        # The recipe must exist in the context folder
+        if not os.path.exists(self.recipe):
+            bot.exit("%s does not exist in %s" % (self.recipe, self.context)) 
+
+# Volumes
+
+    def set_volumes(self, params):
+        '''set volumes from the recipe, including volumes. 
+           TODO: after instances all read in, update each wrt. volumes_from
+           WRITE ME VANESSA RAWR
+        '''
 '''
   nginx:
     build:
