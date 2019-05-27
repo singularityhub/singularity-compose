@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 '''
 
+from scompose.logger import bot
 import scompose
 import argparse
 import sys
@@ -116,29 +117,6 @@ def get_parser():
     return parser
 
 
-def get_subparsers(parser):
-    '''get_subparser will get a dictionary of subparsers, to help with printing help
-    '''
-
-    actions = [action for action in parser._actions 
-               if isinstance(action, argparse._SubParsersAction)]
-
-    subparsers = dict()
-    for action in actions:
-        # get all subparsers and print help
-        for choice, subparser in action.choices.items():
-            subparsers[choice] = subparser
-
-    return subparsers
-
-
-def setup_logging():
-    logging.getLogger("requests").propagate = False
-    root_logger = logging.getLogger()
-    root_logger.addHandler(console_handler)
-    root_logger.setLevel(logging.DEBUG)
-
-
 def main():
     '''main is the entrypoint to singularity compose. We figure out the sub
        parser based on the command, and then import and call the appropriate 
@@ -146,7 +124,6 @@ def main():
     '''
 
     parser = get_parser()
-    subparsers = get_subparsers(parser)
 
     def help(return_code=0):
         '''print help, including the software version and exit with return code
@@ -167,13 +144,13 @@ def main():
 
     if args.debug is False:
         os.environ['MESSAGELEVEL'] = "DEBUG"
+    else:
+        os.environ['MESSAGELEVEL'] = args.log_level
 
     # Show the version and exit
     if args.command == "version" or args.version == True:
         print(scompose.__version__)
         sys.exit(0)
-
-    setup_logging()
 
     # Does the user want a shell?
     if args.command == "build": from .build import main
@@ -198,8 +175,7 @@ def main():
              subparser=subparsers[args.command])
         sys.exit(return_code)
     except KeyboardInterrupt:
-        log.error("Aborting.")
-        return_code = 1
+        bot.exit("Aborting.")
     except UnboundLocalError:
         return_code = 1
 

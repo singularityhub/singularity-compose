@@ -1,0 +1,5 @@
+dist
+build
+__pycache__
+singularity_compose.egg-info/
+*.sif
