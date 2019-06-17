@@ -17,7 +17,7 @@ instances:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - ./uwsgi_params.par:/etc/nginx/uwsgi_params.par:ro
     volumes_from:
-      - uwsgi
+      - app
     ports:
       - "80"
 
@@ -26,7 +26,7 @@ instances:
     volumes:
       - db-data:/var/lib/postgresql/data
 
-  uwsgi:
+  app:
     build:
       context: ./app
     volumes:
@@ -50,13 +50,9 @@ configuration settings to control this (how to handle ports?)
 
 ## Instance
 
-As shown above, an instance currently must be instantiated from a container built 
-from a Singularity recipe in a named folder alongside the singularity-compose.yml.
-We do this for reproducibility, and because there are very few containers out
-in the wild with start scripts that we could quickly pull. If this changes,
-we will provide support for defining a container URI without a build context.
-Here again is an example instance specification, and the fields are discussed
-below:
+An instance currently must be instantiated from a container built 
+from a Singularity recipe in a named folder (the example above) 
+alongside the singularity-compose.yml:
 
 ```
   nginx:
@@ -72,6 +68,41 @@ below:
       - "80"
 ```
 
+or from a container unique resource identifier (uri) that can be pulled
+to a local directory with the same name as the section.
+
+```
+  nginx:
+    image: docker://vanessa/sregistry_nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./uwsgi_params.par:/etc/nginx/uwsgi_params.par:ro
+    volumes_from:
+      - uwsgi
+    ports:
+      - "80"
+```
+
+We build or pull a local container for reproducibility. The first approach,
+building from a local file, is recommended as you have full control over
+the environment and startscript, and there are likely few containers out in the
+wild (and ready to be pulled) that have the correct entry and start scripts
+for your application. In the case that you *do* want to pull
+and customize the startscript or entrypoint you can do that as follows:
+
+```
+  nginx:
+    image: docker://vanessa/sregistry_nginx
+    startscript: ["nginx", "-g", "daemon off;"]
+    entrypoint: /bin/bash
+...
+```
+
+Customization beyond these fields (e.g., labels, help, post) is out of
+scope for singularity-compose, and you must build from a recipe instead.
+The fields for instances are discussed below:
+
+
 ### Fields
 
 |Name| Description |
@@ -81,6 +112,7 @@ field (not defined above).|
 |build| a section to define how and where to build the base container from.|
 |build.context| the folder with the Singularity file (and other relevant files). Must exist.
 |build.recipe| the Singularity recipe in the build context folder. It defaults to `Singularity`|
+|image| is looked for after a build entry. It can be a unique resource identifier, or container binary. |
 |volumes| one or more files or files to bind to the instance when it's started.|
 |volumes_from| shared volumes that are defined for other instances|
 |ports| currently not sure how I'm going to handle this!|

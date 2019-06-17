@@ -19,25 +19,32 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from scompose.logger import bot
 from scompose.utils import read_yaml
+from .instance import Instance
 import os
 import sys
 
 
 class Project(object):
-    '''
-    A compose recipe is a group of containers read in from a config file.
+    '''A compose project is a group of containers read in from a config file.
     '''
     config = None
     instances = {}
 
-    def __init__(self, name=None, filename=None):
+    def __init__(self, filename=None, name=None, working_dir=None, env_file=None):
 
-        self.set_filename(filename)
-        self.name = set_name(name)
+        self.set_filename(filename, working_dir)
+        self.set_name(name)
         self.load()
         self.parse()
+        self.env_file = env_file
 
-    def set_filename(self, filename):
+    def __str__(self):
+        return "(project:%s)" % self.name
+
+    def __repr__(self):
+        return self.__str__()
+
+    def set_filename(self, filename, working_dir=None):
         '''set the filename to read the recipe from. If not provided, defaults
            to singularity-compose.yml
 
@@ -46,6 +53,10 @@ class Project(object):
            filename: the singularity-compose.yml file to use
         '''
         self.filename = filename or "singularity-compose.yml"
+
+        # No working directory set, default to the location of compose file
+        if working_dir is None:
+            self.working_dir = os.path.dirname(self.filename)
 
     def set_name(self, name):
         '''set the filename to read the recipe from. If not provided, defaults
@@ -69,10 +80,10 @@ class Project(object):
         except: # ParserError
             bot.exit('Cannot parse %s, invalid yaml.' % self.filename)
 
-
     def parse(self):
+
         '''parse a loaded config'''
-        if self.config != None:
+        if self.config is not None:
 
             # Create each instance object
             for name in self.config.get('instances', []):
@@ -80,3 +91,15 @@ class Project(object):
 
                 # Validates params
                 self.instances[name] = Instance(name, params)
+
+            # Update volumes with volumes from
+            for _, instance in self.instances.items():
+                instance.set_volumes_from(self.instances)
+
+
+# Build
+
+    def build(self):
+        '''given a loaded project, build associated containers (or pull).
+        '''
+        pass

@@ -45,7 +45,7 @@ def get_parser():
                         choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"])
 
     # Global Variables
-    parser.add_argument('--file', '-f' dest="file",
+    parser.add_argument('--file', '-f', dest="file",
                         help="specify compose file (default singularity-compose.yml)", 
                         default="singularity-compose.yml")
 
@@ -109,11 +109,6 @@ def get_parser():
     up = subparsers.add_parser("up",
                                help="build and start containers")
 
-    # TODO: create simple singularity-compose file, read in
-    # write recipes in folders
-    # build recipes into containers in folders
-    # then write commands
-
     return parser
 
 
@@ -142,7 +137,7 @@ def main():
     except:
         sys.exit(0)
 
-    if args.debug is False:
+    if args.verbose is False:
         os.environ['MESSAGELEVEL'] = "DEBUG"
     else:
         os.environ['MESSAGELEVEL'] = args.log_level
@@ -170,9 +165,7 @@ def main():
     # Pass on to the correct parser
     return_code = 0
     try:
-        main(args=args,
-             parser=parser,
-             subparser=subparsers[args.command])
+        main(args=args, parser=parser)
         sys.exit(return_code)
     except KeyboardInterrupt:
         bot.exit("Aborting.")
