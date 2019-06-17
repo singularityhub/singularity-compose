@@ -30,6 +30,8 @@ class Instance(object):
     '''
     def __init__(self, name, params={}):
 
+        self.image = None
+        self.recipe = None
         self.set_name(name, params)
         self.set_context(params)
         self.set_volumes(params)

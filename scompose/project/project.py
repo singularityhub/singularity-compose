@@ -19,8 +19,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from scompose.logger import bot
 from scompose.utils import read_yaml
+from spython.main import get_client
 from .instance import Instance
 import os
+import re
 import sys
 
 
@@ -102,4 +104,57 @@ class Project(object):
     def build(self):
         '''given a loaded project, build associated containers (or pull).
         '''
-        pass
+        # Create a singularity python client, in case we need it
+        client = get_client()
+
+        # Loop through containers and build missing
+        for name, instance in self.instances.items():
+     
+            context = os.path.abspath(instance.context)
+
+            # if the context directory doesn't exist, create it
+            if not os.path.exists(context):
+                bot.info("Creating image context folder for %s" % name)
+                os.mkdir(context)
+
+            # The sif binary should have a predictible name
+            sif_binary = os.path.join(context, '%s.sif' % name)
+
+            # If the final image already exists, don't continue
+            if os.path.exists(sif_binary):
+                continue
+
+            # Case 1: Given an image
+            if instance.image is not None:
+                if not os.path.exists(instance.image):
+ 
+                    # Can we pull it?
+                    if re.search('(docker|library|shub|http?s)[://]', instance.image):
+                        client.pull(instance.image, name=sif_binary)
+
+                    else:
+                        bot.exit('%s is an invalid unique resource identifier.' % instance.image)
+
+            # Case 2: Given a recipe
+            elif instance.recipe is not None:
+
+                # The recipe is expected to exist in the context folder
+                recipe = os.path.join(context, recipe)
+                if not os.path.exists(recipe):
+                    bot.exit('%s not found for build' % recipe)
+
+                # Build context is the container folder
+                os.chdir(context)
+                    
+                # This will require sudo
+                try:
+                    client.build(name=sif_binary, recipe=recipe)
+                except:
+                    bot.warning("Please build with sudo.")
+                    bot.info("sudo singularity build %s %s" % (sif_binary, recipe))
+
+                # Change back
+                os.chdir(self.working_dir)
+
+            else:
+                bot.exit("neither image and build defined for %s" % name)

@@ -70,8 +70,15 @@ def get_parser():
     version = subparsers.add_parser("version",
                                     help="show software version")
 
+
+    # Build
+
     build = subparsers.add_parser("build",
                                   help="Build or rebuild containers")
+
+    build.add_argument('context', nargs=1,
+                        help='the context for the command (e.g., . means pwd)')
+
 
     config = subparsers.add_parser("config",
                                    help="Validate and view the compose file")
@@ -109,6 +116,7 @@ def get_parser():
     up = subparsers.add_parser("up",
                                help="build and start containers")
 
+
     return parser
 
 
@@ -133,7 +141,7 @@ def main():
     if len(sys.argv) == 1:
         help()
     try:
-        args = parser.parse_args()
+        args, extra = parser.parse_known_args()
     except:
         sys.exit(0)
 
@@ -143,7 +151,7 @@ def main():
         os.environ['MESSAGELEVEL'] = args.log_level
 
     # Show the version and exit
-    if args.command == "version" or args.version == True:
+    if args.command == "version" or args.version is True:
         print(scompose.__version__)
         sys.exit(0)
 
@@ -165,7 +173,7 @@ def main():
     # Pass on to the correct parser
     return_code = 0
     try:
-        main(args=args, parser=parser)
+        main(args=args, parser=parser, extra=extra)
         sys.exit(return_code)
     except KeyboardInterrupt:
         bot.exit("Aborting.")
