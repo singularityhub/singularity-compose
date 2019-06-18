@@ -110,8 +110,14 @@ def get_parser():
     kill = subparsers.add_parser("kill",
                                  help="kill instances")
 
+    # Logs
+
     logs = subparsers.add_parser("logs",
                                  help="view output from instances")
+
+    logs.add_argument("--tail", default=0, 
+                      dest='tail', type=int,
+                      help='clip logs to certain number of lines from end')
 
     ps = subparsers.add_parser("ps",
                                help="list instances")
@@ -120,7 +126,7 @@ def get_parser():
                                      help="stop and start containers.")
 
     # Add list of names
-    for sub in [create, down, up]:
+    for sub in [create, down, logs, up]:
         sub.add_argument('names', nargs="*",
                           help='the names of the instances to target')
 

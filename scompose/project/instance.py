@@ -18,9 +18,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
 from scompose.logger import bot
+from scompose.utils import get_userhome
 from spython.main import get_client
 import shlex as _shlex
 import os
+import platform
 import sys
 
 
@@ -277,6 +279,46 @@ class Instance(object):
             bot.info("Stopping %s" % self)
             self.instance.stop(sudo=self.sudo)
             self.instance = None
+
+# Logs
+
+    def logs(self, tail=0):
+        '''show logs for an instance'''
+
+        home = get_userhome()
+        user = os.path.basename(home)
+
+        if self.sudo:
+            home = '/root'
+            user = "root"
+
+        # Hostname
+        hostname = platform.node()
+
+        log_folder = os.path.join(home, '.singularity', 'instances', 'logs', hostname, user)
+
+        for ext in ['OUT', 'ERR']:
+            logfile = os.path.join(log_folder, '%s.%s' % (self.name, ext.lower()))
+
+            # Use Try/catch to account for not existing.
+            try:
+                if not self.sudo:
+                    result = self.client._run_command(['cat', logfile], quiet=True)
+                else:
+                    result = self.client._run_command(['sudo', 'cat', logfile], quiet=True)
+
+                if result:
+ 
+                    # If the user only wants to see certain number
+                    if tail > 0:
+                        result = '\n'.join(result.split('\n')[-tail:])
+                    bot.custom(prefix=self.name, message=ext, color='CYAN')
+                    print(result)
+                    bot.newline()
+
+            except:
+                pass
+
 
 # Create and Delete
 

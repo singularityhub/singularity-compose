@@ -165,13 +165,13 @@ class Project(object):
 
 # Networking
 
-
     def create_hosts(self, name, depends_on):
         '''create a hosts file to bind to all containers, where we define the
            correct hostnames to correspond with the ip addresses created.
 
            Note: This function is terrible. Singularity should easily expose 
-                 these addresses.
+                 these addresses. See issue here:
+                 https://github.com/sylabs/singularity/issues/3751
         '''
         template = read_file(get_template('hosts'))
         hosts_file = os.path.join(self.working_dir, 'etc.hosts.%s' % name)
@@ -184,6 +184,7 @@ class Project(object):
                        result = self.client.execute(image=instance.instance.get_uri(), 
                                                     command=['hostname', '-I'],
                                                     return_result=True,
+                                                    quiet=True,
                                                     sudo=self.sudo)
 
                        # Busybox won't have hostname -I
@@ -192,6 +193,7 @@ class Project(object):
                            result = self.client.execute(image=instance.instance.get_uri(), 
                                                         command=cmd,
                                                         return_result=True,
+                                                        quiet=True,
                                                         sudo=self.sudo)
 
                        ip_address = result['message'].strip('\n').strip()
@@ -217,6 +219,19 @@ class Project(object):
                 instance = self.instances[name]
                 if instance.exists():
                     self.client.shell(instance.instance.get_uri())
+
+
+    def logs(self, names, tail=0):
+        '''logs will print logs to the screen.
+        '''
+        # If no names provided, show all logs
+        if not names:
+            names = self.get_instance_names()
+
+        # Print logs for each
+        for name in names:
+            if name in self.instances:
+                self.instances[name].logs(tail=tail)
 
 # Config
 

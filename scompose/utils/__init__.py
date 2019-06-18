@@ -40,6 +40,12 @@ def get_installdir():
     return os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 
+def get_userhome():
+    '''get the user home based on the effective uid
+    '''
+    return pwd.getpwuid(os.getuid())[5]
+
+
 def run_command(cmd, sudo=False):
     '''run_command uses subprocess to send a command to the terminal.
 
