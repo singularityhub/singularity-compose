@@ -76,12 +76,13 @@ def get_parser():
     build = subparsers.add_parser("build",
                                   help="Build or rebuild containers")
 
-    build.add_argument('context', nargs=1,
-                        help='the context for the command (e.g., . means pwd)')
 
+    # Config
 
     config = subparsers.add_parser("config",
                                    help="Validate and view the compose file")
+
+    # Create
 
     create = subparsers.add_parser("create",
                                    help="create instances")
@@ -116,6 +117,11 @@ def get_parser():
     up = subparsers.add_parser("up",
                                help="build and start containers")
 
+
+    # Add a context to relevant subparsers
+    for sub in [config, build]:
+        sub.add_argument('context', nargs=1,
+                          help='the context for the command (e.g., . means pwd)')
 
     return parser
 

@@ -21,6 +21,7 @@ from scompose.logger import bot
 from scompose.utils import read_yaml
 from spython.main import get_client
 from .instance import Instance
+import json
 import os
 import re
 import sys
@@ -98,6 +99,13 @@ class Project(object):
             for _, instance in self.instances.items():
                 instance.set_volumes_from(self.instances)
 
+# Config
+
+    def view_config(self):
+        '''print a configuration file (in json) to the screen.
+        '''
+        if self.config is not None:
+            print(json.dumps(self.config, indent=4))
 
 # Build
 
