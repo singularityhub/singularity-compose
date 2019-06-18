@@ -17,8 +17,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 '''
 
+from scompose.templates import get_template
 from scompose.logger import bot
-from scompose.utils import read_yaml
+from scompose.utils import (
+    read_yaml,
+    read_file,
+    write_file
+)
 from spython.main import get_client
 from .instance import Instance
 import json
@@ -158,6 +163,50 @@ class Project(object):
             for _, instance in self.instances.items():
                 instance.set_volumes_from(self.instances)
 
+# Networking
+
+
+    def create_hosts(self, name, depends_on):
+        '''create a hosts file to bind to all containers, where we define the
+           correct hostnames to correspond with the ip addresses created.
+
+           Note: This function is terrible. Singularity should easily expose 
+                 these addresses.
+        '''
+        template = read_file(get_template('hosts'))
+        hosts_file = os.path.join(self.working_dir, 'etc.hosts.%s' % name)
+        hosts_basename = os.path.basename(hosts_file)        
+
+        for _, instance in self.instances.items():
+           if instance.name in depends_on:   
+               if self.sudo:
+                   if instance.exists():
+                       result = self.client.execute(image=instance.instance.get_uri(), 
+                                                    command=['hostname', '-I'],
+                                                    return_result=True,
+                                                    sudo=self.sudo)
+
+                       # Busybox won't have hostname -I
+                       if result['return_code'] != 0:
+                           cmd = "ip -4 --oneline address show up eth0"
+                           result = self.client.execute(image=instance.instance.get_uri(), 
+                                                        command=cmd,
+                                                        return_result=True,
+                                                        sudo=self.sudo)
+
+                       ip_address = result['message'].strip('\n').strip()
+
+                       # Clean up busybox output
+                       if "inet" in ip_address:
+                           ip_address = re.match('.+ inet (?P<address>.+)/', ip_address).groups()[0]
+               else:
+                   ip_address = '127.0.1.1'
+
+               template = ['%s\t%s\n' % (ip_address, instance.name)] + template 
+               instance.volumes.append('%s:/etc/hosts' % hosts_basename)
+        write_file(hosts_file, template)
+
+
 # Commands
 
     def shell(self, name):
@@ -234,6 +283,9 @@ class Project(object):
                     if depends_on not in created:
                         count += 1
                         continue
+
+                # Create a hosts file for the instance based on depends
+                self.create_hosts(instance.name, created)
 
                 # If we get here, execute command and add to list
                 getattr(instance, command)(self.working_dir, writable_tmpfs)

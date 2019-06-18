@@ -31,7 +31,7 @@ LICENSE = "LICENSE"
 
 
 INSTALL_REQUIRES = (
-    ('spython', {'min_version': '0.0.34'}),
+    ('spython', {'min_version': '0.0.67'}),
 )
 
 INSTALL_REQUIRES_ALL = INSTALL_REQUIRES

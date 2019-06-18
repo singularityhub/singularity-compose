@@ -27,10 +27,7 @@ import os
 log = logging.getLogger(__name__)
 
 def main(args, parser, extra):
-    '''bring up one or more instances. They must exist.
-
-       This will build and bring up one or more named instances, or if None
-       are provided, we create all of them.
+    '''bring one or more instances down
     '''
     # Initialize the project
     project = Project(filename=args.file,
@@ -38,4 +35,4 @@ def main(args, parser, extra):
                       env_file=args.env_file)
 
     # Create instances, and if none specified, create all
-    project.up(args.names, writable_tmpfs=args.writable_tmpfs)
+    project.ps()

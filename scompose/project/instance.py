@@ -258,13 +258,13 @@ class Instance(object):
         '''return boolean if an instance exists. We do this by way of listing
            instances, and so the calling user is important.
         '''
-        instances = [x.name for x in self.client.instances(quiet=True)]
+        instances = [x.name for x in self.client.instances(quiet=True, sudo=self.sudo)]
         return self.name in instances
 
     def get(self):
         '''If an instance exists, add to self.instance
         '''
-        for instance in self.client.instances(quiet=True):
+        for instance in self.client.instances(quiet=True, sudo=self.sudo):
             if instance.name == self.name:
                 self.instance = instance
                 break
@@ -275,7 +275,7 @@ class Instance(object):
         '''
         if self.instance:
             bot.info("Stopping %s" % self)
-            self.instance.stop()
+            self.instance.stop(sudo=self.sudo)
             self.instance = None
 
 # Create and Delete
