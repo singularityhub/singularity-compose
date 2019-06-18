@@ -18,11 +18,18 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
 from scompose.logger import bot
-from scompose.utils import get_userhome
+from scompose.utils import (
+    get_userhome, 
+    read_file,
+    write_file
+)
 from spython.main import get_client
+from scompose.templates import get_template
+
 import shlex as _shlex
 import os
 import platform
+import re
 import sys
 
 
@@ -279,6 +286,42 @@ class Instance(object):
             bot.info("Stopping %s" % self)
             self.instance.stop(sudo=self.sudo)
             self.instance = None
+
+# Networking
+
+    def get_address(self):
+        '''get an ip address of an image. If it's busybox, we can't use 
+           hostname -I.
+        '''
+        ip_address = None
+
+        if self.sudo:
+            if self.exists():
+                result = self.client.execute(image=self.instance.get_uri(), 
+                                              command=['hostname', '-I'],
+                                              return_result=True,
+                                              quiet=True,
+                                              sudo=self.sudo)
+
+                # Busybox won't have hostname -I
+                if result['return_code'] != 0:
+                    cmd = "ip -4 --oneline address show up eth0"
+                    result = self.client.execute(image=self.instance.get_uri(), 
+                                                 command=cmd,
+                                                 return_result=True,
+                                                 quiet=True,
+                                                 sudo=self.sudo)
+
+                ip_address = result['message'].strip('\n').strip()
+
+                # Clean up busybox output
+                if "inet" in ip_address:
+                    ip_address = re.match('.+ inet (?P<address>.+)/', ip_address).groups()[0]
+        else:
+            ip_address = '127.0.1.1'
+
+        return ip_address
+
 
 # Logs
 

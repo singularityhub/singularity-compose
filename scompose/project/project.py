@@ -163,12 +163,12 @@ class Project(object):
             for _, instance in self.instances.items():
                 instance.set_volumes_from(self.instances)
 
+
 # Networking
 
     def create_hosts(self, name, depends_on):
         '''create a hosts file to bind to all containers, where we define the
            correct hostnames to correspond with the ip addresses created.
-
            Note: This function is terrible. Singularity should easily expose 
                  these addresses. See issue here:
                  https://github.com/sylabs/singularity/issues/3751
@@ -179,34 +179,16 @@ class Project(object):
 
         for _, instance in self.instances.items():
            if instance.name in depends_on:   
-               if self.sudo:
-                   if instance.exists():
-                       result = self.client.execute(image=instance.instance.get_uri(), 
-                                                    command=['hostname', '-I'],
-                                                    return_result=True,
-                                                    quiet=True,
-                                                    sudo=self.sudo)
+               ip_address = instance.get_address()
+               if ip_address is not None:
+                   template = ['%s\t%s\n' % (ip_address, instance.name)] + template 
+        
+        # Add to our instance
+        instance = self.instances.get(name)
 
-                       # Busybox won't have hostname -I
-                       if result['return_code'] != 0:
-                           cmd = "ip -4 --oneline address show up eth0"
-                           result = self.client.execute(image=instance.instance.get_uri(), 
-                                                        command=cmd,
-                                                        return_result=True,
-                                                        quiet=True,
-                                                        sudo=self.sudo)
-
-                       ip_address = result['message'].strip('\n').strip()
-
-                       # Clean up busybox output
-                       if "inet" in ip_address:
-                           ip_address = re.match('.+ inet (?P<address>.+)/', ip_address).groups()[0]
-               else:
-                   ip_address = '127.0.1.1'
-
-               template = ['%s\t%s\n' % (ip_address, instance.name)] + template 
-               instance.volumes.append('%s:/etc/hosts' % hosts_basename)
-        write_file(hosts_file, template)
+        if instance:
+            instance.volumes.append('%s:/etc/hosts' % hosts_basename)
+            write_file(hosts_file, template)
 
 
 # Commands
@@ -218,7 +200,7 @@ class Project(object):
             if name in self.instances:
                 instance = self.instances[name]
                 if instance.exists():
-                    self.client.shell(instance.instance.get_uri())
+                    self.client.shell(instance.instance.get_uri(), sudo=self.sudo)
 
 
     def logs(self, names, tail=0):
