@@ -33,13 +33,15 @@ class Project(object):
     config = None
     instances = {}
 
-    def __init__(self, filename=None, name=None, working_dir=None, env_file=None):
+    def __init__(self, filename=None, name=None, env_file=None):
 
-        self.set_filename(filename, working_dir)
+        self.set_filename(filename)
         self.set_name(name)
         self.load()
         self.parse()
         self.env_file = env_file
+
+# Names
 
     def __str__(self):
         return "(project:%s)" % self.name
@@ -47,19 +49,28 @@ class Project(object):
     def __repr__(self):
         return self.__str__()
 
-    def set_filename(self, filename, working_dir=None):
+    def get_instance_names(self):
+        '''return a list of names, if a config file is loaded, and instances
+           are defined.
+        '''
+        names = []
+        if self.config is not None:
+            if "instances" in self.config:
+                names = list(self.config['instances'].keys())
+        return names
+
+
+    def set_filename(self, filename):
         '''set the filename to read the recipe from. If not provided, defaults
-           to singularity-compose.yml
+           to singularity-compose.yml. The working directory is set to
+           be the directory name of the configuration file.
 
            Parameters
            ==========
            filename: the singularity-compose.yml file to use
         '''
         self.filename = filename or "singularity-compose.yml"
-
-        # No working directory set, default to the location of compose file
-        if working_dir is None:
-            self.working_dir = os.path.dirname(self.filename)
+        self.working_dir = os.path.dirname(os.path.abspath(self.filename))
 
     def set_name(self, name):
         '''set the filename to read the recipe from. If not provided, defaults
@@ -67,6 +78,25 @@ class Project(object):
         '''
         pwd = os.path.basename(os.path.dirname(os.path.abspath(self.filename)))
         self.name = (name or pwd).lower()
+
+
+# Listing
+
+    def iter_instances(self, names):
+        '''yield instances one at a time. If an invalid name is given,
+           exit with error.
+
+           Parameters
+           ==========
+           names: the names of instances to yield. Must be valid
+        '''
+        # Used to validate instance names
+        instance_names = self.get_instance_names()
+
+        for name in names:
+            if name not in instance_names:
+                bot.exit('%s is not a valid section name.' % name)
+            yield self.instances.get(name)
         
 
 # Loading Functions
@@ -83,8 +113,8 @@ class Project(object):
         except: # ParserError
             bot.exit('Cannot parse %s, invalid yaml.' % self.filename)
 
-    def parse(self):
 
+    def parse(self):
         '''parse a loaded config'''
         if self.config is not None:
 
@@ -93,11 +123,14 @@ class Project(object):
                 params = self.config['instances'][name]
 
                 # Validates params
-                self.instances[name] = Instance(name, params)
+                self.instances[name] = Instance(name=name,
+                                                params=params,
+                                                working_dir=self.working_dir)
 
             # Update volumes with volumes from
             for _, instance in self.instances.items():
                 instance.set_volumes_from(self.instances)
+            
 
 # Config
 
@@ -107,62 +140,77 @@ class Project(object):
         if self.config is not None:
             print(json.dumps(self.config, indent=4))
 
+# Down
+
+    def down(self, names):
+        '''stop one or more instances. If no names are provided, bring them
+           all down.
+        '''
+        # If no names provided, we bring all down
+        if not names:
+            names = self.get_instance_names()
+
+        for instance in self.iter_instances(names):
+            instance.stop()            
+
+
+# Create
+
+    def create(self, names):
+        '''call the create function, which defaults to the command instance.create()
+        '''
+        return self._create(names)
+
+    def up(self, names):
+        '''call the up function, instance.up(), which will build before if
+           a container binary does not exist.
+        '''
+        return self._create(names, command="up")
+
+    def _create(self, names, command="create"):
+        '''create one or more instances. "Command" determines the sub function
+           to call for the instance, which should be "create" or "up".
+           If the user provide a list of names, use them, otherwise default
+           to all instances.
+          
+           Parameters
+           ==========
+           names: the instance names to create
+           command: one of "create" or "up"
+        '''
+        # If no names provided, we create all
+        if not names:
+            names = self.get_instance_names()
+         
+        # Keep a count to determine if we have circular dependency structure
+        created = []
+        count = 0
+
+        # First create those with no dependencies
+        while names:
+            
+            for instance in self.iter_instances(names):
+
+                # Ensure created, skip over if not
+                for depends_on in instance.params.get('depends_on', []):
+                    if depends_on not in created:
+                        count += 1
+                        continue
+
+                # If we get here, execute command and add to list
+                getattr(instance, command)(self.working_dir)
+                created.append(instance.name)
+                names.remove(instance.name) 
+
+                # Possibly circular dependencies 
+                if count >= 100:
+                    bot.exit('Unable to create all instances, possible circular dependency.')
+
 # Build
 
     def build(self):
         '''given a loaded project, build associated containers (or pull).
         '''
-        # Create a singularity python client, in case we need it
-        client = get_client()
-
         # Loop through containers and build missing
         for name, instance in self.instances.items():
-     
-            context = os.path.abspath(instance.context)
-
-            # if the context directory doesn't exist, create it
-            if not os.path.exists(context):
-                bot.info("Creating image context folder for %s" % name)
-                os.mkdir(context)
-
-            # The sif binary should have a predictible name
-            sif_binary = os.path.join(context, '%s.sif' % name)
-
-            # If the final image already exists, don't continue
-            if os.path.exists(sif_binary):
-                continue
-
-            # Case 1: Given an image
-            if instance.image is not None:
-                if not os.path.exists(instance.image):
- 
-                    # Can we pull it?
-                    if re.search('(docker|library|shub|http?s)[://]', instance.image):
-                        client.pull(instance.image, name=sif_binary)
-
-                    else:
-                        bot.exit('%s is an invalid unique resource identifier.' % instance.image)
-
-            # Case 2: Given a recipe
-            elif instance.recipe is not None:
-
-                # The recipe is expected to exist in the context folder
-                recipe = os.path.join(context, recipe)
-                if not os.path.exists(recipe):
-                    bot.exit('%s not found for build' % recipe)
-
-                # Build context is the container folder
-                os.chdir(context)
-                    
-                # This will require sudo
-                try:
-                    client.build(name=sif_binary, recipe=recipe)
-                except:
-                    bot.warning("Please build with sudo.")
-                    bot.info("sudo singularity build %s %s" % (sif_binary, recipe))
-
-                # Change back
-                os.chdir(self.working_dir)
-
-            else:
-                bot.exit("neither image and build defined for %s" % name)
+            instance.build(working_dir=self.working_dir)

@@ -88,17 +88,16 @@ building from a local file, is recommended as you have full control over
 the environment and startscript, and there are likely few containers out in the
 wild (and ready to be pulled) that have the correct entry and start scripts
 for your application. In the case that you *do* want to pull
-and customize the startscript or entrypoint you can do that as follows:
+a container (and use the existing startscript or entrypoint) you can do that
+as follows:
 
 ```
   nginx:
     image: docker://vanessa/sregistry_nginx
-    startscript: ["nginx", "-g", "daemon off;"]
-    entrypoint: /bin/bash
 ...
 ```
 
-Customization beyond these fields (e.g., labels, help, post) is out of
+Customization of an image (e.g., labels, help, post) is out of
 scope for singularity-compose, and you must build from a recipe instead.
 The fields for instances are discussed below:
 

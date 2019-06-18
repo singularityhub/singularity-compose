@@ -54,7 +54,7 @@ def get_parser():
                         help='specify project name (defaults to $PWD)')
 
     parser.add_argument("--project-directory", default=None, 
-                        dest='project_dir', type=str,
+                        dest='working_dir', type=str,
                         help='specify project working directory (defaults to compose file location)')
 
     parser.add_argument("--env-file", default=None, 
@@ -82,19 +82,21 @@ def get_parser():
     config = subparsers.add_parser("config",
                                    help="Validate and view the compose file")
 
-    # Create
+    # Create (assumes built already)
 
     create = subparsers.add_parser("create",
                                    help="create instances")
+
+    # Down
 
     down = subparsers.add_parser("down",
                                   help="stop instances")
 
     execute = subparsers.add_parser("exec",
-                                    help="execute a command to a container")
+                                    help="execute a command to an instance")
 
     images = subparsers.add_parser("images",
-                                    help="list images")
+                                    help="list running instances")
 
     kill = subparsers.add_parser("kill",
                                  help="kill instances")
@@ -106,22 +108,18 @@ def get_parser():
                                help="list instances")
 
     restart = subparsers.add_parser("restart",
-                                     help="restart images")
+                                     help="stop and start containers.")
 
     rm = subparsers.add_parser("rm",
                                help="remove non-running container images")
 
-    stop = subparsers.add_parser("stop",
-                                 help="stop running containers")
-
     up = subparsers.add_parser("up",
                                help="build and start containers")
 
-
-    # Add a context to relevant subparsers
-    for sub in [config, build]:
-        sub.add_argument('context', nargs=1,
-                          help='the context for the command (e.g., . means pwd)')
+    # Add list of names
+    for sub in [create, down, up]:
+        sub.add_argument('names', nargs="?",
+                          help='the names of the instances to target')
 
     return parser
 

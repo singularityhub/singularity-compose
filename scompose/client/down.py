@@ -24,20 +24,15 @@ import sys
 import os
 
 
-
 log = logging.getLogger(__name__)
 
 def main(args, parser, extra):
-    '''Build or rebuild containers
-
-       Containers are built once and then named as <project>_<service>,
-       e.g. `folder_db`. If a Singularity recipe changes for a container folder,
-       you can run "singularity-compose build" to rebuild it.
+    '''bring one or more instances down
     '''
     # Initialize the project
     project = Project(filename=args.file,
                       name=args.project_name,
                       env_file=args.env_file)
 
-    # Builds any containers into folders
-    project.build()
+    # Create instances, and if none specified, create all
+    project.down(args.names)
