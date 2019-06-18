@@ -36,7 +36,7 @@ class Instance(object):
                     named according to "name" is created for the image binary.
        params: all of the parameters defined in the configuration.
     '''
-    def __init__(self, name, working_dir, params=None):
+    def __init__(self, name, working_dir, sudo=False, params=None):
 
         if not params:
             params = {}
@@ -44,6 +44,7 @@ class Instance(object):
         self.image = None
         self.recipe = None
         self.instance = None
+        self.sudo = sudo
         self.set_name(name, params)
         self.set_context(params)
         self.set_volumes(params)
@@ -142,6 +143,19 @@ class Instance(object):
         '''set ports from the recipe to be used
         '''
         self.ports = params.get('ports', [])
+
+# Commands
+
+    def _get_network_commands(self):
+        '''take a list of ports, return the list of --network-args to
+           ensure they are bound correctly.
+        '''
+        ports = []
+        if self.ports:
+            ports.append('--net')
+            for pair in self.ports:
+                ports += ['--network-args', '"portmap=%s/tcp"' % pair]
+        return ports
 
     def _get_bind_commands(self):
         '''take a list of volumes, and return the bind commands for Singularity
@@ -266,7 +280,7 @@ class Instance(object):
 
 # Create and Delete
 
-    def up(self, working_dir):
+    def up(self, working_dir, sudo=False, writable_tmpfs=False):
         '''up is the same as create, but like Docker, we build / pull instances
            first.
         '''
@@ -275,10 +289,10 @@ class Instance(object):
         # Do a build if necessary
         if not os.path.exists(image):
             self.build(working_dir)
-        self.create()
+        self.create(writable_tmpfs=writable_tmpfs)
 
 
-    def create(self):
+    def create(self, sudo=False, writable_tmpfs=False):
         '''create an instance, if it doesn't exist.
         '''
         image = self.get_image()
@@ -295,7 +309,21 @@ class Instance(object):
         if not self.exists():
 
             bot.info("Creating %s" % self.name)
+
+            # Volumes
             binds = self._get_bind_commands()
+
+            # Ports
+            ports = self._get_network_commands()
+
+            # Hostname
+            hostname = ["--hostname", self.name]
+
+            # Writable Temporary Directory
+            if writable_tmpfs:
+                hostname += ['--writable_tmpfs']
+
             self.instance = self.client.instance(name=self.name,
-                                                 options=binds,
+                                                 sudo=self.sudo,
+                                                 options=binds + ports + hostname,
                                                  image=image)

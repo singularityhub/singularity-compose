@@ -40,6 +40,7 @@ class Project(object):
         self.load()
         self.parse()
         self.env_file = env_file
+        self.client = get_client()
 
 # Names
 
@@ -82,6 +83,21 @@ class Project(object):
 
 # Listing
 
+    def ps(self):
+        '''ps will print a table of instances, including pids and names.
+        '''
+        instance_names = self.get_instance_names()
+        table = []
+        for instance in self.client.instances(quiet=True, sudo=self.sudo):
+            if instance.name in instance_names:
+                image = os.path.basename(instance._image)
+                table.append([instance.name.rjust(12), 
+                              instance.pid, 
+                              image])
+
+        bot.custom(prefix="INSTANCES ", message="NAME PID     IMAGE",color="CYAN")
+        bot.table(table)
+        
     def iter_instances(self, names):
         '''yield instances one at a time. If an invalid name is given,
            exit with error.
@@ -116,7 +132,17 @@ class Project(object):
 
     def parse(self):
         '''parse a loaded config'''
+
+        # If a port is defined, we need root.
+        self.sudo = False
+        
         if self.config is not None:
+
+            # If any of config has ports, must use sudo for networking
+            for name in self.config.get('instances', []):
+                params = self.config['instances'][name]
+                if "ports" in params:
+                    self.sudo = True
 
             # Create each instance object
             for name in self.config.get('instances', []):
@@ -125,12 +151,23 @@ class Project(object):
                 # Validates params
                 self.instances[name] = Instance(name=name,
                                                 params=params,
+                                                sudo=self.sudo,
                                                 working_dir=self.working_dir)
 
             # Update volumes with volumes from
             for _, instance in self.instances.items():
                 instance.set_volumes_from(self.instances)
-            
+
+# Commands
+
+    def shell(self, name):
+        '''if an instance exists, shell into it.
+        '''
+        if self.instances:
+            if name in self.instances:
+                instance = self.instances[name]
+                if instance.exists():
+                    self.client.shell(instance.instance.get_uri())
 
 # Config
 
@@ -156,18 +193,18 @@ class Project(object):
 
 # Create
 
-    def create(self, names):
+    def create(self, names, writable_tmpfs=False):
         '''call the create function, which defaults to the command instance.create()
         '''
-        return self._create(names)
+        return self._create(names, writable_tmpfs=writable_tmpfs)
 
-    def up(self, names):
+    def up(self, names, writable_tmpfs=False):
         '''call the up function, instance.up(), which will build before if
            a container binary does not exist.
         '''
-        return self._create(names, command="up")
+        return self._create(names, command="up", writable_tmpfs=writable_tmpfs)
 
-    def _create(self, names, command="create"):
+    def _create(self, names, command="create", writable_tmpfs=False):
         '''create one or more instances. "Command" determines the sub function
            to call for the instance, which should be "create" or "up".
            If the user provide a list of names, use them, otherwise default
@@ -177,6 +214,7 @@ class Project(object):
            ==========
            names: the instance names to create
            command: one of "create" or "up"
+           writable_tmpfs: if the instances should be given writable to tmp
         '''
         # If no names provided, we create all
         if not names:
@@ -198,7 +236,7 @@ class Project(object):
                         continue
 
                 # If we get here, execute command and add to list
-                getattr(instance, command)(self.working_dir)
+                getattr(instance, command)(self.working_dir, writable_tmpfs)
                 created.append(instance.name)
                 names.remove(instance.name) 
 

@@ -82,10 +82,18 @@ def get_parser():
     config = subparsers.add_parser("config",
                                    help="Validate and view the compose file")
 
-    # Create (assumes built already)
+    # Create (assumes built already), Up (will also build, if able)
 
     create = subparsers.add_parser("create",
                                    help="create instances")
+
+    up = subparsers.add_parser("up",
+                               help="build and start containers")
+
+    for sub in [create, up]:
+        sub.add_argument('--writable-tmpfs', dest="writable_tmpfs", 
+                         help="allow the instance to write to tmp", 
+                         default=False, action='store_true')
 
     # Down
 
@@ -95,8 +103,9 @@ def get_parser():
     execute = subparsers.add_parser("exec",
                                     help="execute a command to an instance")
 
-    images = subparsers.add_parser("images",
-                                    help="list running instances")
+    shell = subparsers.add_parser("shell",
+                                   help="shell into an instance")
+
 
     kill = subparsers.add_parser("kill",
                                  help="kill instances")
@@ -110,16 +119,15 @@ def get_parser():
     restart = subparsers.add_parser("restart",
                                      help="stop and start containers.")
 
-    rm = subparsers.add_parser("rm",
-                               help="remove non-running container images")
-
-    up = subparsers.add_parser("up",
-                               help="build and start containers")
-
     # Add list of names
     for sub in [create, down, up]:
-        sub.add_argument('names', nargs="?",
+        sub.add_argument('names', nargs="*",
                           help='the names of the instances to target')
+
+    # Only one name allowed
+    for sub in [shell, execute, kill]:
+        sub.add_argument('name', nargs=1,
+                         help='the name of the instance to target')
 
     return parser
 
@@ -129,7 +137,6 @@ def main():
        parser based on the command, and then import and call the appropriate 
        main.
     '''
-
     parser = get_parser()
 
     def help(return_code=0):
@@ -165,13 +172,11 @@ def main():
     elif args.command == "config": from .config import main
     elif args.command == "down": from .down import main
     elif args.command == "exec": from .exec import main
-    elif args.command == "images": from .images import main
     elif args.command == "kill": from .kill import main
     elif args.command == "logs": from .logs import main
     elif args.command == "ps": from .ps import main
     elif args.command == "restart": from .restart import main
-    elif args.command == "rm": from .rm import main
-    elif args.command == "stop": from .stop import main
+    elif args.command == "shell": from .shell import main
     elif args.command == "up": from .up import main
     
     # Pass on to the correct parser

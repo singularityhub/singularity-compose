@@ -38,4 +38,4 @@ def main(args, parser, extra):
                       env_file=args.env_file)
 
     # Create instances, and if none specified, create all
-    project.create(args.names)
+    project.create(args.names, writable_tmpfs=writable_tmpfs)
