@@ -91,9 +91,13 @@ def get_parser():
                                help="build and start containers")
 
     for sub in [create, up]:
-        sub.add_argument('--writable-tmpfs', dest="writable_tmpfs", 
-                         help="allow the instance to write to tmp", 
+        sub.add_argument('--read_only', dest="read_only", 
+                         help="disable the instance from writing to tmp", 
                          default=False, action='store_true')
+
+        sub.add_argument("--bridge", default="10.22.0.0/16", 
+                         dest='bridge', type=str,
+                         help='the address of the bridge to derive others from.')
 
     # Down
 

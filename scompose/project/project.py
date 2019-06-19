@@ -26,6 +26,7 @@ from scompose.utils import (
 )
 from spython.main import get_client
 from .instance import Instance
+from ipaddress import IPv4Network
 import json
 import os
 import re
@@ -166,6 +167,24 @@ class Project(object):
 
 # Networking
 
+    def get_ip_lookup(self, names, bridge="10.22.0.0/16"):
+        '''based on a bridge address that can serve other addresses (akin to
+           a router, metaphorically, generate a pre-determined address for
+           each container.
+        '''
+        
+        host_iter = IPv4Network(bridge).hosts()
+        lookup = {}
+ 
+        # Don't include the gateway
+        next(host_iter)
+
+        for name in names:
+            lookup[name] = str(next(host_iter))
+
+        return lookup
+
+
     def get_bridge_address(self, name='sbr0'):
         '''get the (named) bridge address on the host. It should be automatically
            created by Singularity over 3.0.
@@ -179,7 +198,7 @@ class Project(object):
         return bridge_address
 
 
-    def create_hosts(self, name, depends_on):
+    def create_hosts(self, lookup):
         '''create a hosts file to bind to all containers, where we define the
            correct hostnames to correspond with the ip addresses created.
            Note: This function is terrible. Singularity should easily expose 
@@ -188,19 +207,15 @@ class Project(object):
 
            Parameters
            ==========
-           name: the name of the instance to create
-           depends_on: the other instances it depends on
+           lookup: a lookup of ip addresses to assign the containers
         '''
         template = read_file(get_template('hosts'))
-        hosts_file = os.path.join(self.working_dir, 'etc.hosts.%s' % name)
-        hosts_basename = os.path.basename(hosts_file)        
+        hosts_file = os.path.join(self.working_dir, 'etc.hosts')
+        hosts_basename = os.path.basename(hosts_file)
 
         # Add an entry for each instance hostname to see the others
-        for _, instance in self.instances.items():
-            ip_address = instance.get_address()
-            if ip_address:
-                print(ip_address)
-                template = ['%s\t%s\n' % (ip_address, instance.name)] + template
+        for name, ip_address in lookup.items():
+            template = ['%s\t%s\n' % (ip_address, name)] + template
 
         # Add the host file to be mounted
         write_file(hosts_file, template)
@@ -280,12 +295,12 @@ class Project(object):
 
 # Create
 
-    def create(self, names, writable_tmpfs=False):
+    def create(self, names, writable_tmpfs=True, bridge="10.22.0.0/16"):
         '''call the create function, which defaults to the command instance.create()
         '''
         return self._create(names, writable_tmpfs=writable_tmpfs)
 
-    def up(self, names, writable_tmpfs=False):
+    def up(self, names, writable_tmpfs=True, bridge="10.22.0.0/16"):
         '''call the up function, instance.up(), which will build before if
            a container binary does not exist.
         '''
@@ -294,7 +309,8 @@ class Project(object):
     def _create(self, 
                 names, 
                 command="create",
-                writable_tmpfs=True):
+                writable_tmpfs=True,
+                bridge="10.22.0.0/16"):
 
         '''create one or more instances. "Command" determines the sub function
            to call for the instance, which should be "create" or "up".
@@ -306,16 +322,23 @@ class Project(object):
            names: the instance names to create
            command: one of "create" or "up"
            writable_tmpfs: if the instances should be given writable to tmp
+           bridge: the bridge ip address to use for networking, and generating
+                   addresses for the individual containers.
+                   see /usr/local/etc/singularity/network/00_bridge.conflist 
         '''
         # If no names provided, we create all
         if not names:
             names = self.get_instance_names()
          
-        writable_tmpfs = True
-
         # Keep a count to determine if we have circular dependency structure
         created = []
         count = 0
+
+        # Generate ip addresses for each
+        lookup = self.get_ip_lookup(names, bridge)
+
+        # Generate shared hosts file
+        hosts_file = self.create_hosts(lookup)
 
         # First create those with no dependencies
         while names:
@@ -326,28 +349,37 @@ class Project(object):
                 do_create = True
 
                 # Ensure created, skip over if not
-                for depends_on in instance.params.get('depends_on', []):
+                depends_on = instance.params.get('depends_on', [])
+                for depends_on in depends_on:
                     if depends_on not in created:
                         count += 1
                         do_create = False
 
                 if do_create:
 
-                    # Create a hosts file for the instance based, add as volume
-                    hosts_file = self.create_hosts(instance.name, depends_on)
                     instance.volumes.append('%s:/etc/hosts' % hosts_file)
 
-                    print(instance.volumes)
+                    # Create a hosts file for the instance based, add as volume
+
                     # If we get here, execute command and add to list
-                    getattr(instance, command)(self.working_dir, writable_tmpfs)
+                    create_func = getattr(instance, command)
+                    create_func(working_dir=self.working_dir,
+                                writable_tmpfs=writable_tmpfs,
+                                ip_address=lookup[instance.name])
+
                     created.append(instance.name)
                     names.remove(instance.name) 
+                 
+                    # Run post create commands
+                    instance.run_post()
 
                 # Possibly circular dependencies 
                 if count >= 100:
                     bot.exit('Unable to create all instances, possible circular dependency.')
 
+
 # Build
+
 
     def build(self):
         '''given a loaded project, build associated containers (or pull).
@@ -355,3 +387,6 @@ class Project(object):
         # Loop through containers and build missing
         for name, instance in self.instances.items():
             instance.build(working_dir=self.working_dir)
+
+        # Run post commands
+        self.post()

@@ -26,7 +26,7 @@ from scompose.utils import (
 from spython.main import get_client
 from scompose.templates import get_template
 
-import shlex as _shlex
+import shlex
 import os
 import platform
 import re
@@ -155,15 +155,18 @@ class Instance(object):
 
 # Commands
 
-    def _get_network_commands(self):
+    def _get_network_commands(self, ip_address=None):
         '''take a list of ports, return the list of --network-args to
            ensure they are bound correctly.
         '''
-        ports = []
-        if self.ports:
-            ports.append('--net')
-            for pair in self.ports:
-                ports += ['--network-args', '"portmap=%s/tcp"' % pair]
+        ports = ['--net']
+        for pair in self.ports:
+            ports += ['--network-args', '"portmap=%s/tcp"' % pair]
+
+        # Ask for a custom ip address
+        if ip_address is not None:
+            ports += ["--network-args", '"IP=%s"' % ip_address]
+
         return ports
 
     def _get_bind_commands(self):
@@ -186,6 +189,30 @@ class Instance(object):
             bind = "%s:%s" % (os.path.abspath(src), os.path.abspath(dest))
             binds += ['--bind', bind]
         return binds
+
+
+    def run_post(self):
+        '''run post create commands. Can be added to an instance definition
+           either to run a command directly, or execute a script. The path
+           is assumed to be on the host.
+            
+          post:
+            command: ["mkdir", "-p", "./images/_upload/{0..9}"]
+             
+          OR
+
+          post:
+            command: "mkdir -p ./images/_upload/{0..9}"
+        '''
+        if "post" in self.params:
+            if "command" in self.params['post']:
+                command = self.params['post']['command']
+
+                # Command must be a list
+                if not isinstance(command, list):
+                    command = shlex.split(command)
+
+                self.client._run_command(command, quiet=True)
 
 # Image
 
@@ -382,7 +409,7 @@ class Instance(object):
 
 # Create and Delete
 
-    def up(self, working_dir, sudo=False, writable_tmpfs=False):
+    def up(self, working_dir, ip_address=None, sudo=False, writable_tmpfs=False):
         '''up is the same as create, but like Docker, we build / pull instances
            first.
         '''
@@ -391,10 +418,11 @@ class Instance(object):
         # Do a build if necessary
         if not os.path.exists(image):
             self.build(working_dir)
-        self.create(writable_tmpfs=writable_tmpfs)
+        self.create(writable_tmpfs=writable_tmpfs, 
+                    ip_address=ip_address)
 
 
-    def create(self, sudo=False, writable_tmpfs=False):
+    def create(self, ip_address=None, sudo=False, writable_tmpfs=False):
         '''create an instance, if it doesn't exist.
         '''
         image = self.get_image()
@@ -416,14 +444,14 @@ class Instance(object):
             binds = self._get_bind_commands()
 
             # Ports
-            ports = self._get_network_commands()
+            ports = self._get_network_commands(ip_address)
 
             # Hostname
             hostname = ["--hostname", self.name]
 
             # Writable Temporary Directory
             if writable_tmpfs:
-                hostname += ['--writable_tmpfs']
+                hostname += ['--writable-tmpfs']
 
             self.instance = self.client.instance(name=self.name,
                                                  sudo=self.sudo,
