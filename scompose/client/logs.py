@@ -34,5 +34,7 @@ def main(args, parser, extra):
                       name=args.project_name,
                       env_file=args.env_file)
 
-    # Create instances, and if none specified, create all
-    project.logs(args.names, args.tail)
+    if args.clear:
+        project.clear_logs(args.names)
+    else:
+        project.logs(args.names, args.tail)

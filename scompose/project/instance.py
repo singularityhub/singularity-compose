@@ -290,18 +290,17 @@ class Instance(object):
 # Networking
 
     def get_address(self):
-        '''get an ip address of an image. If it's busybox, we can't use 
+        '''get the bridge address of an image. If it's busybox, we can't use 
            hostname -I.
         '''
         ip_address = None
-
         if self.sudo:
             if self.exists():
                 result = self.client.execute(image=self.instance.get_uri(), 
-                                              command=['hostname', '-I'],
-                                              return_result=True,
-                                              quiet=True,
-                                              sudo=self.sudo)
+                                             command=['hostname', '-I'],
+                                             return_result=True,
+                                             quiet=True,
+                                             sudo=self.sudo)
 
                 # Busybox won't have hostname -I
                 if result['return_code'] != 0:
@@ -313,8 +312,6 @@ class Instance(object):
                                                  sudo=self.sudo)
 
                 ip_address = result['message'].strip('\n').strip()
-
-                # Clean up busybox output
                 if "inet" in ip_address:
                     ip_address = re.match('.+ inet (?P<address>.+)/', ip_address).groups()[0]
         else:
@@ -325,9 +322,29 @@ class Instance(object):
 
 # Logs
 
-    def logs(self, tail=0):
-        '''show logs for an instance'''
+    def clear_logs(self):
+        '''delete logs for an instance, if they exist.
+        '''
+        log_folder = self._get_log_folder()
 
+        for ext in ['out', 'err']:
+            logfile = os.path.join(log_folder, '%s.%s' % (self.name, ext.lower()))
+
+            # Use Try/catch to account for not existing.
+            try:
+                if not self.sudo:
+                    self.client._run_command(['rm', logfile], quiet=True)
+                    self.client._run_command(['touch', logfile], quiet=True)
+                else:
+                    self.client._run_command(['sudo', 'rm', logfile], quiet=True)
+                    self.client._run_command(['sudo', 'touch', logfile], quiet=True)
+            except:
+                pass
+
+
+    def _get_log_folder(self):
+        '''get a log folder that includes a user, home, and host
+        '''
         home = get_userhome()
         user = os.path.basename(home)
 
@@ -337,21 +354,21 @@ class Instance(object):
 
         # Hostname
         hostname = platform.node()
+        return os.path.join(home, '.singularity', 'instances', 'logs', hostname, user)
 
-        log_folder = os.path.join(home, '.singularity', 'instances', 'logs', hostname, user)
+
+    def logs(self, tail=0):
+        '''show logs for an instance'''
+
+        log_folder = self._get_log_folder()
 
         for ext in ['OUT', 'ERR']:
             logfile = os.path.join(log_folder, '%s.%s' % (self.name, ext.lower()))
 
             # Use Try/catch to account for not existing.
             try:
-                if not self.sudo:
-                    result = self.client._run_command(['cat', logfile], quiet=True)
-                else:
-                    result = self.client._run_command(['sudo', 'cat', logfile], quiet=True)
-
-                if result:
- 
+                result = self.client._run_command(['cat', logfile], quiet=True, sudo=self.sudo)
+                if result: 
                     # If the user only wants to see certain number
                     if tail > 0:
                         result = '\n'.join(result.split('\n')[-tail:])

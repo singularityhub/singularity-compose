@@ -166,30 +166,46 @@ class Project(object):
 
 # Networking
 
+    def get_bridge_address(self, name='sbr0'):
+        '''get the (named) bridge address on the host. It should be automatically
+           created by Singularity over 3.0.
+        '''
+        command = ["ip", "-4", "--oneline", "address", "show", "up", name]
+        result = self.client._run_command(command,
+                                          return_result=True,
+                                          quiet=True,
+                                          sudo=self.sudo)['message']
+        bridge_address = re.match('.+ inet (?P<address>.+)/', result).groups()[0]
+        return bridge_address
+
+
     def create_hosts(self, name, depends_on):
         '''create a hosts file to bind to all containers, where we define the
            correct hostnames to correspond with the ip addresses created.
            Note: This function is terrible. Singularity should easily expose 
                  these addresses. See issue here:
                  https://github.com/sylabs/singularity/issues/3751
+
+           Parameters
+           ==========
+           name: the name of the instance to create
+           depends_on: the other instances it depends on
         '''
         template = read_file(get_template('hosts'))
         hosts_file = os.path.join(self.working_dir, 'etc.hosts.%s' % name)
         hosts_basename = os.path.basename(hosts_file)        
 
+        # Add an entry for each instance hostname to see the others
         for _, instance in self.instances.items():
-           if instance.name in depends_on:   
-               ip_address = instance.get_address()
-               if ip_address is not None:
-                   template = ['%s\t%s\n' % (ip_address, instance.name)] + template 
-        
-        # Add to our instance
-        instance = self.instances.get(name)
+            ip_address = instance.get_address()
+            if ip_address:
+                print(ip_address)
+                template = ['%s\t%s\n' % (ip_address, instance.name)] + template
 
-        if instance:
-            instance.volumes.append('%s:/etc/hosts' % hosts_basename)
-            write_file(hosts_file, template)
-
+        # Add the host file to be mounted
+        write_file(hosts_file, template)
+        return hosts_file
+ 
 
 # Commands
 
@@ -225,18 +241,20 @@ class Project(object):
                                                     sudo=self.sudo):
                         print(line, end='')
 
+# Logs
+
+    def clear_logs(self, names):
+        '''clear_logs will remove all old error and output logs.
+        '''
+        for instance in self.iter_instances(names):
+            instance.clear_logs()
+
 
     def logs(self, names, tail=0):
         '''logs will print logs to the screen.
         '''
-        # If no names provided, show all logs
-        if not names:
-            names = self.get_instance_names()
-
-        # Print logs for each
-        for name in names:
-            if name in self.instances:
-                self.instances[name].logs(tail=tail)
+        for instance in self.iter_instances(names):
+            instance.logs(tail=tail)
 
 # Config
 
@@ -273,7 +291,11 @@ class Project(object):
         '''
         return self._create(names, command="up", writable_tmpfs=writable_tmpfs)
 
-    def _create(self, names, command="create", writable_tmpfs=False):
+    def _create(self, 
+                names, 
+                command="create",
+                writable_tmpfs=True):
+
         '''create one or more instances. "Command" determines the sub function
            to call for the instance, which should be "create" or "up".
            If the user provide a list of names, use them, otherwise default
@@ -289,6 +311,8 @@ class Project(object):
         if not names:
             names = self.get_instance_names()
          
+        writable_tmpfs = True
+
         # Keep a count to determine if we have circular dependency structure
         created = []
         count = 0
@@ -309,9 +333,11 @@ class Project(object):
 
                 if do_create:
 
-                    # Create a hosts file for the instance based on depends
-                    self.create_hosts(instance.name, created)
+                    # Create a hosts file for the instance based, add as volume
+                    hosts_file = self.create_hosts(instance.name, depends_on)
+                    instance.volumes.append('%s:/etc/hosts' % hosts_file)
 
+                    print(instance.volumes)
                     # If we get here, execute command and add to list
                     getattr(instance, command)(self.working_dir, writable_tmpfs)
                     created.append(instance.name)

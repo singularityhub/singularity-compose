@@ -119,6 +119,10 @@ def get_parser():
                       dest='tail', type=int,
                       help='clip logs to certain number of lines from end')
 
+    logs.add_argument('--clear', dest="clear", 
+                      help="clear existing logs.", 
+                      default=False, action='store_true')
+
     ps = subparsers.add_parser("ps",
                                help="list instances")
 
