@@ -115,3 +115,5 @@ field (not defined above).|
 |volumes| one or more files or files to bind to the instance when it's started.|
 |volumes_from| shared volumes that are defined for other instances|
 |ports| currently not sure how I'm going to handle this!|
+|post| a section of post commands and arguments, run after instance creation |
+|post.commands| a list of commands to run (directly or a script) on the host |
