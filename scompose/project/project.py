@@ -195,12 +195,35 @@ class Project(object):
 
     def shell(self, name):
         '''if an instance exists, shell into it.
+
+           Parameters
+           ==========
+           name: the name of the instance to shell into
         '''
         if self.instances:
             if name in self.instances:
                 instance = self.instances[name]
                 if instance.exists():
                     self.client.shell(instance.instance.get_uri(), sudo=self.sudo)
+
+
+    def execute(self, name, commands):
+        '''if an instance exists, execute a command to it.
+
+           Parameters
+           ==========
+           name: the name of the instance to exec to
+           commands: a list of commands to issue
+        '''
+        if self.instances:
+            if name in self.instances:
+                instance = self.instances[name]
+                if instance.exists():
+                    for line in self.client.execute(instance.instance.get_uri(), 
+                                                    command=commands,
+                                                    stream=True,
+                                                    sudo=self.sudo):
+                        print(line, end='')
 
 
     def logs(self, names, tail=0):
@@ -275,19 +298,24 @@ class Project(object):
             
             for instance in self.iter_instances(names):
 
+                # Flag to indicated create
+                do_create = True
+
                 # Ensure created, skip over if not
                 for depends_on in instance.params.get('depends_on', []):
                     if depends_on not in created:
                         count += 1
-                        continue
+                        do_create = False
 
-                # Create a hosts file for the instance based on depends
-                self.create_hosts(instance.name, created)
+                if do_create:
 
-                # If we get here, execute command and add to list
-                getattr(instance, command)(self.working_dir, writable_tmpfs)
-                created.append(instance.name)
-                names.remove(instance.name) 
+                    # Create a hosts file for the instance based on depends
+                    self.create_hosts(instance.name, created)
+
+                    # If we get here, execute command and add to list
+                    getattr(instance, command)(self.working_dir, writable_tmpfs)
+                    created.append(instance.name)
+                    names.remove(instance.name) 
 
                 # Possibly circular dependencies 
                 if count >= 100:
