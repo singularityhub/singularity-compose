@@ -34,4 +34,8 @@ INSTALL_REQUIRES = (
     ('spython', {'min_version': '0.0.67'}),
 )
 
+TESTS_REQUIRES = (
+    ('pytest', {'min_version': '4.6.2'}),
+)
+
 INSTALL_REQUIRES_ALL = INSTALL_REQUIRES
