@@ -31,6 +31,12 @@ run_linter: &run_linter
   name: run linter
   command: pylint ~/repo/scompose
 
+install_scompose: &install_scompose
+  name: Install Singularity Compose
+  command: |
+        cd ~/repo
+        pip install .[all]
+
 test_scompose: &test_scompose
   name: Test Singularity Compose
   command: |
@@ -102,6 +108,7 @@ jobs:
           paths:
             - ~/conda
           key: v1-dependencies
+      - run: *install_scompose
       - when:
           condition: << parameters.run-linter >>
           steps:
