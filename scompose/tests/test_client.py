@@ -8,6 +8,7 @@
 
 from scompose.project import Project
 from scompose.utils import run_command
+from time import sleep
 import pytest
 import tempfile
 import shutil
@@ -42,10 +43,9 @@ def test_commands(tmp_path):
     print('Testing up')
     project.up()
     assert 'etc.hosts' in os.listdir()
-    assert 'db.sqlite3' in os.listdir('app')
 
-    # Ensure running
-    assert requests.get('http://127.0.0.1/').status_code == 200
+    print('Waiting for instance to start')
+    sleep(10)
 
     print('Testing logs')
     project.logs(['app'], tail=20)
@@ -59,6 +59,11 @@ def test_commands(tmp_path):
 
     print('Testing exec')
     project.execute('app', ['echo','MarsBar'])
+
+    # Ensure running
+    assert requests.get('http://127.0.0.1/').status_code == 200
+
+    assert 'db.sqlite3' in os.listdir('app')
 
     print('Testing down')
     project.down()
