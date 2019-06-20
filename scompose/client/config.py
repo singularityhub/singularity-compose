@@ -18,13 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
 from scompose.project import Project
-import logging
-import json
-import sys
 import os
-
-
-log = logging.getLogger(__name__)
 
 def main(args, parser, extra):
     '''View or validate a configuration file
@@ -39,7 +33,6 @@ def main(args, parser, extra):
     # Initialize the project
     project = Project(filename=args.file,
                       name=args.project_name,
-                      working_dir=working_dir,
                       env_file=args.env_file)
 
     # Builds any containers into folders

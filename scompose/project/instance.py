@@ -18,19 +18,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
 from scompose.logger import bot
-from scompose.utils import (
-    get_userhome, 
-    read_file,
-    write_file
-)
+from scompose.utils import get_userhome
 from spython.main import get_client
-from scompose.templates import get_template
 
 import shlex
 import os
 import platform
 import re
-import sys
 
 
 class Instance(object):
@@ -256,7 +250,7 @@ class Instance(object):
                 # Can we pull it?
                 if re.search('(docker|library|shub|http?s)[://]', self.image):
                     bot.info('Pulling %s' % self.image)
-                    client.pull(self.image, name=sif_binary)
+                    self.client.pull(self.image, name=sif_binary)
 
                 else:
                     bot.exit('%s is an invalid unique resource identifier.' % self.image)
@@ -275,18 +269,20 @@ class Instance(object):
             # This will require sudo
             try:
                 bot.info('Building %s' % self.name)
-                self.client.build(name=sif_binary, recipe=self.recipe)
+                self.client.build(image=sif_binary,
+                                  recipe=self.recipe)
+
             except:
                 build = "sudo singularity build %s %s" % (os.path.basename(sif_binary),
                                                           self.recipe)
 
-                bot.warning("Please build with sudo: %s" % build)
+                bot.warning("Issue building container, try: %s" % build)
 
             # Change back to provided working directory
             os.chdir(working_dir)
 
         else:
-           bot.exit("neither image and build defined for %s" % self.name)
+            bot.exit("neither image and build defined for %s" % self.name)
 
 # State
 
@@ -453,7 +449,12 @@ class Instance(object):
             if writable_tmpfs:
                 hostname += ['--writable-tmpfs']
 
+            # Show the command to the user
+            options = binds + ports + hostname
+            commands = "%s %s %s" % (' '.join(options), image, self.name)
+            bot.debug('singularity instance start %s' % commands)
+
             self.instance = self.client.instance(name=self.name,
                                                  sudo=self.sudo,
-                                                 options=binds + ports + hostname,
+                                                 options=options,
                                                  image=image)

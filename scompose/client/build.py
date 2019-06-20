@@ -18,14 +18,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
 from scompose.project import Project
-import logging
-import json
-import sys
-import os
-
-
-
-log = logging.getLogger(__name__)
 
 def main(args, parser, extra):
     '''Build or rebuild containers
@@ -40,4 +32,4 @@ def main(args, parser, extra):
                       env_file=args.env_file)
 
     # Builds any containers into folders
-    project.build()
+    project.build(args.names)

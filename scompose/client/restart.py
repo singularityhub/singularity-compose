@@ -20,7 +20,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from scompose.project import Project
 
 def main(args, parser, extra):
-    '''bring one or more instances down
+    '''bring up one or more instances. They must exist.
+
+       This will build and bring up one or more named instances, or if None
+       are provided, we create all of them.
     '''
     # Initialize the project
     project = Project(filename=args.file,
@@ -28,4 +31,9 @@ def main(args, parser, extra):
                       env_file=args.env_file)
 
     # Create instances, and if none specified, create all
-    project.shell(args.name[0])
+    project.down(args.names)
+
+    # Create instances, and if none specified, create all
+    project.up(args.names, 
+               writable_tmpfs=not args.read_only,
+               bridge=args.bridge)

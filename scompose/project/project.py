@@ -82,6 +82,10 @@ class Project(object):
     def set_name(self, name):
         '''set the filename to read the recipe from. If not provided, defaults
            to singularity-compose.yml
+
+           Parameters
+           ==========
+           name: if a customize name is provided, use it
         '''
         pwd = os.path.basename(os.path.dirname(os.path.abspath(self.filename)))
         self.name = (name or pwd).lower()
@@ -101,7 +105,10 @@ class Project(object):
                               instance.pid, 
                               image])
 
-        bot.custom(prefix="INSTANCES ", message="NAME PID     IMAGE",color="CYAN")
+        bot.custom(prefix="INSTANCES ",
+                   message="NAME PID     IMAGE", 
+                   color="CYAN")
+
         bot.table(table)
         
     def iter_instances(self, names):
@@ -124,10 +131,11 @@ class Project(object):
 # Loading Functions
   
     def load(self):
-        '''load a singularity-compose.yml recipe, and validate it.'''
+        '''load a singularity-compose.yml recipe, and validate it.
+        '''
 
         if not os.path.exists(self.filename):
-            log.error("%s does not exist." % self.filename)
+            bot.error("%s does not exist." % self.filename)
             sys.exit(1)
  
         try:
@@ -171,6 +179,11 @@ class Project(object):
         '''based on a bridge address that can serve other addresses (akin to
            a router, metaphorically, generate a pre-determined address for
            each container.
+
+           Parameters
+           ==========
+           names: a list of names of instances to generate addresses for. 
+           bridge: the bridge address to derive them for.
         '''
         
         host_iter = IPv4Network(bridge).hosts()
@@ -187,7 +200,12 @@ class Project(object):
 
     def get_bridge_address(self, name='sbr0'):
         '''get the (named) bridge address on the host. It should be automatically
-           created by Singularity over 3.0.
+           created by Singularity over 3.0. This function currently is not used,
+           but is left in case it's needed.
+
+           Parameters
+           ==========
+           name: The default name of the Singularity bridge (sbr0)
         '''
         command = ["ip", "-4", "--oneline", "address", "show", "up", name]
         result = self.client._run_command(command,
@@ -211,7 +229,6 @@ class Project(object):
         '''
         template = read_file(get_template('hosts'))
         hosts_file = os.path.join(self.working_dir, 'etc.hosts')
-        hosts_basename = os.path.basename(hosts_file)
 
         # Add an entry for each instance hostname to see the others
         for name, ip_address in lookup.items():
@@ -260,6 +277,11 @@ class Project(object):
 
     def clear_logs(self, names):
         '''clear_logs will remove all old error and output logs.
+
+           Parameters
+           ==========
+           names: a list of names to clear logs for. We require the user
+                  to specifically name instances.
         '''
         for instance in self.iter_instances(names):
             instance.clear_logs()
@@ -267,7 +289,13 @@ class Project(object):
 
     def logs(self, names, tail=0):
         '''logs will print logs to the screen.
+
+           Parameters
+           ==========
+           names: a list of names of instances to show logs for. 
+                  If not specified, show logs for all.
         '''
+        names = names or self.get_instance_names()
         for instance in self.iter_instances(names):
             instance.logs(tail=tail)
 
@@ -284,13 +312,15 @@ class Project(object):
     def down(self, names):
         '''stop one or more instances. If no names are provided, bring them
            all down.
-        '''
-        # If no names provided, we bring all down
-        if not names:
-            names = self.get_instance_names()
 
+           Parameters
+           ==========
+           names: a list of names of instances to bring down. If not specified, we
+           bring down all instances.
+        '''
+        names = names or self.get_instance_names()
         for instance in self.iter_instances(names):
-            instance.stop()            
+            instance.stop()
 
 
 # Create
@@ -327,8 +357,7 @@ class Project(object):
                    see /usr/local/etc/singularity/network/00_bridge.conflist 
         '''
         # If no names provided, we create all
-        if not names:
-            names = self.get_instance_names()
+        names = names or self.get_instance_names()
          
         # Keep a count to determine if we have circular dependency structure
         created = []
@@ -381,12 +410,12 @@ class Project(object):
 # Build
 
 
-    def build(self):
+    def build(self, names):
         '''given a loaded project, build associated containers (or pull).
         '''
-        # Loop through containers and build missing
-        for name, instance in self.instances.items():
+        names = names or self.get_instance_names()
+        for instance in self.iter_instances(names):        
             instance.build(working_dir=self.working_dir)
 
-        # Run post commands
-        self.post()
+            # Run post create commands
+            instance.run_post()

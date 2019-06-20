@@ -7,7 +7,6 @@
 
 import os
 import sys
-from .spinner import Spinner
 
 ABORT = -5
 CRITICAL = -4
@@ -206,7 +205,7 @@ class SingularityMessage:
             percent = "%5s" % ("{0:.1f}").format(percent)
             output = '\r' + prefix + \
                 " |%s| %s%s %s" % (bar, percent, '%', suffix)
-            sys.stdout.write(output),
+            sys.stdout.write(output)
             if iteration == total and carriage_return:
                 sys.stdout.write('\n')
             sys.stdout.flush()
@@ -272,11 +271,10 @@ class SingularityMessage:
 
     def table(self, rows, col_width=2):
         '''table will print a table of entries. If the rows is 
-        a dictionary, the keys are interpreted as column names. if
-        not, a numbered list is used.
+           a dictionary, the keys are interpreted as column names. if
+           not, a numbered list is used.
         '''
-
-        labels = [str(x) for x in range(1,len(rows)+1)]
+        labels = [str(x) for x in range(1, len(rows)+1)]
         if isinstance(rows, dict):
             labels = list(rows.keys())
             rows = list(rows.values())
@@ -292,9 +290,9 @@ class SingularityMessage:
 
 def get_logging_level():
     '''configure a logging to standard out based on the user's
-    selected level, which should be in an environment variable called
-    MESSAGELEVEL. if MESSAGELEVEL is not set, the info level
-    (1) is assumed (all informational messages).
+       selected level, which should be in an environment variable called
+       MESSAGELEVEL. if MESSAGELEVEL is not set, the info level
+       (1) is assumed (all informational messages).
     '''
     level = os.environ.get("MESSAGELEVEL", "1") # INFO
 
@@ -338,5 +336,4 @@ def convert2boolean(arg):
         return arg.lower() in ("yes", "true", "t", "1", "y")
     return arg
 
-SingularityMessage.spinner = Spinner()
 bot = SingularityMessage()

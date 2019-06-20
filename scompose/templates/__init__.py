@@ -17,22 +17,17 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 '''
 
-import logging
-from six import binary_type
+from scompose.logger import bot
+from scompose.utils import get_installdir
 
-log = logging.getLogger(__name__)
+import os
 
-
-class NoSuchService(Exception):
-    def __init__(self, name):
-        if isinstance(name, binary_type):
-            name = name.decode('utf-8')
-        self.name = name
-        self.msg = "No such service: %s" % self.name
-
-    def __str__(self):
-        return self.msg
-
-class ConnectionError(Exception):
-    pass
-
+def get_template(name):
+    '''get a template by name from this directory. If does not exist,
+       return None.
+    '''
+    here = get_installdir()
+    template = os.path.join(here, 'templates', name)
+    if os.path.exists(template):
+        return template
+    bot.warning('%s does not exist.' % template)

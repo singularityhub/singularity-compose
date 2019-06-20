@@ -19,7 +19,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 '''
 
-from scompose.logger import bot
 import scompose
 import argparse
 import sys
@@ -31,7 +30,7 @@ def get_parser():
     parser = argparse.ArgumentParser(description="Singularity Compose")
 
     # Verbosity
-    parser.add_argument('--verbose', dest="verbose", 
+    parser.add_argument('--debug', dest="debug", 
                         help="use verbose logging to debug.", 
                         default=False, action='store_true')
 
@@ -67,7 +66,7 @@ def get_parser():
                                        dest="command")
 
     # print version and exit
-    version = subparsers.add_parser("version",
+    version = subparsers.add_parser("version", # pylint: disable=unused-variable
                                     help="show software version")
 
 
@@ -79,7 +78,7 @@ def get_parser():
 
     # Config
 
-    config = subparsers.add_parser("config",
+    config = subparsers.add_parser("config", # pylint: disable=unused-variable
                                    help="Validate and view the compose file")
 
     # Create (assumes built already), Up (will also build, if able)
@@ -110,10 +109,6 @@ def get_parser():
     shell = subparsers.add_parser("shell",
                                    help="shell into an instance")
 
-
-    kill = subparsers.add_parser("kill",
-                                 help="kill instances")
-
     # Logs
 
     logs = subparsers.add_parser("logs",
@@ -127,33 +122,33 @@ def get_parser():
                       help="clear existing logs.", 
                       default=False, action='store_true')
 
-    ps = subparsers.add_parser("ps",
+    ps = subparsers.add_parser("ps", # pylint: disable=unused-variable
                                help="list instances")
 
     restart = subparsers.add_parser("restart",
                                      help="stop and start containers.")
 
     # Add list of names
-    for sub in [create, down, logs, up]:
+    for sub in [build, create, down, logs, up, restart]:
         sub.add_argument('names', nargs="*",
                           help='the names of the instances to target')
 
     # Only one name allowed
-    for sub in [shell, execute, kill]:
+    for sub in [shell, execute]:
         sub.add_argument('name', nargs=1,
                          help='the name of the instance to target')
 
     return parser
 
 
-def main():
+def start():
     '''main is the entrypoint to singularity compose. We figure out the sub
        parser based on the command, and then import and call the appropriate 
        main.
     '''
     parser = get_parser()
 
-    def help(return_code=0):
+    def show_help(return_code=0):
         '''print help, including the software version and exit with return code
         '''
         version = scompose.__version__
@@ -164,16 +159,19 @@ def main():
     
     # If the user didn't provide any arguments, show the full help
     if len(sys.argv) == 1:
-        help()
+        show_help()
     try:
         args, extra = parser.parse_known_args()
     except:
         sys.exit(0)
 
-    if args.verbose is False:
+    if args.debug is True:
         os.environ['MESSAGELEVEL'] = "DEBUG"
     else:
         os.environ['MESSAGELEVEL'] = args.log_level
+
+    # Import the logger to grab verbosity level
+    from scompose.logger import bot
 
     # Show the version and exit
     if args.command == "version" or args.version is True:
@@ -181,17 +179,26 @@ def main():
         sys.exit(0)
 
     # Does the user want a shell?
-    if args.command == "build": from .build import main
-    elif args.command == "create": from .create import main
-    elif args.command == "config": from .config import main
-    elif args.command == "down": from .down import main
-    elif args.command == "exec": from .exec import main
-    elif args.command == "kill": from .kill import main
-    elif args.command == "logs": from .logs import main
-    elif args.command == "ps": from .ps import main
-    elif args.command == "restart": from .restart import main
-    elif args.command == "shell": from .shell import main
-    elif args.command == "up": from .up import main
+    if args.command == "build": 
+        from .build import main
+    elif args.command == "create": 
+        from .create import main
+    elif args.command == "config": 
+        from .config import main
+    elif args.command == "down": 
+        from .down import main
+    elif args.command == "exec": 
+        from .exec import main
+    elif args.command == "logs": 
+        from .logs import main
+    elif args.command == "ps": 
+        from .ps import main
+    elif args.command == "restart": 
+        from .restart import main
+    elif args.command == "shell":
+        from .shell import main
+    elif args.command == "up": 
+        from .up import main
     
     # Pass on to the correct parser
     return_code = 0
@@ -206,4 +213,4 @@ def main():
     sys.exit(return_code)
 
 if __name__ == '__main__':
-    main()
+    start()

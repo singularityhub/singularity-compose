@@ -18,13 +18,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
 from scompose.project import Project
-import logging
-import json
-import sys
-import os
-
-
-log = logging.getLogger(__name__)
 
 def main(args, parser, extra):
     '''bring one or more instances down

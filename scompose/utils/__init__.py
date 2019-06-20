@@ -17,21 +17,19 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 '''
 
-import hashlib
 import errno
+import json
+import os
 import pwd
 import re
-import shutil
-import tempfile
+import sys
 import yaml
 
-import json
 from subprocess import (
     Popen,
     PIPE,
     STDOUT
 )
-import os
 
 
 def get_installdir():
@@ -44,7 +42,6 @@ def get_userhome():
     '''get the user home based on the effective uid
     '''
     return pwd.getpwuid(os.getuid())[5]
-
 
 def run_command(cmd, sudo=False):
     '''run_command uses subprocess to send a command to the terminal.
@@ -66,9 +63,9 @@ def run_command(cmd, sudo=False):
         cmd.pop(0)
         output = Popen(cmd, stderr=STDOUT, stdout=PIPE)
 
-    t = output.communicate()[0],output.returncode
-    output = {'message':t[0],
-              'return_code':t[1]}
+    t = output.communicate()[0], output.returncode
+    output = {'message': t[0],
+              'return_code': t[1]}
 
     if isinstance(output['message'], bytes):
         output['message'] = output['message'].decode('utf-8')
@@ -91,93 +88,13 @@ def mkdir_p(path):
         if e.errno == errno.EEXIST and os.path.isdir(path):
             pass
         else:
-            bot.error("Error creating path %s, exiting." % path)
+            print("Error creating path %s, exiting." % path)
             sys.exit(1)
-
-
-def get_tmpfile(requested_tmpdir=None, prefix=""):
-    '''get a temporary file with an optional prefix. By default will be
-       created in /tmp and by default, the file is closed (and a name returned).
-
-       Parameters
-       ==========
-       requested_tmpdir: an optional requested temporary directory, first
-       priority as is coming from calling function.
-       prefix: Given a need for a sandbox (or similar), prefix the file
-       with this string.
-    '''
-
-    # First priority for the base goes to the user requested.
-    tmpdir = get_tmpdir(requested_tmpdir)
-
-    # If tmpdir is set, add to prefix
-    if tmpdir is not None:
-        prefix = os.path.join(tmpdir, os.path.basename(prefix))
-
-    fd, tmp_file = tempfile.mkstemp(prefix=prefix) 
-    os.close(fd)
-
-    return tmp_file
-
-
-def get_tmpdir(tmpdir=None, prefix="", create=True):
-    '''get a temporary directory for an operation.
-
-       Parameters
-       ==========
-       requested_tmpdir: an optional requested temporary directory, first
-       priority as is coming from calling function.
-       prefix: A prefix for the directory
-       create: boolean to determine if we should create folder (True)
-    '''
-    # First priority for the base goes to the user requested.
-    tmpdir = tmpdir or tempfile.gettempdir()
-
-    prefix = prefix or "scompose-tmp"
-    prefix = "%s.%s" %(prefix, next(tempfile._get_candidate_names()))
-    tmpdir = os.path.join(tmpdir, prefix)
-
-    if not os.path.exists(tmpdir) and create is True:
-        os.mkdir(tmpdir)
-
-    return tmpdir
-
-def get_userhome():
-    '''get the user home based on the effective uid
-    '''
-    return pwd.getpwuid(os.getuid())[5]
-
-
-def get_content_hash(contents):
-    '''get_content_hash will return a hash for a list of content (bytes/other)
-    '''
-    hasher = hashlib.sha256()
-    for content in contents:
-        if isinstance(content, io.BytesIO):
-            content = content.getvalue()
-        if not isinstance(content, bytes):
-            content = bytes(content)
-        hasher.update(content)
-    return hasher.hexdigest()
 
 
 ################################################################################
 ## FILE OPERATIONS #############################################################
 ################################################################################
-
-def copyfile(source, destination, force=True):
-    '''copy a file from a source to its destination.
-    '''
-    # Case 1: It's already there, we aren't replacing it :)
-    if source == destination and force is False:
-        return destination
-
-    # Case 2: It's already there, we ARE replacing it :)
-    if os.path.exists(destination) and force is True:
-        os.remove(destination)
-
-    shutil.copyfile(source, destination)
-    return destination
 
 
 def write_file(filename, content, mode="w"):
@@ -235,32 +152,11 @@ def _read_yaml(section, quiet=False):
     docs = yaml.load_all(section)
     for doc in docs:
         if isinstance(doc, dict):
-            for k,v in doc.items():
+            for k, v in doc.items():
                 if not quiet:
-                    print('%s: %s' %(k,v))
+                    print('%s: %s' %(k, v))
                 metadata[k] = v
     return metadata
-
-
-# Markdown and frontmatter
-
-def read_frontmatter(filename, mode='r', quiet=False):
-    '''read a yaml file, only including sections between dashes
-    '''
-    stream = read_file(filename, mode, readlines=False)
-
-    # The yml section always comes after the --- of the frontmatter
-    section = stream.split('---')[1]
-    return _read_yaml(section, quiet=quiet)
-
-
-def read_markdown(filename, mode='r'):
-    '''read the OTHER part of the markdown file (remove the frontend matter)
-    '''
-    stream = read_file(filename, mode, readlines=False)
-
-    # The yml section always comes after the --- of the frontmatter
-    return stream.split('---')[-1]
 
 
 # Json
@@ -282,7 +178,6 @@ def write_json(json_obj, filename, mode="w", print_pretty=True):
     return filename
 
 
-
 def print_json(json_obj):
     ''' just dump the json in a "pretty print" format
     '''
@@ -292,7 +187,6 @@ def print_json(json_obj):
                     separators=(
                         ',',
                         ': '))
-
 
 def read_json(filename, mode='r'):
     '''read_json reads in a json file and returns
