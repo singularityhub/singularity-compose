@@ -64,7 +64,7 @@ commands:
           python --version
           [ $(python -c'import sys;print(sys.version_info.major)') -eq $PYTHON_VERSION ]
 
-          pip install --upgrade pylint pytest
+          pip install --upgrade pylint pytest setuptools
 
 ################################################################################
 # Jobs
