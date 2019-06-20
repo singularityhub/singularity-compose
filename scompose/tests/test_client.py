@@ -11,7 +11,6 @@ from scompose.utils import run_command
 from time import sleep
 import requests
 import pytest
-import shutil
 import os
 
 
@@ -72,6 +71,3 @@ def test_commands(tmp_path):
     lookup = project.get_ip_lookup(['app'])
     assert 'app' in lookup
     assert lookup['app'] == '10.22.0.2'
-    
-    # Clean up
-    shutil.rmtree(tmpdir)
