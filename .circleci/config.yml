@@ -18,14 +18,10 @@ workflows:
             branches:
               ignore: master
           name: "Latest Singularity with Python 3"
-          run-linter: false
+          run-linter: true
           python: 3
           singularity: 3.2.1
           singularity-3: true
-      - run-scompose-ci-tests:
-          <<: *base_job
-          name: "Singularity 3.2.0 - Python 3"
-          singularity: 3.2.0
 
 ################################################################################
 # Functions
@@ -111,4 +107,3 @@ jobs:
           steps:
             - run: *run_linter
       - run: *test_scompose
-
