@@ -1,7 +1,8 @@
 # Singularity Compose
 
 This is a simple orchestration library for Singularity containers, akin to
-Docker Compose.
+Docker Compose. See the [specification]() and the [documentation]() for
+details, or more examples below.
 
 ## Examples
 

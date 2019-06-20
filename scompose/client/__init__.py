@@ -89,7 +89,10 @@ def get_parser():
     up = subparsers.add_parser("up",
                                help="build and start containers")
 
-    for sub in [create, up]:
+    restart = subparsers.add_parser("restart",
+                                     help="stop and start containers.")
+
+    for sub in [create, up, restart]:
         sub.add_argument('--read_only', dest="read_only", 
                          help="disable the instance from writing to tmp", 
                          default=False, action='store_true')
@@ -124,9 +127,6 @@ def get_parser():
 
     ps = subparsers.add_parser("ps", # pylint: disable=unused-variable
                                help="list instances")
-
-    restart = subparsers.add_parser("restart",
-                                     help="stop and start containers.")
 
     # Add list of names
     for sub in [build, create, down, logs, up, restart]:
