@@ -32,6 +32,7 @@ LICENSE = "LICENSE"
 
 INSTALL_REQUIRES = (
     ('spython', {'min_version': '0.0.67'}),
+    ('pyaml', {'min_version': '17.12.1'}),
 )
 
 TESTS_REQUIRES = (

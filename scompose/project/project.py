@@ -287,7 +287,7 @@ class Project(object):
             instance.clear_logs()
 
 
-    def logs(self, names, tail=0):
+    def logs(self, names=None, tail=0):
         '''logs will print logs to the screen.
 
            Parameters
@@ -309,7 +309,7 @@ class Project(object):
 
 # Down
 
-    def down(self, names):
+    def down(self, names=None):
         '''stop one or more instances. If no names are provided, bring them
            all down.
 
@@ -325,12 +325,12 @@ class Project(object):
 
 # Create
 
-    def create(self, names, writable_tmpfs=True, bridge="10.22.0.0/16"):
+    def create(self, names=None, writable_tmpfs=True, bridge="10.22.0.0/16"):
         '''call the create function, which defaults to the command instance.create()
         '''
         return self._create(names, writable_tmpfs=writable_tmpfs)
 
-    def up(self, names, writable_tmpfs=True, bridge="10.22.0.0/16"):
+    def up(self, names=None, writable_tmpfs=True, bridge="10.22.0.0/16"):
         '''call the up function, instance.up(), which will build before if
            a container binary does not exist.
         '''
@@ -410,7 +410,7 @@ class Project(object):
 # Build
 
 
-    def build(self, names):
+    def build(self, names=None):
         '''given a loaded project, build associated containers (or pull).
         '''
         names = names or self.get_instance_names()

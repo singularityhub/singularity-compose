@@ -290,11 +290,12 @@ and customie the arguments to the command. Read [here](https://sylabs.io/guides/
 
 ## Commands
 
-Read more about the commands shown above [here](commands.md#commands).
+Read more about the commands shown above [here](commands.md#commands). For the
+Python API, see [here](/singularity-compose/api/).
 
 ## Specification
 
-The [specification](spec) describes in more detail the sections of the singularity-compose.yml.
+The [specification](spec/) describes in more detail the sections of the singularity-compose.yml.
 For example, in the quick start above, we have a post command for the app instance
 that creates a series of folders on the host. 
 

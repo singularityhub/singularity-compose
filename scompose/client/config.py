@@ -18,7 +18,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
 from scompose.project import Project
-import os
 
 def main(args, parser, extra):
     '''View or validate a configuration file
@@ -26,10 +25,6 @@ def main(args, parser, extra):
        This comes down to reading in the config to the project, at which
        case it is validated. We then print it for the user.
     '''
-    working_dir = args.context
-    if working_dir == ".":
-        working_dir = os.getcwd()
-
     # Initialize the project
     project = Project(filename=args.file,
                       name=args.project_name,
