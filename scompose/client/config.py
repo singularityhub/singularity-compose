@@ -18,7 +18,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
 from scompose.project import Project
-import os
 
 def main(args, parser, extra):
     '''View or validate a configuration file
