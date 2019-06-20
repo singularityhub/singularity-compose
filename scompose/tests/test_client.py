@@ -9,8 +9,8 @@
 from scompose.project import Project
 from scompose.utils import run_command
 from time import sleep
+import requests
 import pytest
-import tempfile
 import shutil
 import os
 
@@ -58,7 +58,7 @@ def test_commands(tmp_path):
     project.ps()
 
     print('Testing exec')
-    project.execute('app', ['echo','MarsBar'])
+    project.execute('app', ['echo', 'MarsBar'])
 
     # Ensure running
     assert requests.get('http://127.0.0.1/').status_code == 200
@@ -75,6 +75,3 @@ def test_commands(tmp_path):
     
     # Clean up
     shutil.rmtree(tmpdir)
-
-if __name__ == '__main__':
-    unittest.main()
