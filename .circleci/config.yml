@@ -22,7 +22,7 @@ workflows:
           python: 3
           singularity: 3.2.1
           singularity-3: true
-      - run-spython-ci-tests:
+      - run-scompose-ci-tests:
           <<: *base_job
           name: "Singularity 3.2.0 - Python 3"
           singularity: 3.2.0

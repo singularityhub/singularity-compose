@@ -290,7 +290,8 @@ and customie the arguments to the command. Read [here](https://sylabs.io/guides/
 
 ## Commands
 
-Read more about the commands shown above [here](commands.md#commands).
+Read more about the commands shown above [here](commands.md#commands). For the
+Python API, see [here](/singularity-compose/api).
 
 ## Specification
 
