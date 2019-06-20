@@ -1,0 +1,628 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>scompose.project.project &mdash; Singularity Compose API 1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../assets/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../assets/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Singularity Compose API
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/scompose.html">scompose package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">CHANGELOG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Singularity Compose API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>scompose.project.project</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for scompose.project.project</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">Copyright (C) 2019 Vanessa Sochat.</span>
+
+<span class="sd">This program is free software: you can redistribute it and/or modify it</span>
+<span class="sd">under the terms of the GNU Affero General Public License as published by</span>
+<span class="sd">the Free Software Foundation, either version 3 of the License, or (at your</span>
+<span class="sd">option) any later version.</span>
+
+<span class="sd">This program is distributed in the hope that it will be useful, but WITHOUT</span>
+<span class="sd">ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or</span>
+<span class="sd">FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public</span>
+<span class="sd">License for more details.</span>
+
+<span class="sd">You should have received a copy of the GNU Affero General Public License</span>
+<span class="sd">along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">scompose.templates</span> <span class="k">import</span> <span class="n">get_template</span>
+<span class="kn">from</span> <span class="nn">scompose.logger</span> <span class="k">import</span> <span class="n">bot</span>
+<span class="kn">from</span> <span class="nn">scompose.utils</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">read_yaml</span><span class="p">,</span>
+    <span class="n">read_file</span><span class="p">,</span>
+    <span class="n">write_file</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">spython.main</span> <span class="k">import</span> <span class="n">get_client</span>
+<span class="kn">from</span> <span class="nn">.instance</span> <span class="k">import</span> <span class="n">Instance</span>
+<span class="kn">from</span> <span class="nn">ipaddress</span> <span class="k">import</span> <span class="n">IPv4Network</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+
+<div class="viewcode-block" id="Project"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project">[docs]</a><span class="k">class</span> <span class="nc">Project</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;A compose project is a group of containers read in from a config file.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">instances</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">env_file</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env_file</span> <span class="o">=</span> <span class="n">env_file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">get_client</span><span class="p">()</span>
+
+<span class="c1"># Names</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;(project:</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Project.get_instance_names"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.get_instance_names">[docs]</a>    <span class="k">def</span> <span class="nf">get_instance_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;return a list of names, if a config file is loaded, and instances</span>
+<span class="sd">           are defined.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;instances&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
+                <span class="n">names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;instances&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">names</span></div>
+
+
+<div class="viewcode-block" id="Project.set_filename"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.set_filename">[docs]</a>    <span class="k">def</span> <span class="nf">set_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;set the filename to read the recipe from. If not provided, defaults</span>
+<span class="sd">           to singularity-compose.yml. The working directory is set to</span>
+<span class="sd">           be the directory name of the configuration file.</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           filename: the singularity-compose.yml file to use</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span> <span class="ow">or</span> <span class="s2">&quot;singularity-compose.yml&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">working_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Project.set_name"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.set_name">[docs]</a>    <span class="k">def</span> <span class="nf">set_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;set the filename to read the recipe from. If not provided, defaults</span>
+<span class="sd">           to singularity-compose.yml</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           name: if a customize name is provided, use it</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">pwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="p">(</span><span class="n">name</span> <span class="ow">or</span> <span class="n">pwd</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span></div>
+
+
+<span class="c1"># Listing</span>
+
+<div class="viewcode-block" id="Project.ps"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.ps">[docs]</a>    <span class="k">def</span> <span class="nf">ps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;ps will print a table of instances, including pids and names.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">instance_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_instance_names</span><span class="p">()</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">instances</span><span class="p">(</span><span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sudo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sudo</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">instance_names</span><span class="p">:</span>
+                <span class="n">image</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">_image</span><span class="p">)</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">instance</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">12</span><span class="p">),</span> 
+                              <span class="n">instance</span><span class="o">.</span><span class="n">pid</span><span class="p">,</span> 
+                              <span class="n">image</span><span class="p">])</span>
+
+        <span class="n">bot</span><span class="o">.</span><span class="n">custom</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;INSTANCES &quot;</span><span class="p">,</span>
+                   <span class="n">message</span><span class="o">=</span><span class="s2">&quot;NAME PID     IMAGE&quot;</span><span class="p">,</span> 
+                   <span class="n">color</span><span class="o">=</span><span class="s2">&quot;CYAN&quot;</span><span class="p">)</span>
+
+        <span class="n">bot</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">table</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="Project.iter_instances"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.iter_instances">[docs]</a>    <span class="k">def</span> <span class="nf">iter_instances</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;yield instances one at a time. If an invalid name is given,</span>
+<span class="sd">           exit with error.</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           names: the names of instances to yield. Must be valid</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># Used to validate instance names</span>
+        <span class="n">instance_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_instance_names</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">instance_names</span><span class="p">:</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> is not a valid section name.&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+        
+
+<span class="c1"># Loading Functions</span>
+  
+<div class="viewcode-block" id="Project.load"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;load a singularity-compose.yml recipe, and validate it.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">):</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> does not exist.&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+ 
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">read_yaml</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span> <span class="c1"># ParserError</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Cannot parse </span><span class="si">%s</span><span class="s1">, invalid yaml.&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Project.parse"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;parse a loaded config&#39;&#39;&#39;</span>
+
+        <span class="c1"># If a port is defined, we need root.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sudo</span> <span class="o">=</span> <span class="kc">False</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="c1"># If any of config has ports, must use sudo for networking</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;instances&#39;</span><span class="p">,</span> <span class="p">[]):</span>
+                <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;instances&#39;</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s2">&quot;ports&quot;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">sudo</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="c1"># Create each instance object</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;instances&#39;</span><span class="p">,</span> <span class="p">[]):</span>
+                <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;instances&#39;</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
+
+                <span class="c1"># Validates params</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                                                <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                                                <span class="n">sudo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sudo</span><span class="p">,</span>
+                                                <span class="n">working_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">working_dir</span><span class="p">)</span>
+
+            <span class="c1"># Update volumes with volumes from</span>
+            <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">instance</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">instance</span><span class="o">.</span><span class="n">set_volumes_from</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">)</span></div>
+
+
+<span class="c1"># Networking</span>
+
+<div class="viewcode-block" id="Project.get_ip_lookup"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.get_ip_lookup">[docs]</a>    <span class="k">def</span> <span class="nf">get_ip_lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">bridge</span><span class="o">=</span><span class="s2">&quot;10.22.0.0/16&quot;</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;based on a bridge address that can serve other addresses (akin to</span>
+<span class="sd">           a router, metaphorically, generate a pre-determined address for</span>
+<span class="sd">           each container.</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           names: a list of names of instances to generate addresses for. </span>
+<span class="sd">           bridge: the bridge address to derive them for.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        
+        <span class="n">host_iter</span> <span class="o">=</span> <span class="n">IPv4Network</span><span class="p">(</span><span class="n">bridge</span><span class="p">)</span><span class="o">.</span><span class="n">hosts</span><span class="p">()</span>
+        <span class="n">lookup</span> <span class="o">=</span> <span class="p">{}</span>
+ 
+        <span class="c1"># Don&#39;t include the gateway</span>
+        <span class="nb">next</span><span class="p">(</span><span class="n">host_iter</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+            <span class="n">lookup</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">host_iter</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">lookup</span></div>
+
+
+<div class="viewcode-block" id="Project.get_bridge_address"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.get_bridge_address">[docs]</a>    <span class="k">def</span> <span class="nf">get_bridge_address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;sbr0&#39;</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;get the (named) bridge address on the host. It should be automatically</span>
+<span class="sd">           created by Singularity over 3.0. This function currently is not used,</span>
+<span class="sd">           but is left in case it&#39;s needed.</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           name: The default name of the Singularity bridge (sbr0)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ip&quot;</span><span class="p">,</span> <span class="s2">&quot;-4&quot;</span><span class="p">,</span> <span class="s2">&quot;--oneline&quot;</span><span class="p">,</span> <span class="s2">&quot;address&quot;</span><span class="p">,</span> <span class="s2">&quot;show&quot;</span><span class="p">,</span> <span class="s2">&quot;up&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">]</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_run_command</span><span class="p">(</span><span class="n">command</span><span class="p">,</span>
+                                          <span class="n">return_result</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                          <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                          <span class="n">sudo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sudo</span><span class="p">)[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span>
+        <span class="n">bridge_address</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;.+ inet (?P&lt;address&gt;.+)/&#39;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span><span class="o">.</span><span class="n">groups</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">bridge_address</span></div>
+
+
+<div class="viewcode-block" id="Project.create_hosts"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.create_hosts">[docs]</a>    <span class="k">def</span> <span class="nf">create_hosts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lookup</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;create a hosts file to bind to all containers, where we define the</span>
+<span class="sd">           correct hostnames to correspond with the ip addresses created.</span>
+<span class="sd">           Note: This function is terrible. Singularity should easily expose </span>
+<span class="sd">                 these addresses. See issue here:</span>
+<span class="sd">                 https://github.com/sylabs/singularity/issues/3751</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           lookup: a lookup of ip addresses to assign the containers</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">template</span> <span class="o">=</span> <span class="n">read_file</span><span class="p">(</span><span class="n">get_template</span><span class="p">(</span><span class="s1">&#39;hosts&#39;</span><span class="p">))</span>
+        <span class="n">hosts_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">working_dir</span><span class="p">,</span> <span class="s1">&#39;etc.hosts&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Add an entry for each instance hostname to see the others</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">ip_address</span> <span class="ow">in</span> <span class="n">lookup</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">template</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;</span><span class="si">%s</span><span class="se">\t</span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ip_address</span><span class="p">,</span> <span class="n">name</span><span class="p">)]</span> <span class="o">+</span> <span class="n">template</span>
+
+        <span class="c1"># Add the host file to be mounted</span>
+        <span class="n">write_file</span><span class="p">(</span><span class="n">hosts_file</span><span class="p">,</span> <span class="n">template</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">hosts_file</span></div>
+ 
+
+<span class="c1"># Commands</span>
+
+<div class="viewcode-block" id="Project.shell"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.shell">[docs]</a>    <span class="k">def</span> <span class="nf">shell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;if an instance exists, shell into it.</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           name: the name of the instance to shell into</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">:</span>
+                <span class="n">instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">shell</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">get_uri</span><span class="p">(),</span> <span class="n">sudo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sudo</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Project.execute"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.execute">[docs]</a>    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">commands</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;if an instance exists, execute a command to it.</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           name: the name of the instance to exec to</span>
+<span class="sd">           commands: a list of commands to issue</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">:</span>
+                <span class="n">instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">get_uri</span><span class="p">(),</span> 
+                                                    <span class="n">command</span><span class="o">=</span><span class="n">commands</span><span class="p">,</span>
+                                                    <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                                    <span class="n">sudo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sudo</span><span class="p">):</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span></div>
+
+<span class="c1"># Logs</span>
+
+<div class="viewcode-block" id="Project.clear_logs"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.clear_logs">[docs]</a>    <span class="k">def</span> <span class="nf">clear_logs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;clear_logs will remove all old error and output logs.</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           names: a list of names to clear logs for. We require the user</span>
+<span class="sd">                  to specifically name instances.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter_instances</span><span class="p">(</span><span class="n">names</span><span class="p">):</span>
+            <span class="n">instance</span><span class="o">.</span><span class="n">clear_logs</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Project.logs"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.logs">[docs]</a>    <span class="k">def</span> <span class="nf">logs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tail</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;logs will print logs to the screen.</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           names: a list of names of instances to show logs for. </span>
+<span class="sd">                  If not specified, show logs for all.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="n">names</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_instance_names</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter_instances</span><span class="p">(</span><span class="n">names</span><span class="p">):</span>
+            <span class="n">instance</span><span class="o">.</span><span class="n">logs</span><span class="p">(</span><span class="n">tail</span><span class="o">=</span><span class="n">tail</span><span class="p">)</span></div>
+
+<span class="c1"># Config</span>
+
+<div class="viewcode-block" id="Project.view_config"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.view_config">[docs]</a>    <span class="k">def</span> <span class="nf">view_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;print a configuration file (in json) to the screen.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span></div>
+
+<span class="c1"># Down</span>
+
+<div class="viewcode-block" id="Project.down"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.down">[docs]</a>    <span class="k">def</span> <span class="nf">down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;stop one or more instances. If no names are provided, bring them</span>
+<span class="sd">           all down.</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           names: a list of names of instances to bring down. If not specified, we</span>
+<span class="sd">           bring down all instances.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="n">names</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_instance_names</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter_instances</span><span class="p">(</span><span class="n">names</span><span class="p">):</span>
+            <span class="n">instance</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span></div>
+
+
+<span class="c1"># Create</span>
+
+<div class="viewcode-block" id="Project.create"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">writable_tmpfs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bridge</span><span class="o">=</span><span class="s2">&quot;10.22.0.0/16&quot;</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;call the create function, which defaults to the command instance.create()</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">writable_tmpfs</span><span class="o">=</span><span class="n">writable_tmpfs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Project.up"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.up">[docs]</a>    <span class="k">def</span> <span class="nf">up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">writable_tmpfs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bridge</span><span class="o">=</span><span class="s2">&quot;10.22.0.0/16&quot;</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;call the up function, instance.up(), which will build before if</span>
+<span class="sd">           a container binary does not exist.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="s2">&quot;up&quot;</span><span class="p">,</span> <span class="n">writable_tmpfs</span><span class="o">=</span><span class="n">writable_tmpfs</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+                <span class="n">names</span><span class="p">,</span> 
+                <span class="n">command</span><span class="o">=</span><span class="s2">&quot;create&quot;</span><span class="p">,</span>
+                <span class="n">writable_tmpfs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">bridge</span><span class="o">=</span><span class="s2">&quot;10.22.0.0/16&quot;</span><span class="p">):</span>
+
+        <span class="sd">&#39;&#39;&#39;create one or more instances. &quot;Command&quot; determines the sub function</span>
+<span class="sd">           to call for the instance, which should be &quot;create&quot; or &quot;up&quot;.</span>
+<span class="sd">           If the user provide a list of names, use them, otherwise default</span>
+<span class="sd">           to all instances.</span>
+<span class="sd">          </span>
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           names: the instance names to create</span>
+<span class="sd">           command: one of &quot;create&quot; or &quot;up&quot;</span>
+<span class="sd">           writable_tmpfs: if the instances should be given writable to tmp</span>
+<span class="sd">           bridge: the bridge ip address to use for networking, and generating</span>
+<span class="sd">                   addresses for the individual containers.</span>
+<span class="sd">                   see /usr/local/etc/singularity/network/00_bridge.conflist </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># If no names provided, we create all</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="n">names</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_instance_names</span><span class="p">()</span>
+         
+        <span class="c1"># Keep a count to determine if we have circular dependency structure</span>
+        <span class="n">created</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Generate ip addresses for each</span>
+        <span class="n">lookup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ip_lookup</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">bridge</span><span class="p">)</span>
+
+        <span class="c1"># Generate shared hosts file</span>
+        <span class="n">hosts_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_hosts</span><span class="p">(</span><span class="n">lookup</span><span class="p">)</span>
+
+        <span class="c1"># First create those with no dependencies</span>
+        <span class="k">while</span> <span class="n">names</span><span class="p">:</span>
+            
+            <span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter_instances</span><span class="p">(</span><span class="n">names</span><span class="p">):</span>
+
+                <span class="c1"># Flag to indicated create</span>
+                <span class="n">do_create</span> <span class="o">=</span> <span class="kc">True</span>
+
+                <span class="c1"># Ensure created, skip over if not</span>
+                <span class="n">depends_on</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;depends_on&#39;</span><span class="p">,</span> <span class="p">[])</span>
+                <span class="k">for</span> <span class="n">depends_on</span> <span class="ow">in</span> <span class="n">depends_on</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">depends_on</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">created</span><span class="p">:</span>
+                        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+                        <span class="n">do_create</span> <span class="o">=</span> <span class="kc">False</span>
+
+                <span class="k">if</span> <span class="n">do_create</span><span class="p">:</span>
+
+                    <span class="n">instance</span><span class="o">.</span><span class="n">volumes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">:/etc/hosts&#39;</span> <span class="o">%</span> <span class="n">hosts_file</span><span class="p">)</span>
+
+                    <span class="c1"># Create a hosts file for the instance based, add as volume</span>
+
+                    <span class="c1"># If we get here, execute command and add to list</span>
+                    <span class="n">create_func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">command</span><span class="p">)</span>
+                    <span class="n">create_func</span><span class="p">(</span><span class="n">working_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">working_dir</span><span class="p">,</span>
+                                <span class="n">writable_tmpfs</span><span class="o">=</span><span class="n">writable_tmpfs</span><span class="p">,</span>
+                                <span class="n">ip_address</span><span class="o">=</span><span class="n">lookup</span><span class="p">[</span><span class="n">instance</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+
+                    <span class="n">created</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                    <span class="n">names</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> 
+                 
+                    <span class="c1"># Run post create commands</span>
+                    <span class="n">instance</span><span class="o">.</span><span class="n">run_post</span><span class="p">()</span>
+
+                <span class="c1"># Possibly circular dependencies </span>
+                <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;=</span> <span class="mi">100</span><span class="p">:</span>
+                    <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Unable to create all instances, possible circular dependency.&#39;</span><span class="p">)</span>
+
+
+<span class="c1"># Build</span>
+
+
+<div class="viewcode-block" id="Project.build"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.build">[docs]</a>    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;given a loaded project, build associated containers (or pull).</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="n">names</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_instance_names</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter_instances</span><span class="p">(</span><span class="n">names</span><span class="p">):</span>        
+            <span class="n">instance</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">working_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">working_dir</span><span class="p">)</span>
+
+            <span class="c1"># Run post create commands</span>
+            <span class="n">instance</span><span class="o">.</span><span class="n">run_post</span><span class="p">()</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Vanessa Sochat.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../assets/jquery.js"></script>
+      <script type="text/javascript" src="../../../assets/underscore.js"></script>
+      <script type="text/javascript" src="../../../assets/doctools.js"></script>
+      <script type="text/javascript" src="../../../assets/language_data.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../assets/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,467 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>scompose.logger package &mdash; Singularity Compose API 1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../assets/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="scompose.project package" href="scompose.project.html" />
+    <link rel="prev" title="scompose.client package" href="scompose.client.html" /> 
+
+  
+  <script src="../assets/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Singularity Compose API
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="scompose.html">scompose package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="scompose.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="scompose.client.html">scompose.client package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">scompose.logger package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-scompose.logger.message">scompose.logger.message module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-scompose.logger.progress">scompose.logger.progress module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-scompose.logger">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scompose.project.html">scompose.project package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scompose.templates.html">scompose.templates package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scompose.tests.html">scompose.tests package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scompose.utils.html">scompose.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scompose.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scompose.html#module-scompose.version">scompose.version module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scompose.html#module-scompose">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">CHANGELOG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Singularity Compose API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="scompose.html">scompose package</a> &raquo;</li>
+        
+      <li>scompose.logger package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/scompose.logger.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="scompose-logger-package">
+<h1>scompose.logger package<a class="headerlink" href="#scompose-logger-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-scompose.logger.message">
+<span id="scompose-logger-message-module"></span><h2>scompose.logger.message module<a class="headerlink" href="#module-scompose.logger.message" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="scompose.logger.message.SingularityMessage">
+<em class="property">class </em><code class="descclassname">scompose.logger.message.</code><code class="descname">SingularityMessage</code><span class="sig-paren">(</span><em>MESSAGELEVEL=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.abort">
+<code class="descname">abort</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.abort"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.abort" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.addColor">
+<code class="descname">addColor</code><span class="sig-paren">(</span><em>level</em>, <em>text</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.addColor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.addColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>addColor to the prompt (usually prefix) if terminal
+supports, and specified to do so</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.critical">
+<code class="descname">critical</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.critical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.critical" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.custom">
+<code class="descname">custom</code><span class="sig-paren">(</span><em>prefix</em>, <em>message</em>, <em>color='\x1b[95m'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.custom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.custom" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.debug">
+<code class="descname">debug</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.debug"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.debug" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.emit">
+<code class="descname">emit</code><span class="sig-paren">(</span><em>level</em>, <em>message</em>, <em>prefix=None</em>, <em>color=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.emit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.emit" title="Permalink to this definition">¶</a></dt>
+<dd><p>emit is the main function to print the message
+optionally with a prefix
+:param level: the level of the message
+:param message: the message to print
+:param prefix: a prefix for the message</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.emitError">
+<code class="descname">emitError</code><span class="sig-paren">(</span><em>level</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.emitError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.emitError" title="Permalink to this definition">¶</a></dt>
+<dd><p>determine if a level should print to
+stderr, includes all levels but INFO and QUIET</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.emitOutput">
+<code class="descname">emitOutput</code><span class="sig-paren">(</span><em>level</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.emitOutput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.emitOutput" title="Permalink to this definition">¶</a></dt>
+<dd><p>determine if a level should print to stdout
+only includes INFO</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.error">
+<code class="descname">error</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.exit">
+<code class="descname">exit</code><span class="sig-paren">(</span><em>message</em>, <em>return_code=1</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.exit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.exit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.get_logs">
+<code class="descname">get_logs</code><span class="sig-paren">(</span><em>join_newline=True</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.get_logs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.get_logs" title="Permalink to this definition">¶</a></dt>
+<dd><p>‘get_logs will return the complete history, joined by newline
+(default) or as is.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.info">
+<code class="descname">info</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.isEnabledFor">
+<code class="descname">isEnabledFor</code><span class="sig-paren">(</span><em>messageLevel</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.isEnabledFor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.isEnabledFor" title="Permalink to this definition">¶</a></dt>
+<dd><p>check if a messageLevel is enabled to emit a level</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.is_quiet">
+<code class="descname">is_quiet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.is_quiet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.is_quiet" title="Permalink to this definition">¶</a></dt>
+<dd><p>is_quiet returns true if the level is under 1</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.log">
+<code class="descname">log</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.newline">
+<code class="descname">newline</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.newline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.newline" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.println">
+<code class="descname">println</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.println"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.println" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.show_progress">
+<code class="descname">show_progress</code><span class="sig-paren">(</span><em>iteration</em>, <em>total</em>, <em>length=40</em>, <em>min_level=0</em>, <em>prefix=None</em>, <em>carriage_return=True</em>, <em>suffix=None</em>, <em>symbol=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.show_progress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.show_progress" title="Permalink to this definition">¶</a></dt>
+<dd><p>create a terminal progress bar, default bar shows for verbose+
+:param iteration: current iteration (Int)
+:param total: total iterations (Int)
+:param length: character length of bar (Int)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.table">
+<code class="descname">table</code><span class="sig-paren">(</span><em>rows</em>, <em>col_width=2</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.table" title="Permalink to this definition">¶</a></dt>
+<dd><p>table will print a table of entries. If the rows is
+a dictionary, the keys are interpreted as column names. if
+not, a numbered list is used.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.useColor">
+<code class="descname">useColor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.useColor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.useColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>useColor will determine if color should be added
+to a print. Will check if being run in a terminal, and
+if has support for ascii</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.verbose">
+<code class="descname">verbose</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.verbose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.verbose" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.verbose1">
+<code class="descname">verbose1</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.verbose1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.verbose1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.verbose2">
+<code class="descname">verbose2</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.verbose2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.verbose2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.verbose3">
+<code class="descname">verbose3</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.verbose3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.verbose3" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.warning">
+<code class="descname">warning</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.warning"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.warning" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.message.SingularityMessage.write">
+<code class="descname">write</code><span class="sig-paren">(</span><em>stream</em>, <em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#SingularityMessage.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.SingularityMessage.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>write will write a message to a stream,
+first checking the encoding</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="scompose.logger.message.convert2boolean">
+<code class="descclassname">scompose.logger.message.</code><code class="descname">convert2boolean</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#convert2boolean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.convert2boolean" title="Permalink to this definition">¶</a></dt>
+<dd><p>convert2boolean is used for environmental variables that must be
+returned as boolean</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="scompose.logger.message.get_logging_level">
+<code class="descclassname">scompose.logger.message.</code><code class="descname">get_logging_level</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#get_logging_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.get_logging_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>configure a logging to standard out based on the user’s
+selected level, which should be in an environment variable called
+MESSAGELEVEL. if MESSAGELEVEL is not set, the info level
+(1) is assumed (all informational messages).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="scompose.logger.message.get_user_color_preference">
+<code class="descclassname">scompose.logger.message.</code><code class="descname">get_user_color_preference</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/message.html#get_user_color_preference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.message.get_user_color_preference" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-scompose.logger.progress">
+<span id="scompose-logger-progress-module"></span><h2>scompose.logger.progress module<a class="headerlink" href="#module-scompose.logger.progress" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="scompose.logger.progress.ProgressBar">
+<em class="property">class </em><code class="descclassname">scompose.logger.progress.</code><code class="descname">ProgressBar</code><span class="sig-paren">(</span><em>label=''</em>, <em>width=32</em>, <em>hide=None</em>, <em>empty_char=' '</em>, <em>filled_char='-'</em>, <em>expected_size=None</em>, <em>every=1</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/progress.html#ProgressBar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.progress.ProgressBar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="scompose.logger.progress.ProgressBar.done">
+<code class="descname">done</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/progress.html#ProgressBar.done"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.progress.ProgressBar.done" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.progress.ProgressBar.format_time">
+<code class="descname">format_time</code><span class="sig-paren">(</span><em>seconds</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/progress.html#ProgressBar.format_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.progress.ProgressBar.format_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="scompose.logger.progress.ProgressBar.show">
+<code class="descname">show</code><span class="sig-paren">(</span><em>progress</em>, <em>count=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/progress.html#ProgressBar.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.progress.ProgressBar.show" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="scompose.logger.progress.bar">
+<code class="descclassname">scompose.logger.progress.</code><code class="descname">bar</code><span class="sig-paren">(</span><em>it</em>, <em>label=''</em>, <em>width=32</em>, <em>hide=None</em>, <em>empty_char=' '</em>, <em>filled_char='-'</em>, <em>expected_size=None</em>, <em>every=1</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/logger/progress.html#bar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.logger.progress.bar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Progress iterator. Wrap your iterables with it.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-scompose.logger">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-scompose.logger" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="scompose.project.html" class="btn btn-neutral float-right" title="scompose.project package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="scompose.client.html" class="btn btn-neutral" title="scompose.client package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Vanessa Sochat.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../assets/jquery.js"></script>
+      <script type="text/javascript" src="../assets/underscore.js"></script>
+      <script type="text/javascript" src="../assets/doctools.js"></script>
+      <script type="text/javascript" src="../assets/language_data.js"></script>
+
+  
+
+  <script type="text/javascript" src="../assets/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

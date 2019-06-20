@@ -1,0 +1,352 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>scompose.utils package &mdash; Singularity Compose API 1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../assets/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="CHANGELOG" href="../changelog.html" />
+    <link rel="prev" title="scompose.tests.testdata package" href="scompose.tests.testdata.html" /> 
+
+  
+  <script src="../assets/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Singularity Compose API
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="scompose.html">scompose package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="scompose.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="scompose.client.html">scompose.client package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scompose.logger.html">scompose.logger package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scompose.project.html">scompose.project package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scompose.templates.html">scompose.templates package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scompose.tests.html">scompose.tests package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">scompose.utils package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-scompose.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scompose.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scompose.html#module-scompose.version">scompose.version module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scompose.html#module-scompose">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">CHANGELOG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Singularity Compose API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="scompose.html">scompose package</a> &raquo;</li>
+        
+      <li>scompose.utils package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/scompose.utils.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="scompose-utils-package">
+<h1>scompose.utils package<a class="headerlink" href="#scompose-utils-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-scompose.utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-scompose.utils" title="Permalink to this headline">¶</a></h2>
+<p>Copyright (C) 2019 Vanessa Sochat.</p>
+<p>This program is free software: you can redistribute it and/or modify it
+under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or (at your
+option) any later version.</p>
+<p>This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public
+License for more details.</p>
+<p>You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see &lt;<a class="reference external" href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>&gt;.</p>
+<dl class="function">
+<dt id="scompose.utils.get_installdir">
+<code class="descclassname">scompose.utils.</code><code class="descname">get_installdir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#get_installdir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.get_installdir" title="Permalink to this definition">¶</a></dt>
+<dd><p>get_installdir returns the installation directory of the application</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="scompose.utils.get_userhome">
+<code class="descclassname">scompose.utils.</code><code class="descname">get_userhome</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#get_userhome"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.get_userhome" title="Permalink to this definition">¶</a></dt>
+<dd><p>get the user home based on the effective uid</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="scompose.utils.mkdir_p">
+<code class="descclassname">scompose.utils.</code><code class="descname">mkdir_p</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#mkdir_p"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.mkdir_p" title="Permalink to this definition">¶</a></dt>
+<dd><p>mkdir_p attempts to get the same functionality as mkdir -p
+:param path: the path to create.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="scompose.utils.print_json">
+<code class="descclassname">scompose.utils.</code><code class="descname">print_json</code><span class="sig-paren">(</span><em>json_obj</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#print_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.print_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>just dump the json in a “pretty print” format</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="scompose.utils.read_file">
+<code class="descclassname">scompose.utils.</code><code class="descname">read_file</code><span class="sig-paren">(</span><em>filename</em>, <em>mode='r'</em>, <em>readlines=True</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#read_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.read_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>write_file will open a file, “filename” and write content, “content”
+and properly close the file</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="scompose.utils.read_json">
+<code class="descclassname">scompose.utils.</code><code class="descname">read_json</code><span class="sig-paren">(</span><em>filename</em>, <em>mode='r'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#read_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.read_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>read_json reads in a json file and returns
+the data structure as dict.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="scompose.utils.read_yaml">
+<code class="descclassname">scompose.utils.</code><code class="descname">read_yaml</code><span class="sig-paren">(</span><em>filename</em>, <em>mode='r'</em>, <em>quiet=False</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#read_yaml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.read_yaml" title="Permalink to this definition">¶</a></dt>
+<dd><p>read a yaml file, only including sections between dashes</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="scompose.utils.run_command">
+<code class="descclassname">scompose.utils.</code><code class="descname">run_command</code><span class="sig-paren">(</span><em>cmd</em>, <em>sudo=False</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#run_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.run_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>run_command uses subprocess to send a command to the terminal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cmd</strong> (<em>the command to send, should be a list for subprocess</em>)</p></li>
+<li><p><strong>error_message</strong> (<em>the error message to give to user if fails,</em>)</p></li>
+<li><p><strong>if none specified, will alert that command failed.</strong></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="scompose.utils.write_file">
+<code class="descclassname">scompose.utils.</code><code class="descname">write_file</code><span class="sig-paren">(</span><em>filename</em>, <em>content</em>, <em>mode='w'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#write_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.write_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>write_file will open a file, “filename” and write content, “content”
+and properly close the file</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="scompose.utils.write_json">
+<code class="descclassname">scompose.utils.</code><code class="descname">write_json</code><span class="sig-paren">(</span><em>json_obj</em>, <em>filename</em>, <em>mode='w'</em>, <em>print_pretty=True</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#write_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.write_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>write_json will (optionally,pretty print) a json object to file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>json_obj</strong> (<em>the dict to print to json</em>)</p></li>
+<li><p><strong>filename</strong> (<em>the output file to write to</em>)</p></li>
+<li><p><strong>pretty_print</strong> (<em>if True, will use nicer formatting</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="scompose.utils.write_yaml">
+<code class="descclassname">scompose.utils.</code><code class="descname">write_yaml</code><span class="sig-paren">(</span><em>yaml_dict</em>, <em>filename</em>, <em>mode='w'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#write_yaml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.write_yaml" title="Permalink to this definition">¶</a></dt>
+<dd><p>write a dictionary to yaml file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>yaml_dict</strong> (<em>the dict to print to yaml</em>)</p></li>
+<li><p><strong>filename</strong> (<em>the output file to write to</em>)</p></li>
+<li><p><strong>pretty_print</strong> (<em>if True, will use nicer formatting</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../changelog.html" class="btn btn-neutral float-right" title="CHANGELOG" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="scompose.tests.testdata.html" class="btn btn-neutral" title="scompose.tests.testdata package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Vanessa Sochat.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../assets/jquery.js"></script>
+      <script type="text/javascript" src="../assets/underscore.js"></script>
+      <script type="text/javascript" src="../assets/doctools.js"></script>
+      <script type="text/javascript" src="../assets/language_data.js"></script>
+
+  
+
+  <script type="text/javascript" src="../assets/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
