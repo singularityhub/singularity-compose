@@ -83,13 +83,13 @@ if __name__ == "__main__":
           license=LICENSE,
           description=DESCRIPTION,
           long_description=LONG_DESCRIPTION,
+          long_description_content_type="text/markdown",
           keywords=KEYWORDS,
           install_requires = INSTALL_REQUIRES,
           setup_requires=["pytest-runner"],
           tests_require=TESTS_REQUIRES,
           extras_require={
               'all': [INSTALL_REQUIRES_ALL]
-
           },
           classifiers=[
               'Intended Audience :: Science/Research',

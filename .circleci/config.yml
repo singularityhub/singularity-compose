@@ -39,7 +39,7 @@ test_scompose: &test_scompose
   name: Test Singularity Compose
   command: |
         cd ~/repo
-        sudo python setup.py install
+        pip install .[all]
         pytest scompose
 
 commands:
