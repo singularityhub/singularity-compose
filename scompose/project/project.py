@@ -30,6 +30,7 @@ from ipaddress import IPv4Network
 import json
 import os
 import re
+import subprocess
 import sys
 
 
@@ -267,11 +268,14 @@ class Project(object):
             if name in self.instances:
                 instance = self.instances[name]
                 if instance.exists():
-                    for line in self.client.execute(instance.instance.get_uri(), 
-                                                    command=commands,
-                                                    stream=True,
-                                                    sudo=self.sudo):
-                        print(line, end='')
+                    try:
+                        for line in self.client.execute(instance.instance.get_uri(), 
+                                                        command=commands,
+                                                        stream=True,
+                                                        sudo=self.sudo):
+                            print(line, end='')
+                    except subprocess.CalledProcessError:
+                        bot.exit('Command had non zero exit status.')
 
 # Logs
 

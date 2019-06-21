@@ -154,6 +154,11 @@ class Instance(object):
            ensure they are bound correctly.
         '''
         ports = ['--net']
+
+        # If no sudo, isolates container network with a loopback interface.
+        if not self.sudo:
+            ports += ["--network", "none"]
+
         for pair in self.ports:
             ports += ['--network-args', '"portmap=%s/tcp"' % pair]
 
