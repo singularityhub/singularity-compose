@@ -94,6 +94,19 @@ usr
 var
 ```
 
+## Run
+
+If a container has a `%runscript` section (or a Docker entrypoint/cmd that 
+was converted to one), you can run that script easily:
+
+```bash
+$ singularity-compose run app
+```
+
+If your container didn't have any kind of runscript, the startscript
+will be used instead.
+
+
 ## Down
 
 You can bring one or more instances down (meaning, stopping them) by doing:
