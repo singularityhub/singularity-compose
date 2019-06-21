@@ -14,5 +14,6 @@ and **Merged pull requests**. Critical items to know are:
 The versions coincide with releases on pypi.
 
 ## [0.0.x](https://github.com/singularityhub/singularity-compose/tree/master) (0.0.x)
+ - pyaml version should be for newer kind, and still check for attribute (0.0.11)
  - alpha release with simple (single container) working example (0.0.1)
  - dummy release (0.0.0)
