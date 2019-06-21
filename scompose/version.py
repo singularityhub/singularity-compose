@@ -31,7 +31,7 @@ LICENSE = "LICENSE"
 
 
 INSTALL_REQUIRES = (
-    ('spython', {'min_version': '0.0.67'}),
+    ('spython', {'min_version': '0.0.68'}),
     ('pyaml', {'min_version': '5.1.1'}),
 )
 
