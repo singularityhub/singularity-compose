@@ -109,6 +109,9 @@ def get_parser():
     execute = subparsers.add_parser("exec",
                                     help="execute a command to an instance")
 
+    run = subparsers.add_parser("run",
+                                help="run an instance runscript.")
+
     shell = subparsers.add_parser("shell",
                                    help="shell into an instance")
 
@@ -134,7 +137,7 @@ def get_parser():
                           help='the names of the instances to target')
 
     # Only one name allowed
-    for sub in [shell, execute]:
+    for sub in [shell, execute, run]:
         sub.add_argument('name', nargs=1,
                          help='the name of the instance to target')
 
@@ -195,6 +198,8 @@ def start():
         from .ps import main
     elif args.command == "restart": 
         from .restart import main
+    elif args.command == "run": 
+        from .run import main
     elif args.command == "shell":
         from .shell import main
     elif args.command == "up": 

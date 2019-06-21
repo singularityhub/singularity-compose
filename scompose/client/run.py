@@ -17,26 +17,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 '''
 
-__version__ = "0.0.15"
-AUTHOR = 'Vanessa Sochat'
-AUTHOR_EMAIL = 'vsochat@stanford.edu'
-NAME = 'singularity-compose'
-PACKAGE_URL = "http://www.github.com/singularityhub/singularity-compose"
-KEYWORDS = 'singularity, compose'
-DESCRIPTION = "simple orchestration for singularity containers"
-LICENSE = "LICENSE"
+from scompose.project import Project
 
-################################################################################
-# Global requirements
+def main(args, parser, extra):
+    '''execute a command to an instance.
+    '''
+    # Initialize the project
+    project = Project(filename=args.file,
+                      name=args.project_name,
+                      env_file=args.env_file)
 
-
-INSTALL_REQUIRES = (
-    ('spython', {'min_version': '0.0.69'}),
-    ('pyaml', {'min_version': '5.1.1'}),
-)
-
-TESTS_REQUIRES = (
-    ('pytest', {'min_version': '4.6.2'}),
-)
-
-INSTALL_REQUIRES_ALL = INSTALL_REQUIRES
+    project.run(args.name[0])

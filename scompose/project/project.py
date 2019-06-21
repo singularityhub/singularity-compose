@@ -129,6 +129,22 @@ class Project(object):
             yield self.instances.get(name)
         
 
+    def get_instance(self, name):
+        '''get a specifically named instance. We first check that the 
+           client has instances defined, and that the name we are looking
+           for is also included. If not found, we return None.
+
+           Parameters
+           ==========
+           names: the name of instances to get. Must be valid
+        '''
+        instance = None
+        if self.instances:
+            if name in self.instances:
+                instance = self.instances[name]
+        return instance
+        
+
 # Loading Functions
   
     def load(self):
@@ -249,11 +265,34 @@ class Project(object):
            ==========
            name: the name of the instance to shell into
         '''
-        if self.instances:
-            if name in self.instances:
-                instance = self.instances[name]
-                if instance.exists():
-                    self.client.shell(instance.instance.get_uri(), sudo=self.sudo)
+        instance = self.get_instance(name)
+        if not instance:
+            bot.exit('Cannot find %s, is it up?' % name)
+
+        if instance.exists():
+            self.client.shell(instance.instance.get_uri(), sudo=self.sudo)
+
+
+    def run(self, name):
+        '''if an instance exists, run it.
+
+           Parameters
+           ==========
+           name: the name of the instance to run
+        '''
+        instance = self.get_instance(name)
+        if not instance:
+            bot.exit('Cannot find %s, is it up?' % name)
+
+        if instance.exists():
+            self.client.quiet = True
+            result = self.client.run(instance.instance.get_uri(), 
+                                     sudo=self.sudo,
+                                     return_result=True)
+
+            if result['return_code'] != 0:
+                bot.exit("Return code %s" % result['return_code'])
+            print(''.join([x for x in result['message'] if x]))
 
 
     def execute(self, name, commands):
@@ -264,18 +303,20 @@ class Project(object):
            name: the name of the instance to exec to
            commands: a list of commands to issue
         '''
-        if self.instances:
-            if name in self.instances:
-                instance = self.instances[name]
-                if instance.exists():
-                    try:
-                        for line in self.client.execute(instance.instance.get_uri(), 
-                                                        command=commands,
-                                                        stream=True,
-                                                        sudo=self.sudo):
-                            print(line, end='')
-                    except subprocess.CalledProcessError:
-                        bot.exit('Command had non zero exit status.')
+        instance = self.get_instance(name)
+        if not instance:
+            bot.exit('Cannot find %s, is it up?' % name)
+
+        if instance.exists():
+            try:
+                for line in self.client.execute(instance.instance.get_uri(), 
+                                                command=commands,
+                                                stream=True,
+                                                sudo=self.sudo):
+                    print(line, end='')
+            except subprocess.CalledProcessError:
+                bot.exit('Command had non zero exit status.')
+
 
 # Logs
 
