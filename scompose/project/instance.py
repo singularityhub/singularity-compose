@@ -206,6 +206,7 @@ class Instance(object):
                 if not isinstance(command, list):
                     command = shlex.split(command)
 
+                print('Running %s' % command)
                 self.client._run_command(command, quiet=True)
 
 # Image
