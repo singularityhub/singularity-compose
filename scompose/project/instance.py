@@ -289,10 +289,15 @@ class Instance(object):
                 sudo = not ("--fakeroot" in options or "--remote" in options)
 
                 bot.info('Building %s' % self.name)
-                self.client.build(image=sif_binary,
-                                  recipe=self.recipe,
-                                  options=options,
-                                  sudo=sudo)
+ 
+                _, stream = self.client.build(image=sif_binary,
+                                              recipe=self.recipe,
+                                              options=options,
+                                              sudo=sudo,
+                                              stream=True)
+
+                for line in stream:
+                    print(line)
 
             except:
                 build = "sudo singularity build %s %s" % (os.path.basename(sif_binary),
