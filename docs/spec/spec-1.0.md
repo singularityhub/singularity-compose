@@ -111,6 +111,7 @@ field (not defined above).|
 |build| a section to define how and where to build the base container from.|
 |build.context| the folder with the Singularity file (and other relevant files). Must exist.
 |build.recipe| the Singularity recipe in the build context folder. It defaults to `Singularity`|
+|build.options| a list of one or more options (single strings for boolean, or key value pairs for arguments) to provide to build. |
 |image| is looked for after a build entry. It can be a unique resource identifier, or container binary. |
 |volumes| one or more files or files to bind to the instance when it's started.|
 |volumes_from| shared volumes that are defined for other instances|
