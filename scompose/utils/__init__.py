@@ -149,7 +149,13 @@ def _read_yaml(section, quiet=False):
        section: a string of unparsed yaml content.
     '''
     metadata = {}
-    docs = yaml.load_all(section, Loader=yaml.FullLoader)
+
+    # PyYaml vs pyaml have subtle differences
+    if hasattr(yaml, "FullLoader"):
+        docs = yaml.load_all(section, Loader=yaml.FullLoader)
+    else:
+        docs = yaml.load_all(section)
+
     for doc in docs:
         if isinstance(doc, dict):
             for k, v in doc.items():

@@ -206,7 +206,17 @@ class Instance(object):
                 if not isinstance(command, list):
                     command = shlex.split(command)
 
-                self.client._run_command(command, quiet=True)
+                # Capture the return code
+                response = self.client._run_command(command, 
+                                                    quiet=True, 
+                                                    return_result=True)
+                # If debug on, show output
+                bot.debug("".join(response['message']))
+
+                # Alert the user if there is an error
+                if response['return_code'] != 0:
+                    bot.error("".join(response['message']))
+                    bot.exit("Return code %s, exiting." % response['return_code'])
 
 # Image
 

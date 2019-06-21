@@ -17,7 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 '''
 
-__version__ = "0.0.1"
+__version__ = "0.0.11"
 AUTHOR = 'Vanessa Sochat'
 AUTHOR_EMAIL = 'vsochat@stanford.edu'
 NAME = 'singularity-compose'
@@ -32,7 +32,7 @@ LICENSE = "LICENSE"
 
 INSTALL_REQUIRES = (
     ('spython', {'min_version': '0.0.67'}),
-    ('pyaml', {'min_version': '17.12.1'}),
+    ('pyaml', {'min_version': '5.1.1'}),
 )
 
 TESTS_REQUIRES = (
