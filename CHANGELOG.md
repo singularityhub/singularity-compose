@@ -14,6 +14,7 @@ and **Merged pull requests**. Critical items to know are:
 The versions coincide with releases on pypi.
 
 ## [0.0.x](https://github.com/singularityhub/singularity-compose/tree/master) (0.0.x)
+ - adding more build options to build as build-flags (0.0.13)
  - when not using sudo, need to set --network=none, and catching exec error (0.0.12)
  - pyaml version should be for newer kind, and still check for attribute (0.0.11)
  - alpha release with simple (single container) working example (0.0.1)

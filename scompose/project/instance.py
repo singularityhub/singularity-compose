@@ -281,11 +281,18 @@ class Instance(object):
             if not os.path.exists(self.recipe):
                 bot.exit('%s not found for build' % self.recipe)
              
-            # This will require sudo
+            # This will likely require sudo, unless --remote or --fakeroot in options
             try:
+                options = self.get_build_options()
+
+                # If remote or fakeroot included, don't need sudo
+                sudo = not ("--fakeroot" in options or "--remote" in options)
+
                 bot.info('Building %s' % self.name)
                 self.client.build(image=sif_binary,
-                                  recipe=self.recipe)
+                                  recipe=self.recipe,
+                                  options=options,
+                                  sudo=sudo)
 
             except:
                 build = "sudo singularity build %s %s" % (os.path.basename(sif_binary),
@@ -298,6 +305,32 @@ class Instance(object):
 
         else:
             bot.exit("neither image and build defined for %s" % self.name)
+
+    def get_build_options(self):
+        ''''get build options will parse through params, and return build
+            options (if they exist)
+        '''
+        options = []
+
+        if "build" in self.params:
+            if "options" in self.params['build']:
+                for option in self.params['build']['options']:
+
+                    # if the option is a string, it's a boolean flag
+                    if isinstance(option, str):
+                        options.append('--%s' % option)
+
+                    # Otherwise, the user set a boolean with a value or an arg
+                    elif isinstance(option, dict):
+                        for key, val in option.items():
+                            if val is True:
+                                options.append('--%s' % key)
+                            elif val is False:
+                                continue
+                            else:
+                                options += ['--%s' % key, val]
+
+        return options
 
 # State
 
