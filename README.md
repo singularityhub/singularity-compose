@@ -7,5 +7,5 @@ details, or more examples below.
 
 ## Examples
 
- - [singularity-compose-simple](https://www.github.com/singularityhub/singularity-compose-simple): A single container example (working in full).
- - [singularity-compose-example](https://www.github.com/singularityhub/singularity-compose-example): The same application split into multiple containers. Requires either no Docker install on the host, or install of fixed Singularity (the current release has a bug).
+See our [Singularity Compose Examples](https://www.github.com/singularityhub/singularity-compose-examples) repository for
+finding or contributing examples for using scompose.

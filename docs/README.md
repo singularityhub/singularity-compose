@@ -299,3 +299,7 @@ The [specification](spec/) describes in more detail the sections of the singular
 For example, in the quick start above, we have a post command for the app instance
 that creates a series of folders on the host. 
 
+## Examples
+
+See our [Singularity Compose Examples](https://www.github.com/singularityhub/singularity-compose-examples) repository for
+finding or contributing examples for using scompose.
