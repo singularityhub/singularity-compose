@@ -42,6 +42,7 @@ def test_commands(tmp_path):
     print('Testing up')
     project.up()
     assert 'etc.hosts' in os.listdir()
+    assert 'resolv.conf' in os.listdir()
 
     print('Waiting for instance to start')
     sleep(10)

@@ -33,4 +33,5 @@ def main(args, parser, extra):
     # Create instances, and if none specified, create all
     project.create(args.names, 
                    writable_tmpfs=not args.read_only,
-                   bridge=args.bridge)
+                   bridge=args.bridge,
+                   no_resolv=args.no_resolv)

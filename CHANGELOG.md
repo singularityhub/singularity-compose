@@ -14,6 +14,7 @@ and **Merged pull requests**. Critical items to know are:
 The versions coincide with releases on pypi.
 
 ## [0.0.x](https://github.com/singularityhub/singularity-compose/tree/master) (0.0.x)
+ - resolv.conf needs to bind by default (0.0.16)
  - adding run command (0.0.15)
  - ensuring that builds are streamed (0.0.14)
  - adding more build options to build as build-flags (0.0.13)

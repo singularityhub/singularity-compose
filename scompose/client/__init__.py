@@ -97,6 +97,10 @@ def get_parser():
                          help="disable the instance from writing to tmp", 
                          default=False, action='store_true')
 
+        sub.add_argument('--no-resolv', dest="no_resolv", 
+                         help="do not generate and bind a resolv.conf", 
+                         default=False, action='store_true')
+
         sub.add_argument("--bridge", default="10.22.0.0/16", 
                          dest='bridge', type=str,
                          help='the address of the bridge to derive others from.')
