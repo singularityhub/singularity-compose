@@ -254,7 +254,17 @@ class Project(object):
         # Add the host file to be mounted
         write_file(hosts_file, template)
         return hosts_file
- 
+
+
+    def generate_resolv_conf(self):
+        '''generate a resolv.conf file to bind to the containers.
+           We use the template provided by scompose.
+        '''
+        resolv_conf = os.path.join(self.working_dir, 'resolv.conf')
+        if not os.path.exists(resolv_conf):
+            template = read_file(get_template('resolv.conf'))
+            write_file(resolv_conf, template)
+        return resolv_conf
 
 # Commands
 
@@ -370,22 +380,36 @@ class Project(object):
 
 # Create
 
-    def create(self, names=None, writable_tmpfs=True, bridge="10.22.0.0/16"):
+    def create(self, names=None,
+               writable_tmpfs=True,
+               bridge="10.22.0.0/16",
+               no_resolv=False):
+
         '''call the create function, which defaults to the command instance.create()
         '''
-        return self._create(names, writable_tmpfs=writable_tmpfs)
+        return self._create(names,
+                            writable_tmpfs=writable_tmpfs, 
+                            no_resolv=no_resolv)
 
-    def up(self, names=None, writable_tmpfs=True, bridge="10.22.0.0/16"):
+    def up(self, names=None, 
+           writable_tmpfs=True,
+           bridge="10.22.0.0/16",
+           no_resolv=False):
+
         '''call the up function, instance.up(), which will build before if
            a container binary does not exist.
         '''
-        return self._create(names, command="up", writable_tmpfs=writable_tmpfs)
+        return self._create(names, 
+                            command="up",
+                            writable_tmpfs=writable_tmpfs,
+                            no_resolv=no_resolv)
 
     def _create(self, 
                 names, 
                 command="create",
                 writable_tmpfs=True,
-                bridge="10.22.0.0/16"):
+                bridge="10.22.0.0/16",
+                no_resolv=False):
 
         '''create one or more instances. "Command" determines the sub function
            to call for the instance, which should be "create" or "up".
@@ -400,6 +424,8 @@ class Project(object):
            bridge: the bridge ip address to use for networking, and generating
                    addresses for the individual containers.
                    see /usr/local/etc/singularity/network/00_bridge.conflist 
+           no_resolv: if True, don't create and bind a resolv.conf with Google
+                      nameservers.
         '''
         # If no names provided, we create all
         names = names or self.get_instance_names()
@@ -431,9 +457,13 @@ class Project(object):
 
                 if do_create:
 
-                    instance.volumes.append('%s:/etc/hosts' % hosts_file)
+                    # Generate a resolv.conf to bind to the container
+                    if not no_resolv:
+                        resolv = self.generate_resolv_conf()
+                        instance.volumes.append('%s:/etc/resolv.conf' % resolv)
 
                     # Create a hosts file for the instance based, add as volume
+                    instance.volumes.append('%s:/etc/hosts' % hosts_file)
 
                     # If we get here, execute command and add to list
                     create_func = getattr(instance, command)
