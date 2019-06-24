@@ -24,7 +24,7 @@ Singularity Compose is an orchestration tool for Singularity container instances
 
 The Singularity container technology started to become popular in 2016,
 as it offered a more secure option to run encapsulated environments [@Kurtzer2017-xj].
-Traditionally, this meant that Singularity users could run an script built into the container
+Traditionally, this meant that Singularity users could run a script built into the container
 (called a runscript), execute a custom command, or shell into a container. 
 Unlike Docker [@Merkel2014-da], these basic interactions simply interacted with processes in the 
 foreground (e.g., running a script and exiting) and were not appropriate to run 
