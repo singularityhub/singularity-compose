@@ -18,15 +18,15 @@ bibliography: paper.bib
 
 # Summary
 
-Singularity Compose is an orchestration tool for management of Singularity containers.
+Singularity Compose is an orchestration tool for Singularity container instances.
 
 ![Singularity Compose](singularity-compose.png)
 
 The Singularity container technology started to become popular in 2016,
 as it offered a more secure option to run encapsulated environments [@Kurtzer2017-xj].
-Traditionally, this meant that Singularity users could run an entrypoint built into the container
+Traditionally, this meant that Singularity users could run an script built into the container
 (called a runscript), execute a custom command, or shell into a container. 
-Unlike Docker, these basic interactions simply interacted with processes in the 
+Unlike Docker [@Merkel2014-da], these basic interactions simply interacted with processes in the 
 foreground (e.g., running a script and exiting) and were not appropriate to run 
 background services. This was a task for container instances [@SingularityInstances].
 
@@ -37,14 +37,14 @@ Examples of services include databases, web servers, and associated applications
 that interact with them. While a container technology can provide command line
 and other programmatic interfaces for interaction with instances, what is also needed
 is a configuration file for orchestration and customization of several instances.
-For sibling container technology Docker, Docker Compose was developed 
+For sibling container technology Docker, Docker Compose [@DockerCompose] was developed 
 for this purpose. For local and production usage, the user could create a `docker-compose.yml` 
 file to define services, volumes, ports exposed, and other customizations to networking and environment
-[@DockerCompose]. There was strong incentive for the development of such a tool.
-Docker Compose existed before Kubernetes was available in the middle of 2015 [@Wikipedia_contributors2019-bw].
+[@DockerCompose]. Notably, there was strong incentive for the development of such a tool,
+because Docker Compose existed before Kubernetes was available in the middle of 2015 [@Wikipedia_contributors2019-bw].
 
-No equivalent orchestration tool has been created for Singularity container
-instances until now. While Singularity has empowered enterprise users to run 
+No equivalent orchestration tool was created for Singularity container
+instances. While Singularity has empowered enterprise users to run 
 services via platforms such as Kubernetes [@Meyer2019-sd], these platforms come
 with privilege. It is often the case that a production Kubernetes cluster is not 
 readily available to a user via his or her institution, or that the user 
@@ -61,37 +61,66 @@ to exist. As the need is unfulfilled, it is the responsibility of the open sourc
 
 ## Singularity Compose
 
-Singularity Compose [@SingularityCompose] is the solution for this niche group of non enterprise users
-that want to easily create a configuration file to control creation and interaction
-of services provided by Singularity container instances. It mirrors the format
-of the `docker-compose.yml` file with a `singularity-compose.yml`, and allows
-the user to define one or more container services, optionally with exposed ports
-to the host. Akin to docker-compose, the user can easily define volumes to be bound
-to each instance, along with ports to be exposed, and a container binary
-to build or pull from a remote resource. Custom scripts can also be defined to 
+The solution for orchestration of container instances from the open source
+community is Singularity Compose [@SingularityCompose]. Singularity Compose 
+is software for non enterprise users to easily create a configuration file to 
+control creation and interaction of Singularity container instances.
+It allows for the creation of a `singularity-compose.yml` file, in which
+the user can define one or more container services, optionally with exposed ports
+and volumes on the host. The user can easily define a container binary
+to build or pull from a remote resource, along with custom scripts to
 run after creation of the instances. Singularity Compose handles designation
 of addresses on a local bridge network for each container, and creation of
-resource files to bind to the container to "see" one another related to hostnames
-and networking. Importantly, by way of adding a Singularity Compose to a repository,
+resource files to bind to the containers to "see" one another. 
+Importantly, by way of adding a Singularity Compose to a repository,
 a user is ensuring not just reproducibility of a container recipe, but also
-reproducibility of it's build and creation of services. For example, a
-sequence of steps for a single container to build it, assign an address, create networking
-files, and then start an instance might look like this:
+reproducibility of it's build and creation of services. For example, a simplified
+version of a sequence of steps to build two containers and bring them up
+as instances might look like this:
 
 ```bash
 $ sudo singularity build app/app.sif app/Singularity
+$ sudo singularity build nginx/nginx.sif nginx/Singularity.nginx
+
 $ singularity instance start \
-    --bind etc.hosts:/etc/hosts \
-    --net --network-args "portmap=80:80/tcp" --network-args "IP=10.22.0.2" \
-    --hostname app \
-    --writable-tmpfs app.sif app
+   --bind nginx.conf:/etc/nginx/conf.d/default.conf \
+   --bind nginx/uwsgi_params.par:/etc/nginx/uwsgi_params.par \
+   --bind nginx/cache:/var/cache/nginx \
+   --bind nginx/run:/var/run \
+   --bind app:/code \
+   --bind static:/var/www/static \
+   --bind images:/var/www/images \
+   --bind etc.hosts:/etc/hosts \
+   --net --network-args "portmap=80:80/tcp" --network-args "IP=10.22.0.2" \
+   --hostname nginx --writable-tmpfs nginx/nginx.sif nginx
+
+$ singularity instance start \
+   --bind app:/code \
+   --bind static:/var/www/static \
+   --bind images:/var/www/images \
+   --bind etc.hosts:/etc/hosts \
+   --net --network-args "portmap=8000:8000/tcp" --network-args "IP=10.22.0.3" \
+   --hostname app --writable-tmpfs app/app.sif app
+
+$ singularity instance list
 ```
 
-In the above command, we've already generated the `etc.hosts` file that defines
-hostnames and addresses for other instances, along with a hostname `app` for
-the container we are starting. If we are running three services, we might need
-to do this three times, and be mindful of binds, ports, and additional arguments
-for each. With Singularity Compose, the user writes a `singularity-compose.yml`
+This is a complicated set of commands. In the above commands, we
+first build the two containers. There are no checks here if the recipes
+exist, or if the containers themselves already exist.
+We then start instances for them. If we save these commands in a file,
+we need to consistently hard code the paths to the container binaries,
+along with the ip addresses, hostnames, and volumes. There are no checks
+done before attempting the creation if the volumes meant to be bound
+actually exist. We also take for granted that we've already generated an 
+`etc.hosts` file to bind to the container at `/etc/hosts`, which will
+define the container instances to have the same names supplied with `--hostname`
+so that instances can "see" one another. For the networking, we have
+to be mindful of the default bridge provided by Singularity, along with how
+to specify networking arguments under different conditions. This entire practice
+is clearly tedious. For a user to constantly need to generate and then
+re-issue these commands, it's not a comfortable workflow. However, 
+with Singularity Compose, the user writes a `singularity-compose.yml`
 file once:
 
 ```yaml
@@ -125,7 +154,8 @@ instances:
       - 8000:8000
 ```
 
-And then can easily build all non-existing containers, and bring up all services
+And then can much more readily see and reproduce generation of the same services.
+The user can easily build all non-existing containers, and bring up all services
 with one command:
 
 ```bash
