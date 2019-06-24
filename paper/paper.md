@@ -4,7 +4,7 @@ tags:
   - containers
   - singularity
   - linux
-  - registry
+  - orchestration
 authors:
  - name: Vanessa Sochat
    orcid: 0000-0002-4387-3819
@@ -12,7 +12,7 @@ authors:
 affiliations:
  - name: Stanford University Research Computing
    index: 1
-date: 1 July 2019
+date: 24 June 2019
 bibliography: paper.bib
 ---
 
@@ -28,19 +28,20 @@ Traditionally, this meant that Singularity users could run an entrypoint built i
 (called a runscript), execute a custom command, or shell into a container. 
 Unlike Docker, these basic interactions simply interacted with processes in the 
 foreground (e.g., running a script and exiting) and were not appropriate to run 
-background services. This was a task for container instances [@SingularityInstances] 
-that were developed in the years to come.
+background services. This was a task for container instances [@SingularityInstances].
 
 A container instance [@SingularityInstances] equates to running a container in a detached or
-daemon mode. It is a persistent version of the same container image that
-can also be isolated. Instances allow for running persistent services in the background,
+daemon mode. Instances allow for running persistent services in the background,
 and then interaction with these services from the host and other containers.
 Examples of services include databases, web servers, and associated applications
-that interact with them. For sibling container technology Docker, an early solution,
-Docker Compose was developed to allow for simple orchestration
-on a host, meaning creation of a `docker-compose.yml` file to define services,
-volumes, ports exposed, and other customizations to networking and environment
-[@DockerCompose]. 
+that interact with them. While a container technology can provide command line
+and other programmatic interfaces for interaction with instances, what is also needed
+is a configuration file for orchestration and customization of several instances.
+For sibling container technology Docker, Docker Compose was developed 
+for this purpose. For local and production usage, the user could create a `docker-compose.yml` 
+file to define services, volumes, ports exposed, and other customizations to networking and environment
+[@DockerCompose]. There was strong incentive for the development of such a tool.
+Docker Compose existed before Kubernetes was available in the middle of 2015 [@Wikipedia_contributors2019-bw].
 
 No equivalent orchestration tool has been created for Singularity container
 instances until now. While Singularity has empowered enterprise users to run 
@@ -48,11 +49,14 @@ services via platforms such as Kubernetes [@Meyer2019-sd], these platforms come
 with privilege. It is often the case that a production Kubernetes cluster is not 
 readily available to a user via his or her institution, or that the user 
 cannot pay a cloud provider to deploy one. However, this does not imply that
-a user that is not associated with an enterprise (e.g., an open source developer
-or academic) would not benefit from such an orchestration tool. This is a classic
-example of mismatched incentives. The company supporting Singularity is not
-incentivized to provide the tool, and so it is the responsibility of the open
-source community to step up.
+a non enterprise user (e.g., an open source developer
+or academic) would not benefit from such an orchestration tool. Unfortunately,
+since the current trend and strongest potential for making profits is centered
+around encouraging usage of enterprise tools like Kubernetes [@Wikipedia_contributors2019-bw],
+there is not any urgent incentive on part of the provider companies to 
+invest in a non-enterprise orchestration tool. It is logical, rational, and
+understandable that companies exist to make profit, and must make profit
+to exist. As the need is unfulfilled, it is the responsibility of the open source community to step up.
 
 
 ## Singularity Compose
