@@ -105,7 +105,7 @@ $ singularity instance start \
 $ singularity instance list
 ```
 
-This is a complicated set of commands. In the above commands, we
+This is a complicated set of commands. In the above, we
 first build the two containers. There are no checks here if the recipes
 exist, or if the containers themselves already exist.
 We then start instances for them. If we save these commands in a file,
@@ -114,11 +114,10 @@ along with the ip addresses, hostnames, and volumes. There are no checks
 done before attempting the creation if the volumes meant to be bound
 actually exist. We also take for granted that we've already generated an 
 `etc.hosts` file to bind to the container at `/etc/hosts`, which will
-define the container instances to have the same names supplied with `--hostname`
-so that instances can "see" one another. For the networking, we have
-to be mindful of the default bridge provided by Singularity, along with how
-to specify networking arguments under different conditions. This entire practice
-is clearly tedious. For a user to constantly need to generate and then
+define the container instances to have the same names supplied with `--hostname`. 
+For the networking, we have to be mindful of the default bridge provided by Singularity, 
+along with how to specify networking arguments under different conditions. 
+This entire practice is clearly tedious. For a user to constantly need to generate and then
 re-issue these commands, it's not a comfortable workflow. However, 
 with Singularity Compose, the user writes a `singularity-compose.yml`
 file once:
