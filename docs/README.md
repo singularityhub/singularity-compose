@@ -12,6 +12,13 @@ or services.
 
 ## Getting Started
 
+### Dependencies
+
+Singularity Compose *must* use a version of [Singularity](https://sylabs.io/guides/latest/user-guide/) 
+3.2.1 or greater. It's recommended to use the latest (3.3.0 release at the time of this writing) otherwise there was
+a bug with some versions of 3.2.1. Singularity 2.x absolutely will not work.
+Python 3 is also required, as Python 2 is at end of life.
+
 ### singularity-compose.yml
 
 For a singularity-compose project, it's expected to have a `singularity-compose.yml`
