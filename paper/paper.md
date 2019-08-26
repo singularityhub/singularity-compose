@@ -10,7 +10,7 @@ authors:
    orcid: 0000-0002-4387-3819
    affiliation: 1
 affiliations:
- - name: Stanford University Research Computing
+ - name: Stanford University Research Computing, Stanford University, Stanford, CA 94305
    index: 1
 date: 24 June 2019
 bibliography: paper.bib
