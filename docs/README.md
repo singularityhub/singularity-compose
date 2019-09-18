@@ -10,6 +10,26 @@ on your host. It is *not* a complicated orchestration tool like Kubernetes,
 but rather a controlled way to represent and manage a set of container instances,
 or services.
 
+## When do I need sudo?
+
+Singularity compose uses Singularity on the backend, so anything that would require sudo (root)
+permissions for Singularity is also required for Singularity compose. This includes most
+networking commands (e.g., asking to allocate ports) and builds from recipe files. 
+However, if you are using Singularity v3.3 or higher, you can take advantage of 
+[fakeroot](https://sylabs.io/guides/3.3/user-guide/fakeroot.html) to try and get around this.
+The snippet below shows how to add fakeroot:
+
+```yaml
+    build:
+      context: ./nginx
+      recipe: Singularity.nginx
+      options:
+       - fakeroot
+```
+
+And a complete example is provided [here](https://github.com/singularityhub/singularity-compose-examples/blob/master/rstudio-simple/singularity-compose.yml).
+
+
 ## Getting Started
 
 ### Dependencies
