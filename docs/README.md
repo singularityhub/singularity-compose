@@ -17,7 +17,7 @@ permissions for Singularity is also required for Singularity compose. This inclu
 networking commands (e.g., asking to allocate ports) and builds from recipe files. 
 However, if you are using Singularity v3.3 or higher, you can take advantage of 
 [fakeroot](https://sylabs.io/guides/3.3/user-guide/fakeroot.html) to try and get around this.
-The snippet below shows how to add fakeroot:
+The snippet below shows how to add fakeroot as an option under a build section:
 
 ```yaml
     build:
