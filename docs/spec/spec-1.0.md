@@ -48,6 +48,31 @@ Since Singularity does not (currently) have control over custom networking,
 all instance ports are mapped to the host (localhost) and we don't have any
 configuration settings to control this (how to handle ports?)
 
+## Environment
+
+While Singularity compose doesn't currently have support for an environment 
+section, it's easy to add custom environments by way of binding an environment
+file to the instance! For example:
+
+```yaml
+  app:
+    build:
+      context: ./app
+    volumes:
+      - ./env_file.sh:/.singularity.d/env/env_file.sh
+```
+
+Any file that is found in the `.singularity.d/env` folder will be sourced.
+For example, you could define or export variables like so:
+
+```bash
+#!/bin/bash
+MYNAME=dinosaur
+export MYNAME
+```
+
+Make sure to export variables.
+
 ## Instance
 
 An instance currently must be instantiated from a container built 
