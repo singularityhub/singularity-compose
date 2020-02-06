@@ -437,8 +437,9 @@ class Project(object):
         # Generate ip addresses for each
         lookup = self.get_ip_lookup(names, bridge)
 
-        # Generate shared hosts file
-        hosts_file = self.create_hosts(lookup)
+        if self.sudo and not no_resolv:
+            # Generate shared hosts file
+            hosts_file = self.create_hosts(lookup)
 
         # First create those with no dependencies
         while names:
@@ -458,12 +459,12 @@ class Project(object):
                 if do_create:
 
                     # Generate a resolv.conf to bind to the container
-                    if not no_resolv:
+                    if self.sudo and not no_resolv:
                         resolv = self.generate_resolv_conf()
                         instance.volumes.append('%s:/etc/resolv.conf' % resolv)
 
-                    # Create a hosts file for the instance based, add as volume
-                    instance.volumes.append('%s:/etc/hosts' % hosts_file)
+                        # Create a hosts file for the instance based, add as volume
+                        instance.volumes.append('%s:/etc/hosts' % hosts_file)
 
                     # If we get here, execute command and add to list
                     create_func = getattr(instance, command)

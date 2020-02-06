@@ -489,21 +489,24 @@ class Instance(object):
 
             bot.info("Creating %s" % self.name)
 
+            # Command options
+            options = []
+
             # Volumes
-            binds = self._get_bind_commands()
+            options += self._get_bind_commands()
 
-            # Ports
-            ports = self._get_network_commands(ip_address)
+            if sudo:
+                # Ports
+                options += self._get_network_commands(ip_address)
 
-            # Hostname
-            hostname = ["--hostname", self.name]
+                # Hostname
+                options += ["--hostname", self.name]
 
             # Writable Temporary Directory
             if writable_tmpfs:
-                hostname += ['--writable-tmpfs']
+                options += ['--writable-tmpfs']
 
             # Show the command to the user
-            options = binds + ports + hostname
             commands = "%s %s %s" % (' '.join(options), image, self.name)
             bot.debug('singularity instance start %s' % commands)
 
