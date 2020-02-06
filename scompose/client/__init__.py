@@ -90,9 +90,7 @@ def get_parser():
     )
 
     # print version and exit
-    version = subparsers.add_parser(
-        "version", help="show software version"  # pylint: disable=unused-variable
-    )
+    version = subparsers.add_parser("version", help="show software version")
 
     # Build
 
@@ -100,10 +98,7 @@ def get_parser():
 
     # Config
 
-    config = subparsers.add_parser(
-        "config",  # pylint: disable=unused-variable
-        help="Validate and view the compose file",
-    )
+    config = subparsers.add_parser("config", help="Validate and view the compose file",)
 
     # Create (assumes built already), Up (will also build, if able)
 
@@ -168,9 +163,7 @@ def get_parser():
         action="store_true",
     )
 
-    ps = subparsers.add_parser(
-        "ps", help="list instances"  # pylint: disable=unused-variable
-    )
+    ps = subparsers.add_parser("ps", help="list instances")
 
     # Add list of names
     for sub in [build, create, down, logs, up, restart]:
