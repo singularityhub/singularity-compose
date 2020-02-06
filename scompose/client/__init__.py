@@ -98,7 +98,7 @@ def get_parser():
 
     # Config
 
-    config = subparsers.add_parser("config", help="Validate and view the compose file",)
+    config = subparsers.add_parser("config", help="Validate and view the compose file")
 
     # Create (assumes built already), Up (will also build, if able)
 
