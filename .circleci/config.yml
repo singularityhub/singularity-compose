@@ -1,13 +1,12 @@
 version: 2.1
 
 orbs:
-  singularity: singularity/singularity@1.0.4
+  singularity: singularity/singularity@1.0.10
 
 
 ################################################################################
 # Workflows
 ################################################################################
-
 
 workflows:
   version: 2
