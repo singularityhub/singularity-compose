@@ -17,11 +17,14 @@ import os
 def test_commands(tmp_path):
 
     tmpdir = os.path.join(tmp_path, "repo")
-    repo = "https://github.com/singularityhub/singularity-compose-simple"
+    repo = "https://github.com/singularityhub/singularity-compose-examples"
 
     # Clone the example
     run_command(["git", "clone", repo, tmpdir])
-    os.chdir(tmpdir)
+
+    # Test the simple apache example
+    workdir = os.path.join(tmpdir, "apache-simple")
+    os.chdir(workdir)
 
     # Check for required files
     assert "singularity-compose.yml" in os.listdir()
@@ -32,9 +35,9 @@ def test_commands(tmp_path):
     project = Project()
 
     print("Testing build")
-    assert "app.sif" not in os.listdir("app")
+    assert "httpd.sif" not in os.listdir("httpd")
     project.build()
-    assert "app.sif" in os.listdir("app")
+    assert "httpd.sif" in os.listdir("httpd")
 
     print("Testing view config")
     project.view_config()
@@ -48,27 +51,25 @@ def test_commands(tmp_path):
     sleep(10)
 
     print("Testing logs")
-    project.logs(["app"], tail=20)
+    project.logs(["httpd"], tail=20)
 
     print("Clearing logs")
-    project.clear_logs(["app"])
-    project.logs(["app"], tail=20)
+    project.clear_logs(["httpd"])
+    project.logs(["httpd"], tail=20)
 
     print("Testing ps")
     project.ps()
 
     print("Testing exec")
-    project.execute("app", ["echo", "MarsBar"])
+    project.execute("httpd", ["echo", "MarsBar"])
 
     # Ensure running
-    assert requests.get("http://127.0.0.1/").status_code == 200
-
-    assert "db.sqlite3" in os.listdir("app")
+    print(requests.get("http://127.0.0.1").status_code)
 
     print("Testing down")
     project.down()
 
     print("Testing ip lookup")
-    lookup = project.get_ip_lookup(["app"])
-    assert "app" in lookup
-    assert lookup["app"] == "10.22.0.2"
+    lookup = project.get_ip_lookup(["httpd"])
+    assert "httpd" in lookup
+    assert lookup["httpd"] == "10.22.0.2"

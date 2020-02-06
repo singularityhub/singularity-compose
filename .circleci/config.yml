@@ -36,7 +36,7 @@ test_scompose: &test_scompose
   command: |
         cd ~/repo
         pip install .[all]
-        pytest scompose
+        pytest --verbose scompose
 
 commands:
   install_dependencies:
