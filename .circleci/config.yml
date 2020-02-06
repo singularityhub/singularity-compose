@@ -1,13 +1,12 @@
 version: 2.1
 
 orbs:
-  singularity: singularity/singularity@1.0.4
+  singularity: singularity/singularity@1.0.10
 
 
 ################################################################################
 # Workflows
 ################################################################################
-
 
 workflows:
   version: 2
@@ -18,7 +17,6 @@ workflows:
             branches:
               ignore: master
           name: "Latest Singularity with Python 3"
-          run-linter: true
           python: 3
           singularity: 3.2.1
           singularity-3: true
@@ -26,10 +24,6 @@ workflows:
 ################################################################################
 # Functions
 ################################################################################
-
-run_linter: &run_linter
-  name: run linter
-  command: pylint ~/repo/scompose
 
 install_scompose: &install_scompose
   name: Install Singularity Compose
@@ -42,7 +36,7 @@ test_scompose: &test_scompose
   command: |
         cd ~/repo
         pip install .[all]
-        pytest scompose
+        pytest --verbose scompose
 
 commands:
   install_dependencies:
@@ -66,7 +60,7 @@ commands:
           python --version
           [ $(python -c'import sys;print(sys.version_info.major)') -eq $PYTHON_VERSION ]
 
-          pip install --upgrade pylint pytest setuptools
+          pip install --upgrade pytest setuptools
 
 ################################################################################
 # Jobs
@@ -75,9 +69,6 @@ commands:
 jobs:
   run-scompose-ci-tests:
     parameters:
-        run-linter:
-          type: boolean
-          default: false
         python:
           type: integer
           description: "Python version: 2 or 3"
@@ -109,8 +100,4 @@ jobs:
             - ~/conda
           key: v1-dependencies
       - run: *install_scompose
-      - when:
-          condition: << parameters.run-linter >>
-          steps:
-            - run: *run_linter
       - run: *test_scompose

@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="../assets/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../assets/documentation_options.js"></script>
+        <script type="text/javascript" src="../assets/jquery.js"></script>
+        <script type="text/javascript" src="../assets/underscore.js"></script>
+        <script type="text/javascript" src="../assets/doctools.js"></script>
+        <script type="text/javascript" src="../assets/language_data.js"></script>
+    
+    <script type="text/javascript" src="../assets/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../assets/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="scompose.templates package" href="scompose.templates.html" />
     <link rel="prev" title="scompose.logger package" href="scompose.logger.html" /> 
-
-  
-  <script src="../assets/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -178,21 +180,14 @@
 </div>
 <div class="section" id="module-scompose.project.instance">
 <span id="scompose-project-instance-module"></span><h2>scompose.project.instance module<a class="headerlink" href="#module-scompose.project.instance" title="Permalink to this headline">¶</a></h2>
-<p>Copyright (C) 2019 Vanessa Sochat.</p>
-<p>This program is free software: you can redistribute it and/or modify it
-under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or (at your
-option) any later version.</p>
-<p>This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public
-License for more details.</p>
-<p>You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see &lt;<a class="reference external" href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>&gt;.</p>
+<p>Copyright (C) 2019-2020 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="class">
 <dt id="scompose.project.instance.Instance">
-<em class="property">class </em><code class="descclassname">scompose.project.instance.</code><code class="descname">Instance</code><span class="sig-paren">(</span><em>name</em>, <em>working_dir</em>, <em>sudo=False</em>, <em>params=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<em class="property">class </em><code class="sig-prename descclassname">scompose.project.instance.</code><code class="sig-name descname">Instance</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">working_dir</em>, <em class="sig-param">sudo=False</em>, <em class="sig-param">params=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>A section of a singularity-compose.yml, typically includes an image
 name, volumes, build directory, and any ports or environment variables
 relevant to the instance.</p>
@@ -207,46 +202,53 @@ relevant to the instance.</p>
 </dl>
 <dl class="method">
 <dt id="scompose.project.instance.Instance.build">
-<code class="descname">build</code><span class="sig-paren">(</span><em>working_dir</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.build"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.build" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">build</code><span class="sig-paren">(</span><em class="sig-param">working_dir</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.build"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.build" title="Permalink to this definition">¶</a></dt>
 <dd><p>build an image if called for based on having a recipe and context.
 Otherwise, pull a container uri to the instance workspace.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="scompose.project.instance.Instance.clear_logs">
-<code class="descname">clear_logs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.clear_logs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.clear_logs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">clear_logs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.clear_logs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.clear_logs" title="Permalink to this definition">¶</a></dt>
 <dd><p>delete logs for an instance, if they exist.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="scompose.project.instance.Instance.create">
-<code class="descname">create</code><span class="sig-paren">(</span><em>ip_address=None</em>, <em>sudo=False</em>, <em>writable_tmpfs=False</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.create" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param">ip_address=None</em>, <em class="sig-param">sudo=False</em>, <em class="sig-param">writable_tmpfs=False</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.create" title="Permalink to this definition">¶</a></dt>
 <dd><p>create an instance, if it doesn’t exist.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="scompose.project.instance.Instance.exists">
-<code class="descname">exists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.exists" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">exists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.exists" title="Permalink to this definition">¶</a></dt>
 <dd><p>return boolean if an instance exists. We do this by way of listing
 instances, and so the calling user is important.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="scompose.project.instance.Instance.get">
-<code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>If an instance exists, add to self.instance</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="scompose.project.instance.Instance.get_address">
-<code class="descname">get_address</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.get_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.get_address" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_address</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.get_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.get_address" title="Permalink to this definition">¶</a></dt>
 <dd><p>get the bridge address of an image. If it’s busybox, we can’t use
 hostname -I.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="scompose.project.instance.Instance.get_build_options">
+<code class="sig-name descname">get_build_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.get_build_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.get_build_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>‘get build options will parse through params, and return build
+options (if they exist)</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="scompose.project.instance.Instance.get_image">
-<code class="descname">get_image</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.get_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.get_image" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_image</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.get_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.get_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>get the associated instance image name, to be built if it doesn’t
 exit. It can either be defined at the config from self.image, or
 ultimately generated via a pull from a uri.</p>
@@ -254,13 +256,13 @@ ultimately generated via a pull from a uri.</p>
 
 <dl class="method">
 <dt id="scompose.project.instance.Instance.logs">
-<code class="descname">logs</code><span class="sig-paren">(</span><em>tail=0</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.logs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.logs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">logs</code><span class="sig-paren">(</span><em class="sig-param">tail=0</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.logs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.logs" title="Permalink to this definition">¶</a></dt>
 <dd><p>show logs for an instance</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="scompose.project.instance.Instance.run_post">
-<code class="descname">run_post</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.run_post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.run_post" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_post</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.run_post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.run_post" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>run post create commands. Can be added to an instance definition</dt><dd><p>either to run a command directly, or execute a script. The path
 is assumed to be on the host.</p>
@@ -277,7 +279,7 @@ is assumed to be on the host.</p>
 
 <dl class="method">
 <dt id="scompose.project.instance.Instance.set_context">
-<code class="descname">set_context</code><span class="sig-paren">(</span><em>params</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.set_context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.set_context" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_context</code><span class="sig-paren">(</span><em class="sig-param">params</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.set_context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.set_context" title="Permalink to this definition">¶</a></dt>
 <dd><p>set and validate parameters from the singularity-compose.yml,
 including build (context and recipe). We don’t pull or create
 anything here, but rather just validate that the sections
@@ -286,7 +288,7 @@ are provided and files exist.</p>
 
 <dl class="method">
 <dt id="scompose.project.instance.Instance.set_name">
-<code class="descname">set_name</code><span class="sig-paren">(</span><em>name</em>, <em>params</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.set_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.set_name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_name</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">params</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.set_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.set_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>set the instance name. First priority goes to name  parameter, then
 to name in file</p>
 <dl class="field-list simple">
@@ -301,19 +303,19 @@ to name in file</p>
 
 <dl class="method">
 <dt id="scompose.project.instance.Instance.set_ports">
-<code class="descname">set_ports</code><span class="sig-paren">(</span><em>params</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.set_ports"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.set_ports" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_ports</code><span class="sig-paren">(</span><em class="sig-param">params</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.set_ports"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.set_ports" title="Permalink to this definition">¶</a></dt>
 <dd><p>set ports from the recipe to be used</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="scompose.project.instance.Instance.set_volumes">
-<code class="descname">set_volumes</code><span class="sig-paren">(</span><em>params</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.set_volumes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.set_volumes" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_volumes</code><span class="sig-paren">(</span><em class="sig-param">params</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.set_volumes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.set_volumes" title="Permalink to this definition">¶</a></dt>
 <dd><p>set volumes from the recipe</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="scompose.project.instance.Instance.set_volumes_from">
-<code class="descname">set_volumes_from</code><span class="sig-paren">(</span><em>instances</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.set_volumes_from"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.set_volumes_from" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_volumes_from</code><span class="sig-paren">(</span><em class="sig-param">instances</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.set_volumes_from"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.set_volumes_from" title="Permalink to this definition">¶</a></dt>
 <dd><p>volumes from is called after all instances are read in, and
 then volumes can be mapped (and shared) with both containers.
 with Docker, this is done with isolation, but for Singularity
@@ -327,14 +329,14 @@ we will try sharing a bind on the host.</p>
 
 <dl class="method">
 <dt id="scompose.project.instance.Instance.stop">
-<code class="descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.stop" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.stop" title="Permalink to this definition">¶</a></dt>
 <dd><p>delete the instance, if it exists. Singularity doesn’t have delete
 or remove commands, everyting is a stop.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="scompose.project.instance.Instance.up">
-<code class="descname">up</code><span class="sig-paren">(</span><em>working_dir</em>, <em>ip_address=None</em>, <em>sudo=False</em>, <em>writable_tmpfs=False</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.up"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.up" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">up</code><span class="sig-paren">(</span><em class="sig-param">working_dir</em>, <em class="sig-param">ip_address=None</em>, <em class="sig-param">sudo=False</em>, <em class="sig-param">writable_tmpfs=False</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.up"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.up" title="Permalink to this definition">¶</a></dt>
 <dd><p>up is the same as create, but like Docker, we build / pull instances
 first.</p>
 </dd></dl>
@@ -344,31 +346,24 @@ first.</p>
 </div>
 <div class="section" id="module-scompose.project.project">
 <span id="scompose-project-project-module"></span><h2>scompose.project.project module<a class="headerlink" href="#module-scompose.project.project" title="Permalink to this headline">¶</a></h2>
-<p>Copyright (C) 2019 Vanessa Sochat.</p>
-<p>This program is free software: you can redistribute it and/or modify it
-under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or (at your
-option) any later version.</p>
-<p>This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public
-License for more details.</p>
-<p>You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see &lt;<a class="reference external" href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>&gt;.</p>
+<p>Copyright (C) 2019-2020 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="class">
 <dt id="scompose.project.project.Project">
-<em class="property">class </em><code class="descclassname">scompose.project.project.</code><code class="descname">Project</code><span class="sig-paren">(</span><em>filename=None</em>, <em>name=None</em>, <em>env_file=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<em class="property">class </em><code class="sig-prename descclassname">scompose.project.project.</code><code class="sig-name descname">Project</code><span class="sig-paren">(</span><em class="sig-param">filename=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">env_file=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>A compose project is a group of containers read in from a config file.</p>
 <dl class="method">
 <dt id="scompose.project.project.Project.build">
-<code class="descname">build</code><span class="sig-paren">(</span><em>names=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.build"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.build" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">build</code><span class="sig-paren">(</span><em class="sig-param">names=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.build"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.build" title="Permalink to this definition">¶</a></dt>
 <dd><p>given a loaded project, build associated containers (or pull).</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="scompose.project.project.Project.clear_logs">
-<code class="descname">clear_logs</code><span class="sig-paren">(</span><em>names</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.clear_logs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.clear_logs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">clear_logs</code><span class="sig-paren">(</span><em class="sig-param">names</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.clear_logs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.clear_logs" title="Permalink to this definition">¶</a></dt>
 <dd><p>clear_logs will remove all old error and output logs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -379,18 +374,18 @@ along with this program.  If not, see &lt;<a class="reference external" href="ht
 
 <dl class="attribute">
 <dt id="scompose.project.project.Project.config">
-<code class="descname">config</code><em class="property"> = None</em><a class="headerlink" href="#scompose.project.project.Project.config" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">config</code><em class="property"> = None</em><a class="headerlink" href="#scompose.project.project.Project.config" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="scompose.project.project.Project.create">
-<code class="descname">create</code><span class="sig-paren">(</span><em>names=None</em>, <em>writable_tmpfs=True</em>, <em>bridge='10.22.0.0/16'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.create" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param">names=None</em>, <em class="sig-param">writable_tmpfs=True</em>, <em class="sig-param">bridge='10.22.0.0/16'</em>, <em class="sig-param">no_resolv=False</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.create" title="Permalink to this definition">¶</a></dt>
 <dd><p>call the create function, which defaults to the command instance.create()</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="scompose.project.project.Project.create_hosts">
-<code class="descname">create_hosts</code><span class="sig-paren">(</span><em>lookup</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.create_hosts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.create_hosts" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create_hosts</code><span class="sig-paren">(</span><em class="sig-param">lookup</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.create_hosts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.create_hosts" title="Permalink to this definition">¶</a></dt>
 <dd><p>create a hosts file to bind to all containers, where we define the
 correct hostnames to correspond with the ip addresses created.
 Note: This function is terrible. Singularity should easily expose</p>
@@ -407,7 +402,7 @@ Note: This function is terrible. Singularity should easily expose</p>
 
 <dl class="method">
 <dt id="scompose.project.project.Project.down">
-<code class="descname">down</code><span class="sig-paren">(</span><em>names=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.down"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.down" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">down</code><span class="sig-paren">(</span><em class="sig-param">names=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.down"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.down" title="Permalink to this definition">¶</a></dt>
 <dd><p>stop one or more instances. If no names are provided, bring them
 all down.</p>
 <dl class="field-list simple">
@@ -422,7 +417,7 @@ all down.</p>
 
 <dl class="method">
 <dt id="scompose.project.project.Project.execute">
-<code class="descname">execute</code><span class="sig-paren">(</span><em>name</em>, <em>commands</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.execute" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">execute</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">commands</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.execute" title="Permalink to this definition">¶</a></dt>
 <dd><p>if an instance exists, execute a command to it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -435,8 +430,15 @@ all down.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="scompose.project.project.Project.generate_resolv_conf">
+<code class="sig-name descname">generate_resolv_conf</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.generate_resolv_conf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.generate_resolv_conf" title="Permalink to this definition">¶</a></dt>
+<dd><p>generate a resolv.conf file to bind to the containers.
+We use the template provided by scompose.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="scompose.project.project.Project.get_bridge_address">
-<code class="descname">get_bridge_address</code><span class="sig-paren">(</span><em>name='sbr0'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.get_bridge_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.get_bridge_address" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_bridge_address</code><span class="sig-paren">(</span><em class="sig-param">name='sbr0'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.get_bridge_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.get_bridge_address" title="Permalink to this definition">¶</a></dt>
 <dd><p>get the (named) bridge address on the host. It should be automatically
 created by Singularity over 3.0. This function currently is not used,
 but is left in case it’s needed.</p>
@@ -448,15 +450,28 @@ but is left in case it’s needed.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="scompose.project.project.Project.get_instance">
+<code class="sig-name descname">get_instance</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.get_instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.get_instance" title="Permalink to this definition">¶</a></dt>
+<dd><p>get a specifically named instance. We first check that the
+client has instances defined, and that the name we are looking
+for is also included. If not found, we return None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>names</strong> (<em>the name of instances to get. Must be valid</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="scompose.project.project.Project.get_instance_names">
-<code class="descname">get_instance_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.get_instance_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.get_instance_names" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_instance_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.get_instance_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.get_instance_names" title="Permalink to this definition">¶</a></dt>
 <dd><p>return a list of names, if a config file is loaded, and instances
 are defined.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="scompose.project.project.Project.get_ip_lookup">
-<code class="descname">get_ip_lookup</code><span class="sig-paren">(</span><em>names</em>, <em>bridge='10.22.0.0/16'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.get_ip_lookup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.get_ip_lookup" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_ip_lookup</code><span class="sig-paren">(</span><em class="sig-param">names</em>, <em class="sig-param">bridge='10.22.0.0/16'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.get_ip_lookup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.get_ip_lookup" title="Permalink to this definition">¶</a></dt>
 <dd><p>based on a bridge address that can serve other addresses (akin to
 a router, metaphorically, generate a pre-determined address for
 each container.</p>
@@ -472,12 +487,12 @@ each container.</p>
 
 <dl class="attribute">
 <dt id="scompose.project.project.Project.instances">
-<code class="descname">instances</code><em class="property"> = {}</em><a class="headerlink" href="#scompose.project.project.Project.instances" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">instances</code><em class="property"> = {}</em><a class="headerlink" href="#scompose.project.project.Project.instances" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="scompose.project.project.Project.iter_instances">
-<code class="descname">iter_instances</code><span class="sig-paren">(</span><em>names</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.iter_instances"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.iter_instances" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">iter_instances</code><span class="sig-paren">(</span><em class="sig-param">names</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.iter_instances"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.iter_instances" title="Permalink to this definition">¶</a></dt>
 <dd><p>yield instances one at a time. If an invalid name is given,
 exit with error.</p>
 <dl class="field-list simple">
@@ -489,13 +504,13 @@ exit with error.</p>
 
 <dl class="method">
 <dt id="scompose.project.project.Project.load">
-<code class="descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.load" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>load a singularity-compose.yml recipe, and validate it.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="scompose.project.project.Project.logs">
-<code class="descname">logs</code><span class="sig-paren">(</span><em>names=None</em>, <em>tail=0</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.logs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.logs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">logs</code><span class="sig-paren">(</span><em class="sig-param">names=None</em>, <em class="sig-param">tail=0</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.logs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.logs" title="Permalink to this definition">¶</a></dt>
 <dd><p>logs will print logs to the screen.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -506,19 +521,30 @@ exit with error.</p>
 
 <dl class="method">
 <dt id="scompose.project.project.Project.parse">
-<code class="descname">parse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.parse" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">parse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.parse" title="Permalink to this definition">¶</a></dt>
 <dd><p>parse a loaded config</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="scompose.project.project.Project.ps">
-<code class="descname">ps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.ps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.ps" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.ps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.ps" title="Permalink to this definition">¶</a></dt>
 <dd><p>ps will print a table of instances, including pids and names.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="scompose.project.project.Project.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>if an instance exists, run it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>the name of the instance to run</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="scompose.project.project.Project.set_filename">
-<code class="descname">set_filename</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.set_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.set_filename" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_filename</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.set_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.set_filename" title="Permalink to this definition">¶</a></dt>
 <dd><p>set the filename to read the recipe from. If not provided, defaults
 to singularity-compose.yml. The working directory is set to
 be the directory name of the configuration file.</p>
@@ -531,7 +557,7 @@ be the directory name of the configuration file.</p>
 
 <dl class="method">
 <dt id="scompose.project.project.Project.set_name">
-<code class="descname">set_name</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.set_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.set_name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_name</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.set_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.set_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>set the filename to read the recipe from. If not provided, defaults
 to singularity-compose.yml</p>
 <dl class="field-list simple">
@@ -543,7 +569,7 @@ to singularity-compose.yml</p>
 
 <dl class="method">
 <dt id="scompose.project.project.Project.shell">
-<code class="descname">shell</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.shell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.shell" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">shell</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.shell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.shell" title="Permalink to this definition">¶</a></dt>
 <dd><p>if an instance exists, shell into it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -554,14 +580,14 @@ to singularity-compose.yml</p>
 
 <dl class="method">
 <dt id="scompose.project.project.Project.up">
-<code class="descname">up</code><span class="sig-paren">(</span><em>names=None</em>, <em>writable_tmpfs=True</em>, <em>bridge='10.22.0.0/16'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.up"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.up" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">up</code><span class="sig-paren">(</span><em class="sig-param">names=None</em>, <em class="sig-param">writable_tmpfs=True</em>, <em class="sig-param">bridge='10.22.0.0/16'</em>, <em class="sig-param">no_resolv=False</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.up"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.up" title="Permalink to this definition">¶</a></dt>
 <dd><p>call the up function, instance.up(), which will build before if
 a container binary does not exist.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="scompose.project.project.Project.view_config">
-<code class="descname">view_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.view_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.view_config" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">view_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.view_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.view_config" title="Permalink to this definition">¶</a></dt>
 <dd><p>print a configuration file (in json) to the screen.</p>
 </dd></dl>
 
@@ -570,17 +596,10 @@ a container binary does not exist.</p>
 </div>
 <div class="section" id="module-scompose.project">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-scompose.project" title="Permalink to this headline">¶</a></h2>
-<p>Copyright (C) 2019 Vanessa Sochat.</p>
-<p>This program is free software: you can redistribute it and/or modify it
-under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or (at your
-option) any later version.</p>
-<p>This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public
-License for more details.</p>
-<p>You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see &lt;<a class="reference external" href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>&gt;.</p>
+<p>Copyright (C) 2019-2020 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 </div>
 </div>
 
@@ -595,7 +614,7 @@ along with this program.  If not, see &lt;<a class="reference external" href="ht
         <a href="scompose.templates.html" class="btn btn-neutral float-right" title="scompose.templates package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="scompose.logger.html" class="btn btn-neutral" title="scompose.logger package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="scompose.logger.html" class="btn btn-neutral float-left" title="scompose.logger package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -604,7 +623,7 @@ along with this program.  If not, see &lt;<a class="reference external" href="ht
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Vanessa Sochat.
+        &copy; Copyright 2019, Vanessa Sochat
 
     </p>
   </div>
@@ -621,33 +640,16 @@ along with this program.  If not, see &lt;<a class="reference external" href="ht
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../assets/jquery.js"></script>
-      <script type="text/javascript" src="../assets/underscore.js"></script>
-      <script type="text/javascript" src="../assets/doctools.js"></script>
-      <script type="text/javascript" src="../assets/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="../assets/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

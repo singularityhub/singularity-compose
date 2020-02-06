@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# Copyright (C) 2019 Vanessa Sochat.
+# Copyright (C) 2019-2020 Vanessa Sochat.
 
 # This Source Code Form is subject to the terms of the
 # Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
@@ -16,59 +16,60 @@ import os
 
 def test_commands(tmp_path):
 
-    tmpdir = os.path.join(tmp_path, 'repo')
-    repo = "https://github.com/singularityhub/singularity-compose-simple"
+    tmpdir = os.path.join(tmp_path, "repo")
+    repo = "https://github.com/singularityhub/singularity-compose-examples"
 
     # Clone the example
     run_command(["git", "clone", repo, tmpdir])
-    os.chdir(tmpdir)
+
+    # Test the simple apache example
+    workdir = os.path.join(tmpdir, "apache-simple")
+    os.chdir(workdir)
 
     # Check for required files
-    assert 'singularity-compose.yml' in os.listdir()
+    assert "singularity-compose.yml" in os.listdir()
 
-    print('Creating project...')
+    print("Creating project...")
 
     # Loading project validates config
     project = Project()
 
-    print('Testing build')
-    assert 'app.sif' not in os.listdir('app')
+    print("Testing build")
+    assert "httpd.sif" not in os.listdir("httpd")
     project.build()
-    assert 'app.sif' in os.listdir('app')
+    assert "httpd.sif" in os.listdir("httpd")
 
-    print('Testing view config')
+    print("Testing view config")
     project.view_config()
 
-    print('Testing up')
+    print("Testing up")
     project.up()
-    assert 'etc.hosts' in os.listdir()
-    assert 'resolv.conf' in os.listdir()
+    assert "etc.hosts" in os.listdir()
+    assert "resolv.conf" in os.listdir()
 
-    print('Waiting for instance to start')
+    print("Waiting for instance to start")
     sleep(10)
 
-    print('Testing logs')
-    project.logs(['app'], tail=20)
+    print("Testing logs")
+    project.logs(["httpd"], tail=20)
 
-    print('Clearing logs')
-    project.clear_logs(['app'])
-    project.logs(['app'], tail=20)
+    print("Clearing logs")
+    project.clear_logs(["httpd"])
+    project.logs(["httpd"], tail=20)
 
-    print('Testing ps')
+    print("Testing ps")
     project.ps()
 
-    print('Testing exec')
-    project.execute('app', ['echo', 'MarsBar'])
+    print("Testing exec")
+    project.execute("httpd", ["echo", "MarsBar"])
 
     # Ensure running
-    assert requests.get('http://127.0.0.1/').status_code == 200
+    print(requests.get("http://127.0.0.1").status_code)
 
-    assert 'db.sqlite3' in os.listdir('app')
-
-    print('Testing down')
+    print("Testing down")
     project.down()
 
-    print('Testing ip lookup')
-    lookup = project.get_ip_lookup(['app'])
-    assert 'app' in lookup
-    assert lookup['app'] == '10.22.0.2'
+    print("Testing ip lookup")
+    lookup = project.get_ip_lookup(["httpd"])
+    assert "httpd" in lookup
+    assert lookup["httpd"] == "10.22.0.2"
