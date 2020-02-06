@@ -17,33 +17,35 @@
   
 
   
+  <script type="text/javascript" src="assets/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="assets/documentation_options.js"></script>
+        <script type="text/javascript" src="assets/jquery.js"></script>
+        <script type="text/javascript" src="assets/underscore.js"></script>
+        <script type="text/javascript" src="assets/doctools.js"></script>
+        <script type="text/javascript" src="assets/language_data.js"></script>
+    
+    <script type="text/javascript" src="assets/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="assets/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="scompose.utils package" href="source/scompose.utils.html" /> 
-
-  
-  <script src="assets/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -152,7 +154,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="changelog">
-<span id="changelog"></span><h1>CHANGELOG<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
+<h1>CHANGELOG<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
 <p>This is a manually generated log to track changes to the repository for each release.
 Each section should include general headers such as <strong>Implemented enhancements</strong>
 and <strong>Merged pull requests</strong>. Critical items to know are:</p>
@@ -166,8 +168,15 @@ and <strong>Merged pull requests</strong>. Critical items to know are:</p>
 </ul>
 <p>The versions coincide with releases on pypi.</p>
 <div class="section" id="x-0-0-x">
-<span id="x-0-0-x"></span><h2><a class="reference external" href="https://github.com/singularityhub/singularity-compose/tree/master">0.0.x</a> (0.0.x)<a class="headerlink" href="#x-0-0-x" title="Permalink to this headline">¶</a></h2>
+<h2><a class="reference external" href="https://github.com/singularityhub/singularity-compose/tree/master">0.0.x</a> (0.0.x)<a class="headerlink" href="#x-0-0-x" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
+<li><p>resolv.conf, etc.hosts generated if needed, network disabled non-sudo users (0.0.17)</p></li>
+<li><p>resolv.conf needs to bind by default (0.0.16)</p></li>
+<li><p>adding run command (0.0.15)</p></li>
+<li><p>ensuring that builds are streamed (0.0.14)</p></li>
+<li><p>adding more build options to build as build-flags (0.0.13)</p></li>
+<li><p>when not using sudo, need to set –network=none, and catching exec error (0.0.12)</p></li>
+<li><p>pyaml version should be for newer kind, and still check for attribute (0.0.11)</p></li>
 <li><p>alpha release with simple (single container) working example (0.0.1)</p></li>
 <li><p>dummy release (0.0.0)</p></li>
 </ul>
@@ -183,7 +192,7 @@ and <strong>Merged pull requests</strong>. Critical items to know are:</p>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="source/scompose.utils.html" class="btn btn-neutral" title="scompose.utils package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="source/scompose.utils.html" class="btn btn-neutral float-left" title="scompose.utils package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -192,7 +201,7 @@ and <strong>Merged pull requests</strong>. Critical items to know are:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Vanessa Sochat.
+        &copy; Copyright 2019, Vanessa Sochat
 
     </p>
   </div>
@@ -209,33 +218,16 @@ and <strong>Merged pull requests</strong>. Critical items to know are:</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="assets/jquery.js"></script>
-      <script type="text/javascript" src="assets/underscore.js"></script>
-      <script type="text/javascript" src="assets/doctools.js"></script>
-      <script type="text/javascript" src="assets/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="assets/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="../../assets/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../assets/documentation_options.js"></script>
+        <script type="text/javascript" src="../../assets/jquery.js"></script>
+        <script type="text/javascript" src="../../assets/underscore.js"></script>
+        <script type="text/javascript" src="../../assets/doctools.js"></script>
+        <script type="text/javascript" src="../../assets/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../assets/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../assets/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
-
-  
-  <script src="../../assets/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -148,20 +150,11 @@
   <h1>Source code for scompose.utils</h1><div class="highlight"><pre>
 <span></span><span class="sd">&#39;&#39;&#39;</span>
 
-<span class="sd">Copyright (C) 2019 Vanessa Sochat.</span>
+<span class="sd">Copyright (C) 2019-2020 Vanessa Sochat.</span>
 
-<span class="sd">This program is free software: you can redistribute it and/or modify it</span>
-<span class="sd">under the terms of the GNU Affero General Public License as published by</span>
-<span class="sd">the Free Software Foundation, either version 3 of the License, or (at your</span>
-<span class="sd">option) any later version.</span>
-
-<span class="sd">This program is distributed in the hope that it will be useful, but WITHOUT</span>
-<span class="sd">ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or</span>
-<span class="sd">FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public</span>
-<span class="sd">License for more details.</span>
-
-<span class="sd">You should have received a copy of the GNU Affero General Public License</span>
-<span class="sd">along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">This Source Code Form is subject to the terms of the</span>
+<span class="sd">Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed</span>
+<span class="sd">with this file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
 
 <span class="sd">&#39;&#39;&#39;</span>
 
@@ -297,7 +290,13 @@
 <span class="sd">       section: a string of unparsed yaml content.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">docs</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load_all</span><span class="p">(</span><span class="n">section</span><span class="p">)</span>
+
+    <span class="c1"># PyYaml vs pyaml have subtle differences</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">yaml</span><span class="p">,</span> <span class="s2">&quot;FullLoader&quot;</span><span class="p">):</span>
+        <span class="n">docs</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load_all</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">FullLoader</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">docs</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load_all</span><span class="p">(</span><span class="n">section</span><span class="p">)</span>
+
     <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">doc</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -355,7 +354,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Vanessa Sochat.
+        &copy; Copyright 2019, Vanessa Sochat
 
     </p>
   </div>
@@ -372,33 +371,16 @@
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../assets/jquery.js"></script>
-      <script type="text/javascript" src="../../assets/underscore.js"></script>
-      <script type="text/javascript" src="../../assets/doctools.js"></script>
-      <script type="text/javascript" src="../../assets/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="../../assets/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

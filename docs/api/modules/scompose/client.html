@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="../../assets/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../assets/documentation_options.js"></script>
+        <script type="text/javascript" src="../../assets/jquery.js"></script>
+        <script type="text/javascript" src="../../assets/underscore.js"></script>
+        <script type="text/javascript" src="../../assets/doctools.js"></script>
+        <script type="text/javascript" src="../../assets/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../assets/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../assets/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
-
-  
-  <script src="../../assets/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -150,20 +152,12 @@
 
 <span class="sd">&#39;&#39;&#39;</span>
 
-<span class="sd">Copyright (C) 2019 Vanessa Sochat.</span>
+<span class="sd">Copyright (C) 2019-2020 Vanessa Sochat.</span>
 
-<span class="sd">This program is free software: you can redistribute it and/or modify it</span>
-<span class="sd">under the terms of the GNU Affero General Public License as published by</span>
-<span class="sd">the Free Software Foundation, either version 3 of the License, or (at your</span>
-<span class="sd">option) any later version.</span>
+<span class="sd">This Source Code Form is subject to the terms of the</span>
+<span class="sd">Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed</span>
+<span class="sd">with this file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
 
-<span class="sd">This program is distributed in the hope that it will be useful, but WITHOUT</span>
-<span class="sd">ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or</span>
-<span class="sd">FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public</span>
-<span class="sd">License for more details.</span>
-
-<span class="sd">You should have received a copy of the GNU Affero General Public License</span>
-<span class="sd">along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
 
 <span class="sd">&#39;&#39;&#39;</span>
 
@@ -245,6 +239,10 @@
                          <span class="n">help</span><span class="o">=</span><span class="s2">&quot;disable the instance from writing to tmp&quot;</span><span class="p">,</span> 
                          <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
 
+        <span class="n">sub</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--no-resolv&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;no_resolv&quot;</span><span class="p">,</span> 
+                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;do not generate and bind a resolv.conf&quot;</span><span class="p">,</span> 
+                         <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+
         <span class="n">sub</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--bridge&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;10.22.0.0/16&quot;</span><span class="p">,</span> 
                          <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;bridge&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
                          <span class="n">help</span><span class="o">=</span><span class="s1">&#39;the address of the bridge to derive others from.&#39;</span><span class="p">)</span>
@@ -256,6 +254,9 @@
 
     <span class="n">execute</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;exec&quot;</span><span class="p">,</span>
                                     <span class="n">help</span><span class="o">=</span><span class="s2">&quot;execute a command to an instance&quot;</span><span class="p">)</span>
+
+    <span class="n">run</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;run&quot;</span><span class="p">,</span>
+                                <span class="n">help</span><span class="o">=</span><span class="s2">&quot;run an instance runscript.&quot;</span><span class="p">)</span>
 
     <span class="n">shell</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;shell&quot;</span><span class="p">,</span>
                                    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;shell into an instance&quot;</span><span class="p">)</span>
@@ -282,7 +283,7 @@
                           <span class="n">help</span><span class="o">=</span><span class="s1">&#39;the names of the instances to target&#39;</span><span class="p">)</span>
 
     <span class="c1"># Only one name allowed</span>
-    <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="p">[</span><span class="n">shell</span><span class="p">,</span> <span class="n">execute</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="p">[</span><span class="n">shell</span><span class="p">,</span> <span class="n">execute</span><span class="p">,</span> <span class="n">run</span><span class="p">]:</span>
         <span class="n">sub</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                          <span class="n">help</span><span class="o">=</span><span class="s1">&#39;the name of the instance to target&#39;</span><span class="p">)</span>
 
@@ -343,6 +344,8 @@
         <span class="kn">from</span> <span class="nn">.ps</span> <span class="k">import</span> <span class="n">main</span>
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;restart&quot;</span><span class="p">:</span> 
         <span class="kn">from</span> <span class="nn">.restart</span> <span class="k">import</span> <span class="n">main</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;run&quot;</span><span class="p">:</span> 
+        <span class="kn">from</span> <span class="nn">.run</span> <span class="k">import</span> <span class="n">main</span>
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;shell&quot;</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">.shell</span> <span class="k">import</span> <span class="n">main</span>
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;up&quot;</span><span class="p">:</span> 
@@ -374,7 +377,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Vanessa Sochat.
+        &copy; Copyright 2019, Vanessa Sochat
 
     </p>
   </div>
@@ -391,33 +394,16 @@
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../assets/jquery.js"></script>
-      <script type="text/javascript" src="../../assets/underscore.js"></script>
-      <script type="text/javascript" src="../../assets/doctools.js"></script>
-      <script type="text/javascript" src="../../assets/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="../../assets/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

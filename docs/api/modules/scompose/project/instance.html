@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="../../../assets/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../assets/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../assets/jquery.js"></script>
+        <script type="text/javascript" src="../../../assets/underscore.js"></script>
+        <script type="text/javascript" src="../../../assets/doctools.js"></script>
+        <script type="text/javascript" src="../../../assets/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../assets/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../../assets/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
-
-  
-  <script src="../../../assets/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -148,20 +150,11 @@
   <h1>Source code for scompose.project.instance</h1><div class="highlight"><pre>
 <span></span><span class="sd">&#39;&#39;&#39;</span>
 
-<span class="sd">Copyright (C) 2019 Vanessa Sochat.</span>
+<span class="sd">Copyright (C) 2019-2020 Vanessa Sochat.</span>
 
-<span class="sd">This program is free software: you can redistribute it and/or modify it</span>
-<span class="sd">under the terms of the GNU Affero General Public License as published by</span>
-<span class="sd">the Free Software Foundation, either version 3 of the License, or (at your</span>
-<span class="sd">option) any later version.</span>
-
-<span class="sd">This program is distributed in the hope that it will be useful, but WITHOUT</span>
-<span class="sd">ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or</span>
-<span class="sd">FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public</span>
-<span class="sd">License for more details.</span>
-
-<span class="sd">You should have received a copy of the GNU Affero General Public License</span>
-<span class="sd">along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">This Source Code Form is subject to the terms of the</span>
+<span class="sd">Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed</span>
+<span class="sd">with this file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
 
 <span class="sd">&#39;&#39;&#39;</span>
 
@@ -302,6 +295,11 @@
 <span class="sd">           ensure they are bound correctly.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">ports</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;--net&#39;</span><span class="p">]</span>
+
+        <span class="c1"># If no sudo, isolates container network with a loopback interface.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sudo</span><span class="p">:</span>
+            <span class="n">ports</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--network&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">]</span>
+
         <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ports</span><span class="p">:</span>
             <span class="n">ports</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;--network-args&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;portmap=</span><span class="si">%s</span><span class="s1">/tcp&quot;&#39;</span> <span class="o">%</span> <span class="n">pair</span><span class="p">]</span>
 
@@ -354,7 +352,17 @@
                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                     <span class="n">command</span> <span class="o">=</span> <span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
 
-                <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_run_command</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+                <span class="c1"># Capture the return code</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_run_command</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> 
+                                                    <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                                                    <span class="n">return_result</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="c1"># If debug on, show output</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]))</span>
+
+                <span class="c1"># Alert the user if there is an error</span>
+                <span class="k">if</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;return_code&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">bot</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]))</span>
+                    <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s2">&quot;Return code </span><span class="si">%s</span><span class="s2">, exiting.&quot;</span> <span class="o">%</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;return_code&#39;</span><span class="p">])</span></div>
 
 <span class="c1"># Image</span>
 
@@ -414,11 +422,23 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">recipe</span><span class="p">):</span>
                 <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> not found for build&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">recipe</span><span class="p">)</span>
              
-            <span class="c1"># This will require sudo</span>
+            <span class="c1"># This will likely require sudo, unless --remote or --fakeroot in options</span>
             <span class="k">try</span><span class="p">:</span>
+                <span class="n">options</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_build_options</span><span class="p">()</span>
+
+                <span class="c1"># If remote or fakeroot included, don&#39;t need sudo</span>
+                <span class="n">sudo</span> <span class="o">=</span> <span class="ow">not</span> <span class="p">(</span><span class="s2">&quot;--fakeroot&quot;</span> <span class="ow">in</span> <span class="n">options</span> <span class="ow">or</span> <span class="s2">&quot;--remote&quot;</span> <span class="ow">in</span> <span class="n">options</span><span class="p">)</span>
+
                 <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Building </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">sif_binary</span><span class="p">,</span>
-                                  <span class="n">recipe</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">recipe</span><span class="p">)</span>
+ 
+                <span class="n">_</span><span class="p">,</span> <span class="n">stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">sif_binary</span><span class="p">,</span>
+                                              <span class="n">recipe</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">recipe</span><span class="p">,</span>
+                                              <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span>
+                                              <span class="n">sudo</span><span class="o">=</span><span class="n">sudo</span><span class="p">,</span>
+                                              <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 
             <span class="k">except</span><span class="p">:</span>
                 <span class="n">build</span> <span class="o">=</span> <span class="s2">&quot;sudo singularity build </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">sif_binary</span><span class="p">),</span>
@@ -431,6 +451,32 @@
 
         <span class="k">else</span><span class="p">:</span>
             <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s2">&quot;neither image and build defined for </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Instance.get_build_options"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.instance.Instance.get_build_options">[docs]</a>    <span class="k">def</span> <span class="nf">get_build_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;&#39;get build options will parse through params, and return build</span>
+<span class="sd">            options (if they exist)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="s2">&quot;build&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;options&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;build&#39;</span><span class="p">]:</span>
+                <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;build&#39;</span><span class="p">][</span><span class="s1">&#39;options&#39;</span><span class="p">]:</span>
+
+                    <span class="c1"># if the option is a string, it&#39;s a boolean flag</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">option</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                        <span class="n">options</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;--</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">option</span><span class="p">)</span>
+
+                    <span class="c1"># Otherwise, the user set a boolean with a value or an arg</span>
+                    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">option</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">option</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                            <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                                <span class="n">options</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;--</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
+                            <span class="k">elif</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                                <span class="k">continue</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">options</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;--</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">options</span></div>
 
 <span class="c1"># State</span>
 
@@ -584,21 +630,24 @@
 
             <span class="n">bot</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Creating </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
+            <span class="c1"># Command options</span>
+            <span class="n">options</span> <span class="o">=</span> <span class="p">[]</span>
+
             <span class="c1"># Volumes</span>
-            <span class="n">binds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_bind_commands</span><span class="p">()</span>
+            <span class="n">options</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_bind_commands</span><span class="p">()</span>
 
-            <span class="c1"># Ports</span>
-            <span class="n">ports</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_network_commands</span><span class="p">(</span><span class="n">ip_address</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">sudo</span><span class="p">:</span>
+                <span class="c1"># Ports</span>
+                <span class="n">options</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_network_commands</span><span class="p">(</span><span class="n">ip_address</span><span class="p">)</span>
 
-            <span class="c1"># Hostname</span>
-            <span class="n">hostname</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;--hostname&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+                <span class="c1"># Hostname</span>
+                <span class="n">options</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--hostname&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
 
             <span class="c1"># Writable Temporary Directory</span>
             <span class="k">if</span> <span class="n">writable_tmpfs</span><span class="p">:</span>
-                <span class="n">hostname</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;--writable-tmpfs&#39;</span><span class="p">]</span>
+                <span class="n">options</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;--writable-tmpfs&#39;</span><span class="p">]</span>
 
             <span class="c1"># Show the command to the user</span>
-            <span class="n">options</span> <span class="o">=</span> <span class="n">binds</span> <span class="o">+</span> <span class="n">ports</span> <span class="o">+</span> <span class="n">hostname</span>
             <span class="n">commands</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">options</span><span class="p">),</span> <span class="n">image</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
             <span class="n">bot</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;singularity instance start </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">commands</span><span class="p">)</span>
 
@@ -618,7 +667,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Vanessa Sochat.
+        &copy; Copyright 2019, Vanessa Sochat
 
     </p>
   </div>
@@ -635,33 +684,16 @@
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../../',
-            VERSION:'1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../../assets/jquery.js"></script>
-      <script type="text/javascript" src="../../../assets/underscore.js"></script>
-      <script type="text/javascript" src="../../../assets/doctools.js"></script>
-      <script type="text/javascript" src="../../../assets/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="../../../assets/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="../../../assets/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../assets/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../assets/jquery.js"></script>
+        <script type="text/javascript" src="../../../assets/underscore.js"></script>
+        <script type="text/javascript" src="../../../assets/doctools.js"></script>
+        <script type="text/javascript" src="../../../assets/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../assets/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../../assets/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
-
-  
-  <script src="../../../assets/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -148,20 +150,11 @@
   <h1>Source code for scompose.project.project</h1><div class="highlight"><pre>
 <span></span><span class="sd">&#39;&#39;&#39;</span>
 
-<span class="sd">Copyright (C) 2019 Vanessa Sochat.</span>
+<span class="sd">Copyright (C) 2019-2020 Vanessa Sochat.</span>
 
-<span class="sd">This program is free software: you can redistribute it and/or modify it</span>
-<span class="sd">under the terms of the GNU Affero General Public License as published by</span>
-<span class="sd">the Free Software Foundation, either version 3 of the License, or (at your</span>
-<span class="sd">option) any later version.</span>
-
-<span class="sd">This program is distributed in the hope that it will be useful, but WITHOUT</span>
-<span class="sd">ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or</span>
-<span class="sd">FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public</span>
-<span class="sd">License for more details.</span>
-
-<span class="sd">You should have received a copy of the GNU Affero General Public License</span>
-<span class="sd">along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">This Source Code Form is subject to the terms of the</span>
+<span class="sd">Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed</span>
+<span class="sd">with this file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
 
 <span class="sd">&#39;&#39;&#39;</span>
 
@@ -178,6 +171,7 @@
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
 
@@ -274,6 +268,22 @@
             <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">instance_names</span><span class="p">:</span>
                 <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> is not a valid section name.&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
             <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+        
+
+<div class="viewcode-block" id="Project.get_instance"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.get_instance">[docs]</a>    <span class="k">def</span> <span class="nf">get_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;get a specifically named instance. We first check that the </span>
+<span class="sd">           client has instances defined, and that the name we are looking</span>
+<span class="sd">           for is also included. If not found, we return None.</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           names: the name of instances to get. Must be valid</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">:</span>
+                <span class="n">instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">instance</span></div>
         
 
 <span class="c1"># Loading Functions</span>
@@ -385,7 +395,17 @@
         <span class="c1"># Add the host file to be mounted</span>
         <span class="n">write_file</span><span class="p">(</span><span class="n">hosts_file</span><span class="p">,</span> <span class="n">template</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">hosts_file</span></div>
- 
+
+
+<div class="viewcode-block" id="Project.generate_resolv_conf"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.generate_resolv_conf">[docs]</a>    <span class="k">def</span> <span class="nf">generate_resolv_conf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;generate a resolv.conf file to bind to the containers.</span>
+<span class="sd">           We use the template provided by scompose.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">resolv_conf</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">working_dir</span><span class="p">,</span> <span class="s1">&#39;resolv.conf&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">resolv_conf</span><span class="p">):</span>
+            <span class="n">template</span> <span class="o">=</span> <span class="n">read_file</span><span class="p">(</span><span class="n">get_template</span><span class="p">(</span><span class="s1">&#39;resolv.conf&#39;</span><span class="p">))</span>
+            <span class="n">write_file</span><span class="p">(</span><span class="n">resolv_conf</span><span class="p">,</span> <span class="n">template</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">resolv_conf</span></div>
 
 <span class="c1"># Commands</span>
 
@@ -396,11 +416,34 @@
 <span class="sd">           ==========</span>
 <span class="sd">           name: the name of the instance to shell into</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">:</span>
-                <span class="n">instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
-                <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">shell</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">get_uri</span><span class="p">(),</span> <span class="n">sudo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sudo</span><span class="p">)</span></div>
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_instance</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">instance</span><span class="p">:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Cannot find </span><span class="si">%s</span><span class="s1">, is it up?&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">shell</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">get_uri</span><span class="p">(),</span> <span class="n">sudo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sudo</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Project.run"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;if an instance exists, run it.</span>
+
+<span class="sd">           Parameters</span>
+<span class="sd">           ==========</span>
+<span class="sd">           name: the name of the instance to run</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_instance</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">instance</span><span class="p">:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Cannot find </span><span class="si">%s</span><span class="s1">, is it up?&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">quiet</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">get_uri</span><span class="p">(),</span> 
+                                     <span class="n">sudo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sudo</span><span class="p">,</span>
+                                     <span class="n">return_result</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;return_code&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s2">&quot;Return code </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;return_code&#39;</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">x</span><span class="p">]))</span></div>
 
 
 <div class="viewcode-block" id="Project.execute"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.execute">[docs]</a>    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">commands</span><span class="p">):</span>
@@ -411,15 +454,20 @@
 <span class="sd">           name: the name of the instance to exec to</span>
 <span class="sd">           commands: a list of commands to issue</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">:</span>
-                <span class="n">instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
-                <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-                    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">get_uri</span><span class="p">(),</span> 
-                                                    <span class="n">command</span><span class="o">=</span><span class="n">commands</span><span class="p">,</span>
-                                                    <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                                    <span class="n">sudo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sudo</span><span class="p">):</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span></div>
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_instance</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">instance</span><span class="p">:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Cannot find </span><span class="si">%s</span><span class="s1">, is it up?&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">get_uri</span><span class="p">(),</span> 
+                                                <span class="n">command</span><span class="o">=</span><span class="n">commands</span><span class="p">,</span>
+                                                <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                                <span class="n">sudo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sudo</span><span class="p">):</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">:</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Command had non zero exit status.&#39;</span><span class="p">)</span></div>
+
 
 <span class="c1"># Logs</span>
 
@@ -473,22 +521,36 @@
 
 <span class="c1"># Create</span>
 
-<div class="viewcode-block" id="Project.create"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">writable_tmpfs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bridge</span><span class="o">=</span><span class="s2">&quot;10.22.0.0/16&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="Project.create"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+               <span class="n">writable_tmpfs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+               <span class="n">bridge</span><span class="o">=</span><span class="s2">&quot;10.22.0.0/16&quot;</span><span class="p">,</span>
+               <span class="n">no_resolv</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
         <span class="sd">&#39;&#39;&#39;call the create function, which defaults to the command instance.create()</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">writable_tmpfs</span><span class="o">=</span><span class="n">writable_tmpfs</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create</span><span class="p">(</span><span class="n">names</span><span class="p">,</span>
+                            <span class="n">writable_tmpfs</span><span class="o">=</span><span class="n">writable_tmpfs</span><span class="p">,</span> 
+                            <span class="n">no_resolv</span><span class="o">=</span><span class="n">no_resolv</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Project.up"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.up">[docs]</a>    <span class="k">def</span> <span class="nf">up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">writable_tmpfs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bridge</span><span class="o">=</span><span class="s2">&quot;10.22.0.0/16&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="Project.up"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.project.Project.up">[docs]</a>    <span class="k">def</span> <span class="nf">up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+           <span class="n">writable_tmpfs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+           <span class="n">bridge</span><span class="o">=</span><span class="s2">&quot;10.22.0.0/16&quot;</span><span class="p">,</span>
+           <span class="n">no_resolv</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
         <span class="sd">&#39;&#39;&#39;call the up function, instance.up(), which will build before if</span>
 <span class="sd">           a container binary does not exist.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="s2">&quot;up&quot;</span><span class="p">,</span> <span class="n">writable_tmpfs</span><span class="o">=</span><span class="n">writable_tmpfs</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> 
+                            <span class="n">command</span><span class="o">=</span><span class="s2">&quot;up&quot;</span><span class="p">,</span>
+                            <span class="n">writable_tmpfs</span><span class="o">=</span><span class="n">writable_tmpfs</span><span class="p">,</span>
+                            <span class="n">no_resolv</span><span class="o">=</span><span class="n">no_resolv</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
                 <span class="n">names</span><span class="p">,</span> 
                 <span class="n">command</span><span class="o">=</span><span class="s2">&quot;create&quot;</span><span class="p">,</span>
                 <span class="n">writable_tmpfs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                <span class="n">bridge</span><span class="o">=</span><span class="s2">&quot;10.22.0.0/16&quot;</span><span class="p">):</span>
+                <span class="n">bridge</span><span class="o">=</span><span class="s2">&quot;10.22.0.0/16&quot;</span><span class="p">,</span>
+                <span class="n">no_resolv</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
         <span class="sd">&#39;&#39;&#39;create one or more instances. &quot;Command&quot; determines the sub function</span>
 <span class="sd">           to call for the instance, which should be &quot;create&quot; or &quot;up&quot;.</span>
@@ -503,6 +565,8 @@
 <span class="sd">           bridge: the bridge ip address to use for networking, and generating</span>
 <span class="sd">                   addresses for the individual containers.</span>
 <span class="sd">                   see /usr/local/etc/singularity/network/00_bridge.conflist </span>
+<span class="sd">           no_resolv: if True, don&#39;t create and bind a resolv.conf with Google</span>
+<span class="sd">                      nameservers.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="c1"># If no names provided, we create all</span>
         <span class="n">names</span> <span class="o">=</span> <span class="n">names</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_instance_names</span><span class="p">()</span>
@@ -514,8 +578,9 @@
         <span class="c1"># Generate ip addresses for each</span>
         <span class="n">lookup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ip_lookup</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">bridge</span><span class="p">)</span>
 
-        <span class="c1"># Generate shared hosts file</span>
-        <span class="n">hosts_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_hosts</span><span class="p">(</span><span class="n">lookup</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sudo</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">no_resolv</span><span class="p">:</span>
+            <span class="c1"># Generate shared hosts file</span>
+            <span class="n">hosts_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_hosts</span><span class="p">(</span><span class="n">lookup</span><span class="p">)</span>
 
         <span class="c1"># First create those with no dependencies</span>
         <span class="k">while</span> <span class="n">names</span><span class="p">:</span>
@@ -534,9 +599,13 @@
 
                 <span class="k">if</span> <span class="n">do_create</span><span class="p">:</span>
 
-                    <span class="n">instance</span><span class="o">.</span><span class="n">volumes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">:/etc/hosts&#39;</span> <span class="o">%</span> <span class="n">hosts_file</span><span class="p">)</span>
+                    <span class="c1"># Generate a resolv.conf to bind to the container</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sudo</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">no_resolv</span><span class="p">:</span>
+                        <span class="n">resolv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_resolv_conf</span><span class="p">()</span>
+                        <span class="n">instance</span><span class="o">.</span><span class="n">volumes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">:/etc/resolv.conf&#39;</span> <span class="o">%</span> <span class="n">resolv</span><span class="p">)</span>
 
-                    <span class="c1"># Create a hosts file for the instance based, add as volume</span>
+                        <span class="c1"># Create a hosts file for the instance based, add as volume</span>
+                        <span class="n">instance</span><span class="o">.</span><span class="n">volumes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">:/etc/hosts&#39;</span> <span class="o">%</span> <span class="n">hosts_file</span><span class="p">)</span>
 
                     <span class="c1"># If we get here, execute command and add to list</span>
                     <span class="n">create_func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">command</span><span class="p">)</span>
@@ -579,7 +648,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Vanessa Sochat.
+        &copy; Copyright 2019, Vanessa Sochat
 
     </p>
   </div>
@@ -596,33 +665,16 @@
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../../',
-            VERSION:'1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../../assets/jquery.js"></script>
-      <script type="text/javascript" src="../../../assets/underscore.js"></script>
-      <script type="text/javascript" src="../../../assets/doctools.js"></script>
-      <script type="text/javascript" src="../../../assets/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="../../../assets/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

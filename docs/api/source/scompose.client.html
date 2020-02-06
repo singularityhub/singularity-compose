@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="../assets/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../assets/documentation_options.js"></script>
+        <script type="text/javascript" src="../assets/jquery.js"></script>
+        <script type="text/javascript" src="../assets/underscore.js"></script>
+        <script type="text/javascript" src="../assets/doctools.js"></script>
+        <script type="text/javascript" src="../assets/language_data.js"></script>
+    
+    <script type="text/javascript" src="../assets/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../assets/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="scompose.logger package" href="scompose.logger.html" />
     <link rel="prev" title="scompose package" href="scompose.html" /> 
-
-  
-  <script src="../assets/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -186,20 +188,13 @@
 </div>
 <div class="section" id="module-scompose.client.build">
 <span id="scompose-client-build-module"></span><h2>scompose.client.build module<a class="headerlink" href="#module-scompose.client.build" title="Permalink to this headline">¶</a></h2>
-<p>Copyright (C) 2019 Vanessa Sochat.</p>
-<p>This program is free software: you can redistribute it and/or modify it
-under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or (at your
-option) any later version.</p>
-<p>This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public
-License for more details.</p>
-<p>You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see &lt;<a class="reference external" href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>&gt;.</p>
+<p>Copyright (C) 2019-2020 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="function">
 <dt id="scompose.client.build.main">
-<code class="descclassname">scompose.client.build.</code><code class="descname">main</code><span class="sig-paren">(</span><em>args</em>, <em>parser</em>, <em>extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/client/build.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.client.build.main" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scompose.client.build.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">parser</em>, <em class="sig-param">extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/client/build.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.client.build.main" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build or rebuild containers</p>
 <p>Containers are built once and then named as &lt;project&gt;_&lt;service&gt;,
 e.g. <cite>folder_db</cite>. If a Singularity recipe changes for a container folder,
@@ -209,20 +204,13 @@ you can run “singularity-compose build” to rebuild it.</p>
 </div>
 <div class="section" id="module-scompose.client.config">
 <span id="scompose-client-config-module"></span><h2>scompose.client.config module<a class="headerlink" href="#module-scompose.client.config" title="Permalink to this headline">¶</a></h2>
-<p>Copyright (C) 2019 Vanessa Sochat.</p>
-<p>This program is free software: you can redistribute it and/or modify it
-under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or (at your
-option) any later version.</p>
-<p>This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public
-License for more details.</p>
-<p>You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see &lt;<a class="reference external" href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>&gt;.</p>
+<p>Copyright (C) 2019-2020 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="function">
 <dt id="scompose.client.config.main">
-<code class="descclassname">scompose.client.config.</code><code class="descname">main</code><span class="sig-paren">(</span><em>args</em>, <em>parser</em>, <em>extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/client/config.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.client.config.main" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scompose.client.config.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">parser</em>, <em class="sig-param">extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/client/config.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.client.config.main" title="Permalink to this definition">¶</a></dt>
 <dd><p>View or validate a configuration file</p>
 <p>This comes down to reading in the config to the project, at which
 case it is validated. We then print it for the user.</p>
@@ -231,20 +219,13 @@ case it is validated. We then print it for the user.</p>
 </div>
 <div class="section" id="module-scompose.client.create">
 <span id="scompose-client-create-module"></span><h2>scompose.client.create module<a class="headerlink" href="#module-scompose.client.create" title="Permalink to this headline">¶</a></h2>
-<p>Copyright (C) 2019 Vanessa Sochat.</p>
-<p>This program is free software: you can redistribute it and/or modify it
-under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or (at your
-option) any later version.</p>
-<p>This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public
-License for more details.</p>
-<p>You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see &lt;<a class="reference external" href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>&gt;.</p>
+<p>Copyright (C) 2019-2020 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="function">
 <dt id="scompose.client.create.main">
-<code class="descclassname">scompose.client.create.</code><code class="descname">main</code><span class="sig-paren">(</span><em>args</em>, <em>parser</em>, <em>extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/client/create.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.client.create.main" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scompose.client.create.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">parser</em>, <em class="sig-param">extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/client/create.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.client.create.main" title="Permalink to this definition">¶</a></dt>
 <dd><p>create one or more instances. If they don’t exist, build first.</p>
 <p>This will build and bring up one or more named instances, or if None
 are provided, we create all of them.</p>
@@ -253,100 +234,65 @@ are provided, we create all of them.</p>
 </div>
 <div class="section" id="module-scompose.client.down">
 <span id="scompose-client-down-module"></span><h2>scompose.client.down module<a class="headerlink" href="#module-scompose.client.down" title="Permalink to this headline">¶</a></h2>
-<p>Copyright (C) 2019 Vanessa Sochat.</p>
-<p>This program is free software: you can redistribute it and/or modify it
-under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or (at your
-option) any later version.</p>
-<p>This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public
-License for more details.</p>
-<p>You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see &lt;<a class="reference external" href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>&gt;.</p>
+<p>Copyright (C) 2019-2020 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="function">
 <dt id="scompose.client.down.main">
-<code class="descclassname">scompose.client.down.</code><code class="descname">main</code><span class="sig-paren">(</span><em>args</em>, <em>parser</em>, <em>extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/client/down.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.client.down.main" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scompose.client.down.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">parser</em>, <em class="sig-param">extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/client/down.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.client.down.main" title="Permalink to this definition">¶</a></dt>
 <dd><p>bring one or more instances down</p>
 </dd></dl>
 
 </div>
 <div class="section" id="module-scompose.client.exec">
 <span id="scompose-client-exec-module"></span><h2>scompose.client.exec module<a class="headerlink" href="#module-scompose.client.exec" title="Permalink to this headline">¶</a></h2>
-<p>Copyright (C) 2019 Vanessa Sochat.</p>
-<p>This program is free software: you can redistribute it and/or modify it
-under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or (at your
-option) any later version.</p>
-<p>This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public
-License for more details.</p>
-<p>You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see &lt;<a class="reference external" href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>&gt;.</p>
+<p>Copyright (C) 2019-2020 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="function">
 <dt id="scompose.client.exec.main">
-<code class="descclassname">scompose.client.exec.</code><code class="descname">main</code><span class="sig-paren">(</span><em>args</em>, <em>parser</em>, <em>extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/client/exec.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.client.exec.main" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scompose.client.exec.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">parser</em>, <em class="sig-param">extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/client/exec.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.client.exec.main" title="Permalink to this definition">¶</a></dt>
 <dd><p>execute a command to an instance.</p>
 </dd></dl>
 
 </div>
 <div class="section" id="module-scompose.client.logs">
 <span id="scompose-client-logs-module"></span><h2>scompose.client.logs module<a class="headerlink" href="#module-scompose.client.logs" title="Permalink to this headline">¶</a></h2>
-<p>Copyright (C) 2019 Vanessa Sochat.</p>
-<p>This program is free software: you can redistribute it and/or modify it
-under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or (at your
-option) any later version.</p>
-<p>This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public
-License for more details.</p>
-<p>You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see &lt;<a class="reference external" href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>&gt;.</p>
+<p>Copyright (C) 2019-2020 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="function">
 <dt id="scompose.client.logs.main">
-<code class="descclassname">scompose.client.logs.</code><code class="descname">main</code><span class="sig-paren">(</span><em>args</em>, <em>parser</em>, <em>extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/client/logs.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.client.logs.main" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scompose.client.logs.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">parser</em>, <em class="sig-param">extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/client/logs.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.client.logs.main" title="Permalink to this definition">¶</a></dt>
 <dd><p>bring one or more instances down</p>
 </dd></dl>
 
 </div>
 <div class="section" id="module-scompose.client.ps">
 <span id="scompose-client-ps-module"></span><h2>scompose.client.ps module<a class="headerlink" href="#module-scompose.client.ps" title="Permalink to this headline">¶</a></h2>
-<p>Copyright (C) 2019 Vanessa Sochat.</p>
-<p>This program is free software: you can redistribute it and/or modify it
-under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or (at your
-option) any later version.</p>
-<p>This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public
-License for more details.</p>
-<p>You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see &lt;<a class="reference external" href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>&gt;.</p>
+<p>Copyright (C) 2019-2020 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="function">
 <dt id="scompose.client.ps.main">
-<code class="descclassname">scompose.client.ps.</code><code class="descname">main</code><span class="sig-paren">(</span><em>args</em>, <em>parser</em>, <em>extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/client/ps.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.client.ps.main" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scompose.client.ps.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">parser</em>, <em class="sig-param">extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/client/ps.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.client.ps.main" title="Permalink to this definition">¶</a></dt>
 <dd><p>bring one or more instances down</p>
 </dd></dl>
 
 </div>
 <div class="section" id="module-scompose.client.restart">
 <span id="scompose-client-restart-module"></span><h2>scompose.client.restart module<a class="headerlink" href="#module-scompose.client.restart" title="Permalink to this headline">¶</a></h2>
-<p>Copyright (C) 2019 Vanessa Sochat.</p>
-<p>This program is free software: you can redistribute it and/or modify it
-under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or (at your
-option) any later version.</p>
-<p>This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public
-License for more details.</p>
-<p>You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see &lt;<a class="reference external" href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>&gt;.</p>
+<p>Copyright (C) 2019-2020 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="function">
 <dt id="scompose.client.restart.main">
-<code class="descclassname">scompose.client.restart.</code><code class="descname">main</code><span class="sig-paren">(</span><em>args</em>, <em>parser</em>, <em>extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/client/restart.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.client.restart.main" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scompose.client.restart.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">parser</em>, <em class="sig-param">extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/client/restart.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.client.restart.main" title="Permalink to this definition">¶</a></dt>
 <dd><p>bring up one or more instances. They must exist.</p>
 <p>This will build and bring up one or more named instances, or if None
 are provided, we create all of them.</p>
@@ -355,40 +301,26 @@ are provided, we create all of them.</p>
 </div>
 <div class="section" id="module-scompose.client.shell">
 <span id="scompose-client-shell-module"></span><h2>scompose.client.shell module<a class="headerlink" href="#module-scompose.client.shell" title="Permalink to this headline">¶</a></h2>
-<p>Copyright (C) 2019 Vanessa Sochat.</p>
-<p>This program is free software: you can redistribute it and/or modify it
-under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or (at your
-option) any later version.</p>
-<p>This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public
-License for more details.</p>
-<p>You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see &lt;<a class="reference external" href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>&gt;.</p>
+<p>Copyright (C) 2019-2020 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="function">
 <dt id="scompose.client.shell.main">
-<code class="descclassname">scompose.client.shell.</code><code class="descname">main</code><span class="sig-paren">(</span><em>args</em>, <em>parser</em>, <em>extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/client/shell.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.client.shell.main" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scompose.client.shell.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">parser</em>, <em class="sig-param">extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/client/shell.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.client.shell.main" title="Permalink to this definition">¶</a></dt>
 <dd><p>bring one or more instances down</p>
 </dd></dl>
 
 </div>
 <div class="section" id="module-scompose.client.up">
 <span id="scompose-client-up-module"></span><h2>scompose.client.up module<a class="headerlink" href="#module-scompose.client.up" title="Permalink to this headline">¶</a></h2>
-<p>Copyright (C) 2019 Vanessa Sochat.</p>
-<p>This program is free software: you can redistribute it and/or modify it
-under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or (at your
-option) any later version.</p>
-<p>This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public
-License for more details.</p>
-<p>You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see &lt;<a class="reference external" href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>&gt;.</p>
+<p>Copyright (C) 2019-2020 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="function">
 <dt id="scompose.client.up.main">
-<code class="descclassname">scompose.client.up.</code><code class="descname">main</code><span class="sig-paren">(</span><em>args</em>, <em>parser</em>, <em>extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/client/up.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.client.up.main" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scompose.client.up.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">parser</em>, <em class="sig-param">extra</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/client/up.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.client.up.main" title="Permalink to this definition">¶</a></dt>
 <dd><p>bring up one or more instances. They must exist.</p>
 <p>This will build and bring up one or more named instances, or if None
 are provided, we create all of them.</p>
@@ -397,25 +329,18 @@ are provided, we create all of them.</p>
 </div>
 <div class="section" id="module-scompose.client">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-scompose.client" title="Permalink to this headline">¶</a></h2>
-<p>Copyright (C) 2019 Vanessa Sochat.</p>
-<p>This program is free software: you can redistribute it and/or modify it
-under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or (at your
-option) any later version.</p>
-<p>This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public
-License for more details.</p>
-<p>You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see &lt;<a class="reference external" href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>&gt;.</p>
+<p>Copyright (C) 2019-2020 Vanessa Sochat.</p>
+<p>This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
 <dl class="function">
 <dt id="scompose.client.get_parser">
-<code class="descclassname">scompose.client.</code><code class="descname">get_parser</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/client.html#get_parser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.client.get_parser" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scompose.client.</code><code class="sig-name descname">get_parser</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/client.html#get_parser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.client.get_parser" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="scompose.client.start">
-<code class="descclassname">scompose.client.</code><code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/client.html#start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.client.start" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scompose.client.</code><code class="sig-name descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/client.html#start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.client.start" title="Permalink to this definition">¶</a></dt>
 <dd><p>main is the entrypoint to singularity compose. We figure out the sub
 parser based on the command, and then import and call the appropriate
 main.</p>
@@ -435,7 +360,7 @@ main.</p>
         <a href="scompose.logger.html" class="btn btn-neutral float-right" title="scompose.logger package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="scompose.html" class="btn btn-neutral" title="scompose package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="scompose.html" class="btn btn-neutral float-left" title="scompose package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -444,7 +369,7 @@ main.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Vanessa Sochat.
+        &copy; Copyright 2019, Vanessa Sochat
 
     </p>
   </div>
@@ -461,33 +386,16 @@ main.</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../assets/jquery.js"></script>
-      <script type="text/javascript" src="../assets/underscore.js"></script>
-      <script type="text/javascript" src="../assets/doctools.js"></script>
-      <script type="text/javascript" src="../assets/language_data.js"></script>
-
-  
-
-  <script type="text/javascript" src="../assets/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>
