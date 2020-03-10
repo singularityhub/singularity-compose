@@ -50,9 +50,11 @@ class Project(object):
            are defined.
         """
         names = []
-        if self.config is not None:
-            if "instances" in self.config:
-                names = list(self.config["instances"].keys())
+        if self.instances is not None:
+            names = self.instances.keys()
+        elif self.config is not None and "instances" in self.config:
+            names = list(self.config["instances"].keys())
+
         return names
 
     def set_filename(self, filename):
@@ -165,6 +167,23 @@ class Project(object):
                     sudo=self.sudo,
                     working_dir=self.working_dir,
                 )
+
+            # Eventually reorder instances based on depends_on constraints
+            sorted_instances = []
+            for instance in self.instances:
+                depends_on = self.instances[instance].params.get("depends_on", [])
+
+                try:
+                    index = sorted_instances.index(instance)
+                except ValueError:
+                    sorted_instances.append(instance)
+                    index = sorted_instances.index(instance)
+
+                for parent in depends_on:
+                    if not parent in sorted_instances:
+                        sorted_instances.insert(index, parent) # self.instances[parent]
+
+            self.instances = {k: self.instances[k] for k in sorted_instances}
 
             # Update volumes with volumes from
             for _, instance in self.instances.items():
@@ -347,7 +366,11 @@ class Project(object):
            names: a list of names of instances to bring down. If not specified, we
            bring down all instances.
         """
-        names = names or self.get_instance_names()
+        if not names:
+          names = list(self.get_instance_names())
+          # Ordered shutdown in case of depends_on
+          names.reverse()
+
         for instance in self.iter_instances(names):
             instance.stop()
 
@@ -400,9 +423,9 @@ class Project(object):
         # If no names provided, we create all
         names = names or self.get_instance_names()
 
-        # Keep a count to determine if we have circular dependency structure
+        # Keep track of created instances to determine if we have circular dependency structure
         created = []
-        count = 0
+        circular_dep = False
 
         # Generate ip addresses for each
         lookup = self.get_ip_lookup(names, bridge)
@@ -411,50 +434,38 @@ class Project(object):
             # Generate shared hosts file
             hosts_file = self.create_hosts(lookup)
 
-        # First create those with no dependencies
-        while names:
+        for instance in self.iter_instances(names):
+            depends_on = instance.params.get("depends_on", [])
+            for dep in depends_on:
+                if dep not in created:
+                    circular_dep = True
 
-            for instance in self.iter_instances(names):
+            # Generate a resolv.conf to bind to the container
+            if self.sudo and not no_resolv:
+                resolv = self.generate_resolv_conf()
+                instance.volumes.append("%s:/etc/resolv.conf" % resolv)
 
-                # Flag to indicated create
-                do_create = True
+                # Create a hosts file for the instance based, add as volume
+                instance.volumes.append("%s:/etc/hosts" % hosts_file)
 
-                # Ensure created, skip over if not
-                depends_on = instance.params.get("depends_on", [])
-                for depends_on in depends_on:
-                    if depends_on not in created:
-                        count += 1
-                        do_create = False
+            # If we get here, execute command and add to list
+            create_func = getattr(instance, command)
+            create_func(
+                working_dir=self.working_dir,
+                writable_tmpfs=writable_tmpfs,
+                ip_address=lookup[instance.name],
+            )
 
-                if do_create:
+            created.append(instance.name)
 
-                    # Generate a resolv.conf to bind to the container
-                    if self.sudo and not no_resolv:
-                        resolv = self.generate_resolv_conf()
-                        instance.volumes.append("%s:/etc/resolv.conf" % resolv)
+            # Run post create commands
+            instance.run_post()
 
-                        # Create a hosts file for the instance based, add as volume
-                        instance.volumes.append("%s:/etc/hosts" % hosts_file)
+        if circular_dep:
+            bot.exit(
+                "Unable to create all instances, possible circular dependency."
+            )
 
-                    # If we get here, execute command and add to list
-                    create_func = getattr(instance, command)
-                    create_func(
-                        working_dir=self.working_dir,
-                        writable_tmpfs=writable_tmpfs,
-                        ip_address=lookup[instance.name],
-                    )
-
-                    created.append(instance.name)
-                    names.remove(instance.name)
-
-                    # Run post create commands
-                    instance.run_post()
-
-                # Possibly circular dependencies
-                if count >= 100:
-                    bot.exit(
-                        "Unable to create all instances, possible circular dependency."
-                    )
 
     # Build
 
