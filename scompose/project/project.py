@@ -367,9 +367,9 @@ class Project(object):
            bring down all instances.
         """
         if not names:
-          names = list(self.get_instance_names())
-          # Ordered shutdown in case of depends_on
-          names.reverse()
+            names = list(self.get_instance_names())
+            # Ordered shutdown in case of depends_on
+            names.reverse()
 
         for instance in self.iter_instances(names):
             instance.stop()
@@ -462,10 +462,7 @@ class Project(object):
             instance.run_post()
 
         if circular_dep:
-            bot.exit(
-                "Unable to create all instances, possible circular dependency."
-            )
-
+            bot.exit("Unable to create all instances, possible circular dependency.")
 
     # Build
 
