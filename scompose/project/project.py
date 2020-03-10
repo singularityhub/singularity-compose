@@ -179,9 +179,9 @@ class Project(object):
                     sorted_instances.append(instance)
                     index = sorted_instances.index(instance)
 
-                for parent in depends_on:
-                    if not parent in sorted_instances:
-                        sorted_instances.insert(index, parent) # self.instances[parent]
+                for dep in depends_on:
+                    if not dep in sorted_instances:
+                        sorted_instances.insert(index, dep)
 
             self.instances = {k: self.instances[k] for k in sorted_instances}
 
