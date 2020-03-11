@@ -166,26 +166,30 @@ class Project(object):
                     working_dir=self.working_dir,
                 )
 
-            # Eventually reorder instances based on depends_on constraints
-            sorted_instances = []
-            for instance in self.instances:
-                depends_on = self.instances[instance].params.get("depends_on", [])
-
-                try:
-                    index = sorted_instances.index(instance)
-                except ValueError:
-                    sorted_instances.append(instance)
-                    index = sorted_instances.index(instance)
-
-                for dep in depends_on:
-                    if not dep in sorted_instances:
-                        sorted_instances.insert(index, dep)
-
-            self.instances = {k: self.instances[k] for k in sorted_instances}
+            self.instances = self._sort_instances(self.instances)
 
             # Update volumes with volumes from
             for _, instance in self.instances.items():
                 instance.set_volumes_from(self.instances)
+
+    def _sort_instances(self, instances):
+        """eventually reorder instances based on depends_on constraints"""
+        sorted_instances = []
+        for instance in self.instances:
+            depends_on = self.instances[instance].params.get("depends_on", [])
+
+            try:
+                index = sorted_instances.index(instance)
+            except ValueError:
+                sorted_instances.append(instance)
+                index = sorted_instances.index(instance)
+
+            for dep in depends_on:
+                if not dep in sorted_instances:
+                    sorted_instances.insert(index, dep)
+
+        return {k: self.instances[k] for k in sorted_instances}
+
 
     # Networking
 
