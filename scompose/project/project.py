@@ -190,7 +190,6 @@ class Project(object):
 
         return {k: self.instances[k] for k in sorted_instances}
 
-
     # Networking
 
     def get_ip_lookup(self, names, bridge="10.22.0.0/16"):
