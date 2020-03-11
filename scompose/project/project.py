@@ -51,9 +51,7 @@ class Project(object):
         """
         names = []
         if self.instances is not None:
-            names = self.instances.keys()
-        elif self.config is not None and "instances" in self.config:
-            names = list(self.config["instances"].keys())
+            names = list(self.instances.keys())
 
         return names
 
@@ -367,7 +365,7 @@ class Project(object):
            bring down all instances.
         """
         if not names:
-            names = list(self.get_instance_names())
+            names = self.get_instance_names()
             # Ordered shutdown in case of depends_on
             names.reverse()
 
