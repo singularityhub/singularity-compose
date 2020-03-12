@@ -1,0 +1,6 @@
+Bootstrap: docker
+From: busybox
+
+%startscript
+printf "Present working directory is $PWD"
+printf "This is first"
