@@ -48,12 +48,13 @@ def test_circular_dependency(tmp_path):
     try:
         print("Testing up")
         project.up()
-        raise Exception('Up should have failed')
+        raise Exception("Up should have failed")
     except SystemExit:
         print("Up failed as expected")
     finally:
         print("Bringing down")
         project.down()
+
 
 def test_no_circular_dependency(tmp_path):
 
@@ -86,7 +87,7 @@ def test_no_circular_dependency(tmp_path):
 
     # Test depends_on DAG order
     keys = list(project.instances.keys())
-    assert keys == ['first', 'second', 'third']
+    assert keys == ["first", "second", "third"]
 
     print("Testing up")
     project.up()
