@@ -1,16 +1,17 @@
 version: "1.0"
 instances:
-  second:
-    build:
-      context: .
-      recipe: Singularity.second
-    depends_on: [first]
-  third:
-    build:
-      context: .
-      recipe: Singularity.third
-    depends_on: [second]
   first:
     build:
       context: .
       recipe: Singularity.first
+    depends_on: [second]
+  second:
+    build:
+      context: .
+      recipe: Singularity.second
+    depends_on: [second]
+  third:
+    build:
+      context: .
+      recipe: Singularity.third
+
