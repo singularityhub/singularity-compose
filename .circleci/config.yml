@@ -18,7 +18,7 @@ workflows:
               ignore: master
           name: "Latest Singularity with Python 3"
           python: 3
-          singularity: 3.2.1
+          singularity: 3.5.1
 
 ################################################################################
 # Functions
@@ -80,16 +80,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: v1-dependencies
+          keys: v2-dependencies
       - install_dependencies:
           python: << parameters.python >>
-      - singularity/install-go:
-          go-version: 1.11.5
-      - singularity/debian-install-3:
+      - singularity/install_debian_3:
+          go-version: "1.13"
           singularity-version: << parameters.singularity >>
       - save_cache:
           paths:
             - ~/conda
-          key: v1-dependencies
+          key: v2-dependencies
       - run: *install_scompose
       - run: *test_scompose
