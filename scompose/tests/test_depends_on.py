@@ -6,6 +6,7 @@
 # Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 # with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+from scompose.logger import bot
 from scompose.project import Project
 from scompose.utils import run_command
 from time import sleep
@@ -57,6 +58,8 @@ def test_circular_dependency(tmp_path):
 
 
 def test_no_circular_dependency(tmp_path):
+    bot.clear()  ## Clear previously logged messages
+
     depends_on = os.path.join(here, "configs", "depends_on")
     for filename in os.listdir(depends_on):
         source = os.path.join(depends_on, filename)
@@ -96,3 +99,8 @@ def test_no_circular_dependency(tmp_path):
 
     print("Bringing down")
     project.down()
+
+    log = bot.get_logs()
+    assert log.index("Creating first") < log.index("Creating second") and log.index(
+        "Creating second"
+    ) < log.index("Creating third")
