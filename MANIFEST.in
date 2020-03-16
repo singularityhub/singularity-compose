@@ -1,9 +1,7 @@
 include README.md LICENSE
 recursive-include scompose *
-prune *.py[co]
-prune .git *
-prune *.img
-prune *.simg
-prune *.sif
-prune __pycache__
-prune .docs
+graft scompose
+global-exclude __pycache__
+global-exclude *.py[co]
+global-exclude *.sif
+global-exclude *.simg
