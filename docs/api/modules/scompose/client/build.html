@@ -84,7 +84,6 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../source/scompose.html">scompose package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">CHANGELOG</a></li>
 </ul>
 
             
@@ -150,7 +149,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for scompose.client.build</h1><div class="highlight"><pre>
-<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">Copyright (C) 2019-2020 Vanessa Sochat.</span>
 
@@ -159,21 +158,22 @@
 <span class="sd">with this file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
 
 
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">scompose.project</span> <span class="k">import</span> <span class="n">Project</span>
 
+
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../source/scompose.client.html#scompose.client.build.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">extra</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;Build or rebuild containers</span>
+    <span class="sd">&quot;&quot;&quot;Build or rebuild containers</span>
 
 <span class="sd">       Containers are built once and then named as &lt;project&gt;_&lt;service&gt;,</span>
 <span class="sd">       e.g. `folder_db`. If a Singularity recipe changes for a container folder,</span>
 <span class="sd">       you can run &quot;singularity-compose build&quot; to rebuild it.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Initialize the project</span>
-    <span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">file</span><span class="p">,</span>
-                      <span class="n">name</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">project_name</span><span class="p">,</span>
-                      <span class="n">env_file</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">env_file</span><span class="p">)</span>
+    <span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span>
+        <span class="n">filename</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">project_name</span><span class="p">,</span> <span class="n">env_file</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">env_file</span>
+    <span class="p">)</span>
 
     <span class="c1"># Builds any containers into folders</span>
     <span class="n">project</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">names</span><span class="p">)</span></div>

@@ -281,6 +281,10 @@ class SingularityMessage:
             message = "\t".join(row)
             self.custom(prefix=label, message=message)
 
+    def clear(self):
+        """reinit log's history"""
+        self.history = []
+
 
 def get_logging_level():
     """configure a logging to standard out based on the user's

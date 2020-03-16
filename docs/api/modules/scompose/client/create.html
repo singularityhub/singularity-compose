@@ -84,7 +84,6 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../source/scompose.html">scompose package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">CHANGELOG</a></li>
 </ul>
 
             
@@ -150,7 +149,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for scompose.client.create</h1><div class="highlight"><pre>
-<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">Copyright (C) 2019-2020 Vanessa Sochat.</span>
 
@@ -159,26 +158,29 @@
 <span class="sd">with this file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
 
 
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">scompose.project</span> <span class="k">import</span> <span class="n">Project</span>
 
+
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../source/scompose.client.html#scompose.client.create.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">extra</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;create one or more instances. If they don&#39;t exist, build first.</span>
+    <span class="sd">&quot;&quot;&quot;create one or more instances. If they don&#39;t exist, build first.</span>
 
 <span class="sd">       This will build and bring up one or more named instances, or if None</span>
 <span class="sd">       are provided, we create all of them.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Initialize the project</span>
-    <span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">file</span><span class="p">,</span>
-                      <span class="n">name</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">project_name</span><span class="p">,</span>
-                      <span class="n">env_file</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">env_file</span><span class="p">)</span>
+    <span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span>
+        <span class="n">filename</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">project_name</span><span class="p">,</span> <span class="n">env_file</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">env_file</span>
+    <span class="p">)</span>
 
     <span class="c1"># Create instances, and if none specified, create all</span>
-    <span class="n">project</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">names</span><span class="p">,</span> 
-                   <span class="n">writable_tmpfs</span><span class="o">=</span><span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">read_only</span><span class="p">,</span>
-                   <span class="n">bridge</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">bridge</span><span class="p">,</span>
-                   <span class="n">no_resolv</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">no_resolv</span><span class="p">)</span></div>
+    <span class="n">project</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">names</span><span class="p">,</span>
+        <span class="n">writable_tmpfs</span><span class="o">=</span><span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">read_only</span><span class="p">,</span>
+        <span class="n">bridge</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">bridge</span><span class="p">,</span>
+        <span class="n">no_resolv</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">no_resolv</span><span class="p">,</span>
+    <span class="p">)</span></div>
 </pre></div>
 
            </div>

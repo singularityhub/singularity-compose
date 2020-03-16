@@ -84,7 +84,6 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../source/scompose.html">scompose package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">CHANGELOG</a></li>
 </ul>
 
             
@@ -148,7 +147,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for scompose.utils</h1><div class="highlight"><pre>
-<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">Copyright (C) 2019-2020 Vanessa Sochat.</span>
 
@@ -156,7 +155,7 @@
 <span class="sd">Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed</span>
 <span class="sd">with this file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
 
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">errno</span>
 <span class="kn">import</span> <span class="nn">json</span>
@@ -166,26 +165,23 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">yaml</span>
 
-<span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="p">(</span>
-    <span class="n">Popen</span><span class="p">,</span>
-    <span class="n">PIPE</span><span class="p">,</span>
-    <span class="n">STDOUT</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="n">Popen</span><span class="p">,</span> <span class="n">PIPE</span><span class="p">,</span> <span class="n">STDOUT</span>
 
 
 <div class="viewcode-block" id="get_installdir"><a class="viewcode-back" href="../../source/scompose.utils.html#scompose.utils.get_installdir">[docs]</a><span class="k">def</span> <span class="nf">get_installdir</span><span class="p">():</span>
-    <span class="sd">&#39;&#39;&#39;get_installdir returns the installation directory of the application</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot;get_installdir returns the installation directory of the application</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)))</span></div>
 
 
 <div class="viewcode-block" id="get_userhome"><a class="viewcode-back" href="../../source/scompose.utils.html#scompose.utils.get_userhome">[docs]</a><span class="k">def</span> <span class="nf">get_userhome</span><span class="p">():</span>
-    <span class="sd">&#39;&#39;&#39;get the user home based on the effective uid</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot;get the user home based on the effective uid</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">pwd</span><span class="o">.</span><span class="n">getpwuid</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getuid</span><span class="p">())[</span><span class="mi">5</span><span class="p">]</span></div>
 
+
 <div class="viewcode-block" id="run_command"><a class="viewcode-back" href="../../source/scompose.utils.html#scompose.utils.run_command">[docs]</a><span class="k">def</span> <span class="nf">run_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">sudo</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;run_command uses subprocess to send a command to the terminal.</span>
+    <span class="sd">&quot;&quot;&quot;run_command uses subprocess to send a command to the terminal.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ==========</span>
@@ -193,9 +189,9 @@
 <span class="sd">        error_message: the error message to give to user if fails,</span>
 <span class="sd">        if none specified, will alert that command failed.</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">sudo</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sudo&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">cmd</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sudo&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">cmd</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">STDOUT</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span>
@@ -205,11 +201,10 @@
         <span class="n">output</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">STDOUT</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span>
 
     <span class="n">t</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">communicate</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">output</span><span class="o">.</span><span class="n">returncode</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-              <span class="s1">&#39;return_code&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;return_code&quot;</span><span class="p">:</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">],</span> <span class="nb">bytes</span><span class="p">):</span>
-        <span class="n">output</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">],</span> <span class="nb">bytes</span><span class="p">):</span>
+        <span class="n">output</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">output</span></div>
 
@@ -220,9 +215,9 @@
 
 
 <div class="viewcode-block" id="mkdir_p"><a class="viewcode-back" href="../../source/scompose.utils.html#scompose.utils.mkdir_p">[docs]</a><span class="k">def</span> <span class="nf">mkdir_p</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;mkdir_p attempts to get the same functionality as mkdir -p</span>
+    <span class="sd">&quot;&quot;&quot;mkdir_p attempts to get the same functionality as mkdir -p</span>
 <span class="sd">    :param path: the path to create.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -239,18 +234,18 @@
 
 
 <div class="viewcode-block" id="write_file"><a class="viewcode-back" href="../../source/scompose.utils.html#scompose.utils.write_file">[docs]</a><span class="k">def</span> <span class="nf">write_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;write_file will open a file, &quot;filename&quot; and write content, &quot;content&quot;</span>
+    <span class="sd">&quot;&quot;&quot;write_file will open a file, &quot;filename&quot; and write content, &quot;content&quot;</span>
 <span class="sd">       and properly close the file</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">filey</span><span class="p">:</span>
         <span class="n">filey</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">filename</span></div>
 
 
 <div class="viewcode-block" id="read_file"><a class="viewcode-back" href="../../source/scompose.utils.html#scompose.utils.read_file">[docs]</a><span class="k">def</span> <span class="nf">read_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">readlines</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;write_file will open a file, &quot;filename&quot; and write content, &quot;content&quot;</span>
+    <span class="sd">&quot;&quot;&quot;write_file will open a file, &quot;filename&quot; and write content, &quot;content&quot;</span>
 <span class="sd">       and properly close the file</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">filey</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">readlines</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="n">content</span> <span class="o">=</span> <span class="n">filey</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
@@ -258,37 +253,39 @@
             <span class="n">content</span> <span class="o">=</span> <span class="n">filey</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">content</span></div>
 
+
 <span class="c1"># Yaml</span>
 
-<div class="viewcode-block" id="read_yaml"><a class="viewcode-back" href="../../source/scompose.utils.html#scompose.utils.read_yaml">[docs]</a><span class="k">def</span> <span class="nf">read_yaml</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;read a yaml file, only including sections between dashes</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="read_yaml"><a class="viewcode-back" href="../../source/scompose.utils.html#scompose.utils.read_yaml">[docs]</a><span class="k">def</span> <span class="nf">read_yaml</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;read a yaml file, only including sections between dashes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">stream</span> <span class="o">=</span> <span class="n">read_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">readlines</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">_read_yaml</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="n">quiet</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="write_yaml"><a class="viewcode-back" href="../../source/scompose.utils.html#scompose.utils.write_yaml">[docs]</a><span class="k">def</span> <span class="nf">write_yaml</span><span class="p">(</span><span class="n">yaml_dict</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;write a dictionary to yaml file</span>
+    <span class="sd">&quot;&quot;&quot;write a dictionary to yaml file</span>
 <span class="sd"> </span>
 <span class="sd">       Parameters</span>
 <span class="sd">       ==========</span>
 <span class="sd">       yaml_dict: the dict to print to yaml</span>
 <span class="sd">       filename: the output file to write to</span>
 <span class="sd">       pretty_print: if True, will use nicer formatting</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">filey</span><span class="p">:</span>
         <span class="n">filey</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">yaml_dict</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">filename</span></div>
 
-   
+
 <span class="k">def</span> <span class="nf">_read_yaml</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;read yaml from a string, either read from file (read_frontmatter) or </span>
+    <span class="sd">&quot;&quot;&quot;read yaml from a string, either read from file (read_frontmatter) or </span>
 <span class="sd">       from yml file proper (read_yaml)</span>
 
 <span class="sd">       Parameters</span>
 <span class="sd">       ==========</span>
 <span class="sd">       section: a string of unparsed yaml content.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="c1"># PyYaml vs pyaml have subtle differences</span>
@@ -301,22 +298,23 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">doc</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">quiet</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
                 <span class="n">metadata</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
     <span class="k">return</span> <span class="n">metadata</span>
 
 
 <span class="c1"># Json</span>
 
+
 <div class="viewcode-block" id="write_json"><a class="viewcode-back" href="../../source/scompose.utils.html#scompose.utils.write_json">[docs]</a><span class="k">def</span> <span class="nf">write_json</span><span class="p">(</span><span class="n">json_obj</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">print_pretty</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;write_json will (optionally,pretty print) a json object to file</span>
+    <span class="sd">&quot;&quot;&quot;write_json will (optionally,pretty print) a json object to file</span>
 
 <span class="sd">       Parameters</span>
 <span class="sd">       ==========</span>
 <span class="sd">       json_obj: the dict to print to json</span>
 <span class="sd">       filename: the output file to write to</span>
 <span class="sd">       pretty_print: if True, will use nicer formatting</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">filey</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">print_pretty</span><span class="p">:</span>
             <span class="n">filey</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">print_json</span><span class="p">(</span><span class="n">json_obj</span><span class="p">))</span>
@@ -326,19 +324,15 @@
 
 
 <div class="viewcode-block" id="print_json"><a class="viewcode-back" href="../../source/scompose.utils.html#scompose.utils.print_json">[docs]</a><span class="k">def</span> <span class="nf">print_json</span><span class="p">(</span><span class="n">json_obj</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; just dump the json in a &quot;pretty print&quot; format</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
-                    <span class="n">json_obj</span><span class="p">,</span>
-                    <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-                    <span class="n">separators</span><span class="o">=</span><span class="p">(</span>
-                        <span class="s1">&#39;,&#39;</span><span class="p">,</span>
-                        <span class="s1">&#39;: &#39;</span><span class="p">))</span></div>
+    <span class="sd">&quot;&quot;&quot; just dump the json in a &quot;pretty print&quot; format</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">json_obj</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;: &quot;</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="read_json"><a class="viewcode-back" href="../../source/scompose.utils.html#scompose.utils.read_json">[docs]</a><span class="k">def</span> <span class="nf">read_json</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;read_json reads in a json file and returns</span>
+
+<div class="viewcode-block" id="read_json"><a class="viewcode-back" href="../../source/scompose.utils.html#scompose.utils.read_json">[docs]</a><span class="k">def</span> <span class="nf">read_json</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;read_json reads in a json file and returns</span>
 <span class="sd">       the data structure as dict.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">filey</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filey</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">data</span></div>

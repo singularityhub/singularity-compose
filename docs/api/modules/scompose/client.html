@@ -84,7 +84,6 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../source/scompose.html">scompose package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">CHANGELOG</a></li>
 </ul>
 
             
@@ -150,7 +149,7 @@
   <h1>Source code for scompose.client</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">Copyright (C) 2019-2020 Vanessa Sochat.</span>
 
@@ -159,7 +158,7 @@
 <span class="sd">with this file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
 
 
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">scompose</span>
 <span class="kn">import</span> <span class="nn">argparse</span>
@@ -168,144 +167,182 @@
 
 
 <div class="viewcode-block" id="get_parser"><a class="viewcode-back" href="../../source/scompose.client.html#scompose.client.get_parser">[docs]</a><span class="k">def</span> <span class="nf">get_parser</span><span class="p">():</span>
-    <span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;Orchestration for Singularity containers&#39;</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Orchestration for Singularity containers&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Singularity Compose&quot;</span><span class="p">)</span>
 
     <span class="c1"># Verbosity</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--debug&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;debug&quot;</span><span class="p">,</span> 
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;use verbose logging to debug.&quot;</span><span class="p">,</span> 
-                        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--debug&quot;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;debug&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;use verbose logging to debug.&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--version&#39;</span><span class="p">,</span> <span class="s1">&#39;-v&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> 
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;print version and exit.&quot;</span><span class="p">,</span> 
-                        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--version&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;-v&quot;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;version&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;print version and exit.&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--log-level&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;INFO&#39;</span><span class="p">,</span> 
-                        <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;log_level&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;logging level&#39;</span><span class="p">,</span>
-                        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;DEBUG&quot;</span><span class="p">,</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span> <span class="s2">&quot;WARNING&quot;</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">,</span> <span class="s2">&quot;CRITICAL&quot;</span><span class="p">])</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--log-level&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;log_level&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;logging level&quot;</span><span class="p">,</span>
+        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;DEBUG&quot;</span><span class="p">,</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span> <span class="s2">&quot;WARNING&quot;</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">,</span> <span class="s2">&quot;CRITICAL&quot;</span><span class="p">],</span>
+    <span class="p">)</span>
 
     <span class="c1"># Global Variables</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--file&#39;</span><span class="p">,</span> <span class="s1">&#39;-f&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;file&quot;</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;specify compose file (default singularity-compose.yml)&quot;</span><span class="p">,</span> 
-                        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;singularity-compose.yml&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--file&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;-f&quot;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;file&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;specify compose file (default singularity-compose.yml)&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;singularity-compose.yml&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--project-name&quot;</span><span class="p">,</span> <span class="s1">&#39;-p&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
-                        <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;project_name&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;specify project name (defaults to $PWD)&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--project-name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;-p&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;project_name&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;specify project name (defaults to $PWD)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--project-directory&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
-                        <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;working_dir&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;specify project working directory (defaults to compose file location)&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--project-directory&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;working_dir&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;specify project working directory (defaults to compose file location)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--env-file&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
-                        <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;env_file&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;an environment file to source&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--env-file&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;env_file&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;an environment file to source&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="n">subparsers</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_subparsers</span><span class="p">(</span><span class="n">help</span><span class="o">=</span><span class="s1">&#39;scompose actions&#39;</span><span class="p">,</span>
-                                       <span class="n">title</span><span class="o">=</span><span class="s1">&#39;actions&#39;</span><span class="p">,</span>
-                                       <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
-                                       <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;command&quot;</span><span class="p">)</span>
+    <span class="n">subparsers</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_subparsers</span><span class="p">(</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;scompose actions&quot;</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;actions&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;command&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="c1"># print version and exit</span>
-    <span class="n">version</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="c1"># pylint: disable=unused-variable</span>
-                                    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;show software version&quot;</span><span class="p">)</span>
-
+    <span class="n">version</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;show software version&quot;</span><span class="p">)</span>
 
     <span class="c1"># Build</span>
 
-    <span class="n">build</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;build&quot;</span><span class="p">,</span>
-                                  <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Build or rebuild containers&quot;</span><span class="p">)</span>
-
+    <span class="n">build</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;build&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Build or rebuild containers&quot;</span><span class="p">)</span>
 
     <span class="c1"># Config</span>
 
-    <span class="n">config</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="c1"># pylint: disable=unused-variable</span>
-                                   <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Validate and view the compose file&quot;</span><span class="p">)</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Validate and view the compose file&quot;</span><span class="p">)</span>
 
     <span class="c1"># Create (assumes built already), Up (will also build, if able)</span>
 
-    <span class="n">create</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;create&quot;</span><span class="p">,</span>
-                                   <span class="n">help</span><span class="o">=</span><span class="s2">&quot;create instances&quot;</span><span class="p">)</span>
+    <span class="n">create</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;create&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;create instances&quot;</span><span class="p">)</span>
 
-    <span class="n">up</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;up&quot;</span><span class="p">,</span>
-                               <span class="n">help</span><span class="o">=</span><span class="s2">&quot;build and start containers&quot;</span><span class="p">)</span>
+    <span class="n">up</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;up&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;build and start containers&quot;</span><span class="p">)</span>
 
-    <span class="n">restart</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;restart&quot;</span><span class="p">,</span>
-                                     <span class="n">help</span><span class="o">=</span><span class="s2">&quot;stop and start containers.&quot;</span><span class="p">)</span>
+    <span class="n">restart</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;restart&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;stop and start containers.&quot;</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="p">[</span><span class="n">create</span><span class="p">,</span> <span class="n">up</span><span class="p">,</span> <span class="n">restart</span><span class="p">]:</span>
-        <span class="n">sub</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--read_only&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;read_only&quot;</span><span class="p">,</span> 
-                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;disable the instance from writing to tmp&quot;</span><span class="p">,</span> 
-                         <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+        <span class="n">sub</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--read_only&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;read_only&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;disable the instance from writing to tmp&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
 
-        <span class="n">sub</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--no-resolv&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;no_resolv&quot;</span><span class="p">,</span> 
-                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;do not generate and bind a resolv.conf&quot;</span><span class="p">,</span> 
-                         <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+        <span class="n">sub</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--no-resolv&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;no_resolv&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;do not generate and bind a resolv.conf&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
 
-        <span class="n">sub</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--bridge&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;10.22.0.0/16&quot;</span><span class="p">,</span> 
-                         <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;bridge&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
-                         <span class="n">help</span><span class="o">=</span><span class="s1">&#39;the address of the bridge to derive others from.&#39;</span><span class="p">)</span>
+        <span class="n">sub</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--bridge&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;10.22.0.0/16&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;bridge&quot;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the address of the bridge to derive others from.&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="c1"># Down</span>
 
-    <span class="n">down</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;down&quot;</span><span class="p">,</span>
-                                  <span class="n">help</span><span class="o">=</span><span class="s2">&quot;stop instances&quot;</span><span class="p">)</span>
+    <span class="n">down</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;down&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;stop instances&quot;</span><span class="p">)</span>
 
-    <span class="n">execute</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;exec&quot;</span><span class="p">,</span>
-                                    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;execute a command to an instance&quot;</span><span class="p">)</span>
+    <span class="n">execute</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;exec&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;execute a command to an instance&quot;</span><span class="p">)</span>
 
-    <span class="n">run</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;run&quot;</span><span class="p">,</span>
-                                <span class="n">help</span><span class="o">=</span><span class="s2">&quot;run an instance runscript.&quot;</span><span class="p">)</span>
+    <span class="n">run</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;run&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;run an instance runscript.&quot;</span><span class="p">)</span>
 
-    <span class="n">shell</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;shell&quot;</span><span class="p">,</span>
-                                   <span class="n">help</span><span class="o">=</span><span class="s2">&quot;shell into an instance&quot;</span><span class="p">)</span>
+    <span class="n">shell</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;shell&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;shell into an instance&quot;</span><span class="p">)</span>
 
     <span class="c1"># Logs</span>
 
-    <span class="n">logs</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;logs&quot;</span><span class="p">,</span>
-                                 <span class="n">help</span><span class="o">=</span><span class="s2">&quot;view output from instances&quot;</span><span class="p">)</span>
+    <span class="n">logs</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;logs&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;view output from instances&quot;</span><span class="p">)</span>
 
-    <span class="n">logs</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--tail&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
-                      <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;tail&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s1">&#39;clip logs to certain number of lines from end&#39;</span><span class="p">)</span>
+    <span class="n">logs</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--tail&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;tail&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;clip logs to certain number of lines from end&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="n">logs</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--clear&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;clear&quot;</span><span class="p">,</span> 
-                      <span class="n">help</span><span class="o">=</span><span class="s2">&quot;clear existing logs.&quot;</span><span class="p">,</span> 
-                      <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">)</span>
+    <span class="n">logs</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--clear&quot;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;clear&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;clear existing logs.&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="n">ps</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;ps&quot;</span><span class="p">,</span> <span class="c1"># pylint: disable=unused-variable</span>
-                               <span class="n">help</span><span class="o">=</span><span class="s2">&quot;list instances&quot;</span><span class="p">)</span>
+    <span class="n">ps</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span><span class="s2">&quot;ps&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;list instances&quot;</span><span class="p">)</span>
 
     <span class="c1"># Add list of names</span>
     <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="p">[</span><span class="n">build</span><span class="p">,</span> <span class="n">create</span><span class="p">,</span> <span class="n">down</span><span class="p">,</span> <span class="n">logs</span><span class="p">,</span> <span class="n">up</span><span class="p">,</span> <span class="n">restart</span><span class="p">]:</span>
-        <span class="n">sub</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;names&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">,</span>
-                          <span class="n">help</span><span class="o">=</span><span class="s1">&#39;the names of the instances to target&#39;</span><span class="p">)</span>
+        <span class="n">sub</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;names&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the names of the instances to target&quot;</span>
+        <span class="p">)</span>
 
     <span class="c1"># Only one name allowed</span>
     <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="p">[</span><span class="n">shell</span><span class="p">,</span> <span class="n">execute</span><span class="p">,</span> <span class="n">run</span><span class="p">]:</span>
-        <span class="n">sub</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                         <span class="n">help</span><span class="o">=</span><span class="s1">&#39;the name of the instance to target&#39;</span><span class="p">)</span>
+        <span class="n">sub</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the name of the instance to target&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">parser</span></div>
 
 
 <div class="viewcode-block" id="start"><a class="viewcode-back" href="../../source/scompose.client.html#scompose.client.start">[docs]</a><span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
-    <span class="sd">&#39;&#39;&#39;main is the entrypoint to singularity compose. We figure out the sub</span>
+    <span class="sd">&quot;&quot;&quot;main is the entrypoint to singularity compose. We figure out the sub</span>
 <span class="sd">       parser based on the command, and then import and call the appropriate </span>
 <span class="sd">       main.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">get_parser</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">show_help</span><span class="p">(</span><span class="n">return_code</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;print help, including the software version and exit with return code</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="sd">&quot;&quot;&quot;print help, including the software version and exit with return code</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">version</span> <span class="o">=</span> <span class="n">scompose</span><span class="o">.</span><span class="n">__version__</span>
 
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Singularity Compose v</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">version</span><span class="p">)</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">return_code</span><span class="p">)</span>
-    
+
     <span class="c1"># If the user didn&#39;t provide any arguments, show the full help</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">show_help</span><span class="p">()</span>
@@ -315,9 +352,9 @@
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">debug</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;MESSAGELEVEL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;DEBUG&quot;</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;MESSAGELEVEL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;DEBUG&quot;</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;MESSAGELEVEL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">log_level</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;MESSAGELEVEL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">log_level</span>
 
     <span class="c1"># Import the logger to grab verbosity level</span>
     <span class="kn">from</span> <span class="nn">scompose.logger</span> <span class="k">import</span> <span class="n">bot</span>
@@ -328,29 +365,29 @@
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
     <span class="c1"># Does the user want a shell?</span>
-    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;build&quot;</span><span class="p">:</span> 
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;build&quot;</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">.build</span> <span class="k">import</span> <span class="n">main</span>
-    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;create&quot;</span><span class="p">:</span> 
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;create&quot;</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">.create</span> <span class="k">import</span> <span class="n">main</span>
-    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;config&quot;</span><span class="p">:</span> 
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;config&quot;</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">.config</span> <span class="k">import</span> <span class="n">main</span>
-    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;down&quot;</span><span class="p">:</span> 
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;down&quot;</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">.down</span> <span class="k">import</span> <span class="n">main</span>
-    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;exec&quot;</span><span class="p">:</span> 
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;exec&quot;</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">.exec</span> <span class="k">import</span> <span class="n">main</span>
-    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;logs&quot;</span><span class="p">:</span> 
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;logs&quot;</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">.logs</span> <span class="k">import</span> <span class="n">main</span>
-    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;ps&quot;</span><span class="p">:</span> 
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;ps&quot;</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">.ps</span> <span class="k">import</span> <span class="n">main</span>
-    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;restart&quot;</span><span class="p">:</span> 
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;restart&quot;</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">.restart</span> <span class="k">import</span> <span class="n">main</span>
-    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;run&quot;</span><span class="p">:</span> 
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;run&quot;</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">.run</span> <span class="k">import</span> <span class="n">main</span>
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;shell&quot;</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">.shell</span> <span class="k">import</span> <span class="n">main</span>
-    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;up&quot;</span><span class="p">:</span> 
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;up&quot;</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">.up</span> <span class="k">import</span> <span class="n">main</span>
-    
+
     <span class="c1"># Pass on to the correct parser</span>
     <span class="n">return_code</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">try</span><span class="p">:</span>
@@ -363,7 +400,8 @@
 
     <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">return_code</span><span class="p">)</span></div>
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">start</span><span class="p">()</span>
 </pre></div>
 

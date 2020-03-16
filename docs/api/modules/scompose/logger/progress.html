@@ -84,7 +84,6 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../source/scompose.html">scompose package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">CHANGELOG</a></li>
 </ul>
 
             
@@ -164,9 +163,9 @@
 
 <span class="n">STREAM</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span>
 
-<span class="n">BAR_TEMPLATE</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">[</span><span class="si">%s%s</span><span class="s1">] </span><span class="si">%i</span><span class="s1">/</span><span class="si">%i</span><span class="s1"> MB - </span><span class="si">%s</span><span class="se">\r</span><span class="s1">&#39;</span>
-<span class="n">BAR_FILLED_CHAR</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span>
-<span class="n">BAR_EMPTY_CHAR</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span>
+<span class="n">BAR_TEMPLATE</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">[</span><span class="si">%s%s</span><span class="s2">] </span><span class="si">%i</span><span class="s2">/</span><span class="si">%i</span><span class="s2"> MB - </span><span class="si">%s</span><span class="se">\r</span><span class="s2">&quot;</span>
+<span class="n">BAR_FILLED_CHAR</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span>
+<span class="n">BAR_EMPTY_CHAR</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
 
 <span class="c1"># How long to wait before recalculating the ETA</span>
 <span class="n">ETA_INTERVAL</span> <span class="o">=</span> <span class="mi">1</span>
@@ -183,8 +182,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">done</span><span class="p">()</span>
         <span class="k">return</span> <span class="kc">False</span>  <span class="c1"># we&#39;re not suppressing exceptions</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">hide</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">empty_char</span><span class="o">=</span><span class="n">BAR_EMPTY_CHAR</span><span class="p">,</span>
-                 <span class="n">filled_char</span><span class="o">=</span><span class="n">BAR_FILLED_CHAR</span><span class="p">,</span> <span class="n">expected_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">every</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">width</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+        <span class="n">hide</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">empty_char</span><span class="o">=</span><span class="n">BAR_EMPTY_CHAR</span><span class="p">,</span>
+        <span class="n">filled_char</span><span class="o">=</span><span class="n">BAR_FILLED_CHAR</span><span class="p">,</span>
+        <span class="n">expected_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">every</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hide</span> <span class="o">=</span> <span class="n">hide</span>
@@ -215,21 +222,31 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">last_progress</span> <span class="o">=</span> <span class="n">progress</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">etadelta</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">ETA_INTERVAL</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">etadelta</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ittimes</span> <span class="o">=</span> \
-                <span class="bp">self</span><span class="o">.</span><span class="n">ittimes</span><span class="p">[</span><span class="o">-</span><span class="n">ETA_SMA_WINDOW</span><span class="p">:]</span> <span class="o">+</span> \
-                    <span class="p">[</span><span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">-</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span> <span class="o">/</span> <span class="p">(</span><span class="n">progress</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">eta</span> <span class="o">=</span> \
-                <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ittimes</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ittimes</span><span class="p">))</span> <span class="o">*</span> \
-                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expected_size</span> <span class="o">-</span> <span class="n">progress</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ittimes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ittimes</span><span class="p">[</span><span class="o">-</span><span class="n">ETA_SMA_WINDOW</span><span class="p">:]</span> <span class="o">+</span> <span class="p">[</span>
+                <span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">-</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span> <span class="o">/</span> <span class="p">(</span><span class="n">progress</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">eta</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ittimes</span><span class="p">)</span>
+                <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ittimes</span><span class="p">))</span>
+                <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expected_size</span> <span class="o">-</span> <span class="n">progress</span><span class="p">)</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">etadisp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_time</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eta</span><span class="p">)</span>
         <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="n">progress</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">expected_size</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">hide</span><span class="p">:</span>
-            <span class="k">if</span> <span class="p">((</span><span class="n">progress</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">every</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span>      <span class="c1"># True every &quot;every&quot; updates</span>
-                <span class="p">(</span><span class="n">progress</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">expected_size</span><span class="p">)):</span>   <span class="c1"># And when we&#39;re done</span>
-                <span class="n">STREAM</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">BAR_TEMPLATE</span> <span class="o">%</span> <span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filled_char</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">x</span><span class="p">),</span> <span class="n">progress</span><span class="p">,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">expected_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">etadisp</span><span class="p">))</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">progress</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">every</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="p">(</span>  <span class="c1"># True every &quot;every&quot; updates</span>
+                <span class="n">progress</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">expected_size</span>
+            <span class="p">):</span>  <span class="c1"># And when we&#39;re done</span>
+                <span class="n">STREAM</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                    <span class="n">BAR_TEMPLATE</span>
+                    <span class="o">%</span> <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">filled_char</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">x</span><span class="p">),</span>
+                        <span class="n">progress</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">expected_size</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">etadisp</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
                 <span class="n">STREAM</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="ProgressBar.done"><a class="viewcode-back" href="../../../source/scompose.logger.html#scompose.logger.progress.ProgressBar.done">[docs]</a>    <span class="k">def</span> <span class="nf">done</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -237,26 +254,47 @@
         <span class="n">elapsed_disp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_time</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">elapsed</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">hide</span><span class="p">:</span>
             <span class="c1"># Print completed bar with elapsed time</span>
-            <span class="n">STREAM</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">BAR_TEMPLATE</span> <span class="o">%</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filled_char</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span> <span class="o">*</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_progress</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">expected_size</span><span class="p">,</span> <span class="n">elapsed_disp</span><span class="p">))</span>
-            <span class="n">STREAM</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">STREAM</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                <span class="n">BAR_TEMPLATE</span>
+                <span class="o">%</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">filled_char</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span> <span class="o">*</span> <span class="mi">0</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">last_progress</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">expected_size</span><span class="p">,</span>
+                    <span class="n">elapsed_disp</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">STREAM</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">STREAM</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="ProgressBar.format_time"><a class="viewcode-back" href="../../../source/scompose.logger.html#scompose.logger.progress.ProgressBar.format_time">[docs]</a>    <span class="k">def</span> <span class="nf">format_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seconds</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H:%M:%S&#39;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="n">seconds</span><span class="p">))</span></div></div>
+        <span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="n">seconds</span><span class="p">))</span></div></div>
 
 
-<div class="viewcode-block" id="bar"><a class="viewcode-back" href="../../../source/scompose.logger.html#scompose.logger.progress.bar">[docs]</a><span class="k">def</span> <span class="nf">bar</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">hide</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">empty_char</span><span class="o">=</span><span class="n">BAR_EMPTY_CHAR</span><span class="p">,</span>
-        <span class="n">filled_char</span><span class="o">=</span><span class="n">BAR_FILLED_CHAR</span><span class="p">,</span> <span class="n">expected_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">every</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="bar"><a class="viewcode-back" href="../../../source/scompose.logger.html#scompose.logger.progress.bar">[docs]</a><span class="k">def</span> <span class="nf">bar</span><span class="p">(</span>
+    <span class="n">it</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+    <span class="n">hide</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">empty_char</span><span class="o">=</span><span class="n">BAR_EMPTY_CHAR</span><span class="p">,</span>
+    <span class="n">filled_char</span><span class="o">=</span><span class="n">BAR_FILLED_CHAR</span><span class="p">,</span>
+    <span class="n">expected_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">every</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Progress iterator. Wrap your iterables with it.&quot;&quot;&quot;</span>
 
     <span class="n">count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="k">if</span> <span class="n">expected_size</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">expected_size</span>
 
-    <span class="k">with</span> <span class="n">ProgressBar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">hide</span><span class="o">=</span><span class="n">hide</span><span class="p">,</span> <span class="n">empty_char</span><span class="o">=</span><span class="n">BAR_EMPTY_CHAR</span><span class="p">,</span>
-             <span class="n">filled_char</span><span class="o">=</span><span class="n">BAR_FILLED_CHAR</span><span class="p">,</span> <span class="n">expected_size</span><span class="o">=</span><span class="n">count</span><span class="p">,</span> <span class="n">every</span><span class="o">=</span><span class="n">every</span><span class="p">)</span> \
-            <span class="k">as</span> <span class="n">pbar</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">ProgressBar</span><span class="p">(</span>
+        <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+        <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
+        <span class="n">hide</span><span class="o">=</span><span class="n">hide</span><span class="p">,</span>
+        <span class="n">empty_char</span><span class="o">=</span><span class="n">BAR_EMPTY_CHAR</span><span class="p">,</span>
+        <span class="n">filled_char</span><span class="o">=</span><span class="n">BAR_FILLED_CHAR</span><span class="p">,</span>
+        <span class="n">expected_size</span><span class="o">=</span><span class="n">count</span><span class="p">,</span>
+        <span class="n">every</span><span class="o">=</span><span class="n">every</span><span class="p">,</span>
+    <span class="p">)</span> <span class="k">as</span> <span class="n">pbar</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">it</span><span class="p">):</span>
             <span class="k">yield</span> <span class="n">item</span>
             <span class="n">pbar</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span></div>
