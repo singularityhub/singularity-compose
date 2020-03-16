@@ -19,7 +19,6 @@ workflows:
           name: "Latest Singularity with Python 3"
           python: 3
           singularity: 3.2.1
-          singularity-3: true
 
 ################################################################################
 # Functions
@@ -76,10 +75,6 @@ jobs:
         singularity:
           type: string
           description: "Singularity version"
-        singularity-3:
-          type: boolean
-          description: "Set to true for singularity 3, false for singularity 2"
-          default: true
     machine: true
     working_directory: ~/repo
     steps:
@@ -88,13 +83,10 @@ jobs:
           keys: v1-dependencies
       - install_dependencies:
           python: << parameters.python >>
-      - when:
-          condition: << parameters.singularity-3 >>
-          steps:
-            - singularity/install-go:
-                go-version: 1.11.5
-            - singularity/debian-install-3:
-                      singularity-version: << parameters.singularity >>
+      - singularity/install-go:
+          go-version: 1.11.5
+      - singularity/debian-install-3:
+          singularity-version: << parameters.singularity >>
       - save_cache:
           paths:
             - ~/conda
