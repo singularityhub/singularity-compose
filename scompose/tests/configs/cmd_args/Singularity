@@ -1,0 +1,5 @@
+Bootstrap: docker
+From: busybox
+
+%startscript
+echo "Following arguments: $@"
