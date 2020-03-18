@@ -48,6 +48,21 @@ Since Singularity does not (currently) have control over custom networking,
 all instance ports are mapped to the host (localhost) and we don't have any
 configuration settings to control this (how to handle ports?)
 
+## Startscript arguments
+
+It is possible to use the `command` option to pass arguments to an instance's
+startscript.
+
+The following example shows how to pass the arguments `arg0 arg1arg2` to the
+startscript of instance `app`,
+
+```yaml
+  app:
+    build:
+      context: ./app
+    command: "arg0 arg1 arg2"
+```
+
 ## Environment
 
 While Singularity compose doesn't currently have support for an environment 
