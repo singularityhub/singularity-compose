@@ -53,7 +53,7 @@ configuration settings to control this (how to handle ports?)
 It is possible to use the `command` option to pass arguments to an instance's
 startscript.
 
-The following example shows how to pass the arguments `arg0 arg1arg2` to the
+The following example shows how to pass the arguments `arg0 arg1 arg2` to the
 startscript of instance `app`,
 
 ```yaml
