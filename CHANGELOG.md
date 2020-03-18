@@ -14,6 +14,7 @@ and **Merged pull requests**. Critical items to know are:
 The versions coincide with releases on pypi.
 
 ## [0.0.x](https://github.com/singularityhub/singularity-compose/tree/master) (0.0.x)
+ - command, ability to associate arguments to the instance's startscript (0.0.19)
  - depends\_on, check circular dependencies at startup and shutdown in reverse order (0.0.18)
  - resolv.conf, etc.hosts generated if needed, network disabled non-sudo users (0.0.17)
  - resolv.conf needs to bind by default (0.0.16)

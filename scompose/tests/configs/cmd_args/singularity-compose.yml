@@ -1,0 +1,7 @@
+version: "1.0"
+instances:
+  echo:
+    build:
+      context: .
+      recipe: Singularity
+    command: "arg0 arg1 arg2"

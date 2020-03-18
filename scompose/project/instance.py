@@ -41,6 +41,7 @@ class Instance(object):
         self.instance = None
         self.sudo = sudo
         self.set_name(name, params)
+        self.set_args(params)
         self.set_context(params)
         self.set_volumes(params)
         self.set_ports(params)
@@ -138,6 +139,10 @@ class Instance(object):
         self.ports = params.get("ports", [])
 
     # Commands
+
+    def set_args(self, params):
+        """set arguments to the startscript"""
+        self.args = params.get("command", "")
 
     def _get_network_commands(self, ip_address=None):
         """take a list of ports, return the list of --network-args to
@@ -505,9 +510,13 @@ class Instance(object):
                 options += ["--writable-tmpfs"]
 
             # Show the command to the user
-            commands = "%s %s %s" % (" ".join(options), image, self.name)
+            commands = "%s %s %s %s" % (" ".join(options), image, self.name, self.args,)
             bot.debug("singularity instance start %s" % commands)
 
             self.instance = self.client.instance(
-                name=self.name, sudo=self.sudo, options=options, image=image
+                name=self.name,
+                sudo=self.sudo,
+                options=options,
+                image=image,
+                args=self.args,
             )
