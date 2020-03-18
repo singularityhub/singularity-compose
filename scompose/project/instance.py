@@ -510,12 +510,7 @@ class Instance(object):
                 options += ["--writable-tmpfs"]
 
             # Show the command to the user
-            commands = "%s %s %s %s" % (
-                " ".join(options),
-                image,
-                self.name,
-                self.args,
-            )
+            commands = "%s %s %s %s" % (" ".join(options), image, self.name, self.args,)
             bot.debug("singularity instance start %s" % commands)
 
             self.instance = self.client.instance(
