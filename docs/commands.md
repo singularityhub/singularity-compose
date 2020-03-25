@@ -165,6 +165,13 @@ To stop a custom set, just specify them:
 $ singularity-compose down nginx
 ```
 
+It is also possible to specify a timeout (as for singularity instance stop)
+in order to kill instances after the specified number of seconds:
+
+```bash
+singularity-compose down -t 100
+```
+
 ## Logs
 
 You can of course view logs for all instances, or just specific named ones:

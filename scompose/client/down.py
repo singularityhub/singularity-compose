@@ -21,4 +21,4 @@ def main(args, parser, extra):
     )
 
     # Create instances, and if none specified, create all
-    project.down(args.names)
+    project.down(args.names, args.timeout)

@@ -353,13 +353,13 @@ class Instance(object):
                 self.instance = instance
                 break
 
-    def stop(self):
+    def stop(self, timeout=None):
         """delete the instance, if it exists. Singularity doesn't have delete
            or remove commands, everyting is a stop.
         """
         if self.instance:
             bot.info("Stopping %s" % self)
-            self.instance.stop(sudo=self.sudo)
+            self.instance.stop(sudo=self.sudo, timeout=timeout)
             self.instance = None
 
     # Networking
