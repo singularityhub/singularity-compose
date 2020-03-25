@@ -137,6 +137,15 @@ def get_parser():
 
     down = subparsers.add_parser("down", help="stop instances")
 
+    down.add_argument(
+        "--timeout",
+        "-t",
+        dest="timeout",
+        type=int,
+        help="force kill non stopped instances after specified seconds",
+        default=None,
+    )
+
     execute = subparsers.add_parser("exec", help="execute a command to an instance")
 
     run = subparsers.add_parser("run", help="run an instance runscript.")
