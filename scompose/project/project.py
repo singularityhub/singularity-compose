@@ -358,7 +358,7 @@ class Project(object):
 
     # Down
 
-    def down(self, names=None):
+    def down(self, names=None, timeout=None):
         """stop one or more instances. If no names are provided, bring them
            all down.
 
@@ -373,7 +373,7 @@ class Project(object):
             names.reverse()
 
         for instance in self.iter_instances(names):
-            instance.stop()
+            instance.stop(timeout=timeout)
 
     # Create
 
