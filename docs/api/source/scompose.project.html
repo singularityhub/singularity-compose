@@ -277,6 +277,12 @@ is assumed to be on the host.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="scompose.project.instance.Instance.set_args">
+<code class="sig-name descname">set_args</code><span class="sig-paren">(</span><em class="sig-param">params</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.set_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.set_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>set arguments to the startscript</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="scompose.project.instance.Instance.set_context">
 <code class="sig-name descname">set_context</code><span class="sig-paren">(</span><em class="sig-param">params</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.set_context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.set_context" title="Permalink to this definition">¶</a></dt>
 <dd><p>set and validate parameters from the singularity-compose.yml,
@@ -328,7 +334,7 @@ we will try sharing a bind on the host.</p>
 
 <dl class="method">
 <dt id="scompose.project.instance.Instance.stop">
-<code class="sig-name descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.stop" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">stop</code><span class="sig-paren">(</span><em class="sig-param">timeout=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/instance.html#Instance.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.instance.Instance.stop" title="Permalink to this definition">¶</a></dt>
 <dd><p>delete the instance, if it exists. Singularity doesn’t have delete
 or remove commands, everyting is a stop.</p>
 </dd></dl>
@@ -401,7 +407,7 @@ Note: This function is terrible. Singularity should easily expose</p>
 
 <dl class="method">
 <dt id="scompose.project.project.Project.down">
-<code class="sig-name descname">down</code><span class="sig-paren">(</span><em class="sig-param">names=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.down"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.down" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">down</code><span class="sig-paren">(</span><em class="sig-param">names=None</em>, <em class="sig-param">timeout=None</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/project/project.html#Project.down"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.project.project.Project.down" title="Permalink to this definition">¶</a></dt>
 <dd><p>stop one or more instances. If no names are provided, bring them
 all down.</p>
 <dl class="field-list simple">
