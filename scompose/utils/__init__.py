@@ -12,7 +12,6 @@ import errno
 import json
 import os
 import pwd
-import re
 import sys
 import yaml
 
