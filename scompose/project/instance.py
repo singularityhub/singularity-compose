@@ -498,12 +498,11 @@ class Instance(object):
             # Volumes
             options += self._get_bind_commands()
 
-            if sudo:
-                # Ports
-                options += self._get_network_commands(ip_address)
+            # Ports
+            options += self._get_network_commands(ip_address)
 
-                # Hostname
-                options += ["--hostname", self.name]
+            # Hostname
+            options += ["--hostname", self.name]
 
             # Writable Temporary Directory
             if writable_tmpfs:
