@@ -1,6 +1,6 @@
 """
 
-Copyright (C) 2019-2020 Vanessa Sochat.
+Copyright (C) 2019-2021 Vanessa Sochat.
 
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
@@ -16,7 +16,7 @@ import os
 
 def get_template(name):
     """get a template by name from this directory. If does not exist,
-       return None.
+    return None.
     """
     here = get_installdir()
     template = os.path.join(here, "templates", name)

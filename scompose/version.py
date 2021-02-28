@@ -1,6 +1,6 @@
 """
 
-Copyright (C) 2019-2020 Vanessa Sochat.
+Copyright (C) 2019-2021 Vanessa Sochat.
 
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
@@ -8,7 +8,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """
 
-__version__ = "0.0.21"
+__version__ = "0.1.0"
 AUTHOR = "Vanessa Sochat"
 AUTHOR_EMAIL = "vsochat@stanford.edu"
 NAME = "singularity-compose"

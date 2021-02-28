@@ -1,6 +1,6 @@
 """
 
-Copyright (C) 2019-2020 Vanessa Sochat.
+Copyright (C) 2019-2021 Vanessa Sochat.
 
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
@@ -14,8 +14,8 @@ from scompose.project import Project
 def main(args, parser, extra):
     """bring up one or more instances. They must exist.
 
-       This will build and bring up one or more named instances, or if None
-       are provided, we create all of them.
+    This will build and bring up one or more named instances, or if None
+    are provided, we create all of them.
     """
     # Initialize the project
     project = Project(

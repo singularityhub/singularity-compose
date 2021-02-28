@@ -1,6 +1,6 @@
 """
 
-Copyright (C) 2019-2020 Vanessa Sochat.
+Copyright (C) 2019-2021 Vanessa Sochat.
 
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
@@ -22,8 +22,7 @@ import sys
 
 
 class Project(object):
-    """A compose project is a group of containers read in from a config file.
-    """
+    """A compose project is a group of containers read in from a config file."""
 
     config = None
     instances = {}
@@ -47,7 +46,7 @@ class Project(object):
 
     def get_instance_names(self):
         """return a list of names, if a config file is loaded, and instances
-           are defined.
+        are defined.
         """
         names = []
         if self.instances is not None:
@@ -57,23 +56,23 @@ class Project(object):
 
     def set_filename(self, filename):
         """set the filename to read the recipe from. If not provided, defaults
-           to singularity-compose.yml. The working directory is set to
-           be the directory name of the configuration file.
+        to singularity-compose.yml. The working directory is set to
+        be the directory name of the configuration file.
 
-           Parameters
-           ==========
-           filename: the singularity-compose.yml file to use
+        Parameters
+        ==========
+        filename: the singularity-compose.yml file to use
         """
         self.filename = filename or "singularity-compose.yml"
         self.working_dir = os.path.dirname(os.path.abspath(self.filename))
 
     def set_name(self, name):
         """set the filename to read the recipe from. If not provided, defaults
-           to singularity-compose.yml
+        to singularity-compose.yml
 
-           Parameters
-           ==========
-           name: if a customize name is provided, use it
+        Parameters
+        ==========
+        name: if a customize name is provided, use it
         """
         pwd = os.path.basename(os.path.dirname(os.path.abspath(self.filename)))
         self.name = (name or pwd).lower()
@@ -81,8 +80,7 @@ class Project(object):
     # Listing
 
     def ps(self):
-        """ps will print a table of instances, including pids and names.
-        """
+        """ps will print a table of instances, including pids and names."""
         instance_names = self.get_instance_names()
         table = []
         for instance in self.client.instances(quiet=True, sudo=self.sudo):
@@ -96,11 +94,11 @@ class Project(object):
 
     def iter_instances(self, names):
         """yield instances one at a time. If an invalid name is given,
-           exit with error.
+        exit with error.
 
-           Parameters
-           ==========
-           names: the names of instances to yield. Must be valid
+        Parameters
+        ==========
+        names: the names of instances to yield. Must be valid
         """
         # Used to validate instance names
         instance_names = self.get_instance_names()
@@ -111,13 +109,13 @@ class Project(object):
             yield self.instances.get(name)
 
     def get_instance(self, name):
-        """get a specifically named instance. We first check that the 
-           client has instances defined, and that the name we are looking
-           for is also included. If not found, we return None.
+        """get a specifically named instance. We first check that the
+        client has instances defined, and that the name we are looking
+        for is also included. If not found, we return None.
 
-           Parameters
-           ==========
-           names: the name of instances to get. Must be valid
+        Parameters
+        ==========
+        names: the name of instances to get. Must be valid
         """
         instance = None
         if self.instances:
@@ -128,8 +126,7 @@ class Project(object):
     # Loading Functions
 
     def load(self):
-        """load a singularity-compose.yml recipe, and validate it.
-        """
+        """load a singularity-compose.yml recipe, and validate it."""
 
         if not os.path.exists(self.filename):
             bot.error("%s does not exist." % self.filename)
@@ -148,10 +145,17 @@ class Project(object):
 
         if self.config is not None:
 
-            # If any of config has ports, must use sudo for networking
+            # If any of config has ports, and no fakeroot, must use sudo
             for name in self.config.get("instances", []):
                 params = self.config["instances"][name]
-                if "ports" in params:
+                start_options = params.get("start", {}).get("options", {})
+
+                # If we have fakeroot, don't use sudo
+                if (
+                    "ports" in params
+                    and "fakeroot" not in start_options
+                    and "f" not in start_options
+                ):
                     self.sudo = True
 
             # Create each instance object
@@ -194,13 +198,13 @@ class Project(object):
 
     def get_ip_lookup(self, names, bridge="10.22.0.0/16"):
         """based on a bridge address that can serve other addresses (akin to
-           a router, metaphorically, generate a pre-determined address for
-           each container.
+        a router, metaphorically, generate a pre-determined address for
+        each container.
 
-           Parameters
-           ==========
-           names: a list of names of instances to generate addresses for. 
-           bridge: the bridge address to derive them for.
+        Parameters
+        ==========
+        names: a list of names of instances to generate addresses for.
+        bridge: the bridge address to derive them for.
         """
 
         host_iter = IPv4Network(bridge).hosts()
@@ -216,12 +220,12 @@ class Project(object):
 
     def get_bridge_address(self, name="sbr0"):
         """get the (named) bridge address on the host. It should be automatically
-           created by Singularity over 3.0. This function currently is not used,
-           but is left in case it's needed.
+        created by Singularity over 3.0. This function currently is not used,
+        but is left in case it's needed.
 
-           Parameters
-           ==========
-           name: The default name of the Singularity bridge (sbr0)
+        Parameters
+        ==========
+        name: The default name of the Singularity bridge (sbr0)
         """
         command = ["ip", "-4", "--oneline", "address", "show", "up", name]
         result = self.client._run_command(
@@ -232,14 +236,14 @@ class Project(object):
 
     def create_hosts(self, lookup):
         """create a hosts file to bind to all containers, where we define the
-           correct hostnames to correspond with the ip addresses created.
-           Note: This function is terrible. Singularity should easily expose 
-                 these addresses. See issue here:
-                 https://github.com/sylabs/singularity/issues/3751
+        correct hostnames to correspond with the ip addresses created.
+        Note: This function is terrible. Singularity should easily expose
+              these addresses. See issue here:
+              https://github.com/sylabs/singularity/issues/3751
 
-           Parameters
-           ==========
-           lookup: a lookup of ip addresses to assign the containers
+        Parameters
+        ==========
+        lookup: a lookup of ip addresses to assign the containers
         """
         template = read_file(get_template("hosts"))
         hosts_file = os.path.join(self.working_dir, "etc.hosts")
@@ -254,7 +258,7 @@ class Project(object):
 
     def generate_resolv_conf(self):
         """generate a resolv.conf file to bind to the containers.
-           We use the template provided by scompose.
+        We use the template provided by scompose.
         """
         resolv_conf = os.path.join(self.working_dir, "resolv.conf")
         if not os.path.exists(resolv_conf):
@@ -267,9 +271,9 @@ class Project(object):
     def shell(self, name):
         """if an instance exists, shell into it.
 
-           Parameters
-           ==========
-           name: the name of the instance to shell into
+        Parameters
+        ==========
+        name: the name of the instance to shell into
         """
         instance = self.get_instance(name)
         if not instance:
@@ -281,9 +285,9 @@ class Project(object):
     def run(self, name):
         """if an instance exists, run it.
 
-           Parameters
-           ==========
-           name: the name of the instance to run
+        Parameters
+        ==========
+        name: the name of the instance to run
         """
         instance = self.get_instance(name)
         if not instance:
@@ -302,10 +306,10 @@ class Project(object):
     def execute(self, name, commands):
         """if an instance exists, execute a command to it.
 
-           Parameters
-           ==========
-           name: the name of the instance to exec to
-           commands: a list of commands to issue
+        Parameters
+        ==========
+        name: the name of the instance to exec to
+        commands: a list of commands to issue
         """
         instance = self.get_instance(name)
         if not instance:
@@ -328,10 +332,10 @@ class Project(object):
     def clear_logs(self, names):
         """clear_logs will remove all old error and output logs.
 
-           Parameters
-           ==========
-           names: a list of names to clear logs for. We require the user
-                  to specifically name instances.
+        Parameters
+        ==========
+        names: a list of names to clear logs for. We require the user
+               to specifically name instances.
         """
         for instance in self.iter_instances(names):
             instance.clear_logs()
@@ -339,10 +343,10 @@ class Project(object):
     def logs(self, names=None, tail=0):
         """logs will print logs to the screen.
 
-           Parameters
-           ==========
-           names: a list of names of instances to show logs for. 
-                  If not specified, show logs for all.
+        Parameters
+        ==========
+        names: a list of names of instances to show logs for.
+               If not specified, show logs for all.
         """
         names = names or self.get_instance_names()
         for instance in self.iter_instances(names):
@@ -351,8 +355,7 @@ class Project(object):
     # Config
 
     def view_config(self):
-        """print a configuration file (in json) to the screen.
-        """
+        """print a configuration file (in json) to the screen."""
         if self.config is not None:
             print(json.dumps(self.config, indent=4))
 
@@ -360,12 +363,12 @@ class Project(object):
 
     def down(self, names=None, timeout=None):
         """stop one or more instances. If no names are provided, bring them
-           all down.
+        all down.
 
-           Parameters
-           ==========
-           names: a list of names of instances to bring down. If not specified, we
-           bring down all instances.
+        Parameters
+        ==========
+        names: a list of names of instances to bring down. If not specified, we
+        bring down all instances.
         """
         if not names:
             names = self.get_instance_names()
@@ -381,8 +384,7 @@ class Project(object):
         self, names=None, writable_tmpfs=True, bridge="10.22.0.0/16", no_resolv=False
     ):
 
-        """call the create function, which defaults to the command instance.create()
-        """
+        """call the create function, which defaults to the command instance.create()"""
         return self._create(names, writable_tmpfs=writable_tmpfs, no_resolv=no_resolv)
 
     def up(
@@ -390,7 +392,7 @@ class Project(object):
     ):
 
         """call the up function, instance.up(), which will build before if
-           a container binary does not exist.
+        a container binary does not exist.
         """
         return self._create(
             names, command="up", writable_tmpfs=writable_tmpfs, no_resolv=no_resolv
@@ -406,20 +408,20 @@ class Project(object):
     ):
 
         """create one or more instances. "Command" determines the sub function
-           to call for the instance, which should be "create" or "up".
-           If the user provide a list of names, use them, otherwise default
-           to all instances.
-          
-           Parameters
-           ==========
-           names: the instance names to create
-           command: one of "create" or "up"
-           writable_tmpfs: if the instances should be given writable to tmp
-           bridge: the bridge ip address to use for networking, and generating
-                   addresses for the individual containers.
-                   see /usr/local/etc/singularity/network/00_bridge.conflist 
-           no_resolv: if True, don't create and bind a resolv.conf with Google
-                      nameservers.
+        to call for the instance, which should be "create" or "up".
+        If the user provide a list of names, use them, otherwise default
+        to all instances.
+
+        Parameters
+        ==========
+        names: the instance names to create
+        command: one of "create" or "up"
+        writable_tmpfs: if the instances should be given writable to tmp
+        bridge: the bridge ip address to use for networking, and generating
+                addresses for the individual containers.
+                see /usr/local/etc/singularity/network/00_bridge.conflist
+        no_resolv: if True, don't create and bind a resolv.conf with Google
+                   nameservers.
         """
         # If no names provided, we create all
         names = names or self.get_instance_names()
@@ -431,7 +433,7 @@ class Project(object):
         # Generate ip addresses for each
         lookup = self.get_ip_lookup(names, bridge)
 
-        if self.sudo and not no_resolv:
+        if not no_resolv:
             # Generate shared hosts file
             hosts_file = self.create_hosts(lookup)
 
@@ -442,7 +444,7 @@ class Project(object):
                     circular_dep = True
 
             # Generate a resolv.conf to bind to the container
-            if self.sudo and not no_resolv:
+            if not no_resolv:
                 resolv = self.generate_resolv_conf()
                 instance.volumes.append("%s:/etc/resolv.conf" % resolv)
 
@@ -468,8 +470,7 @@ class Project(object):
     # Build
 
     def build(self, names=None):
-        """given a loaded project, build associated containers (or pull).
-        """
+        """given a loaded project, build associated containers (or pull)."""
         names = names or self.get_instance_names()
         for instance in self.iter_instances(names):
             instance.build(working_dir=self.working_dir)

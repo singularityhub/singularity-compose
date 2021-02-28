@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# Copyright (C) 2017-2020 Vanessa Sochat.
+# Copyright (C) 2017-2021 Vanessa Sochat.
 
 # This Source Code Form is subject to the terms of the
 # Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
@@ -11,8 +11,7 @@ import pytest
 
 
 def test_write_read_files(tmp_path):
-    """test_write_read_files will test the functions write_file and read_file
-    """
+    """test_write_read_files will test the functions write_file and read_file"""
     print("Testing utils.write_file...")
     from scompose.utils import write_file
 
@@ -56,7 +55,7 @@ def test_write_json(tmp_path):
 
 def test_get_installdir():
     """get install directory should return the base of where sregistry
-       is installed
+    is installed
     """
     print("Testing utils.get_installdir")
     from scompose.utils import get_installdir

@@ -2,7 +2,7 @@
 
 """
 
-Copyright (C) 2019-2020 Vanessa Sochat.
+Copyright (C) 2019-2021 Vanessa Sochat.
 
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
@@ -133,18 +133,20 @@ def get_parser():
             help="the address of the bridge to derive others from.",
         )
 
-    # Down
+    # Down or stop
 
     down = subparsers.add_parser("down", help="stop instances")
+    stop = subparsers.add_parser("stop", help="stop instances")
 
-    down.add_argument(
-        "--timeout",
-        "-t",
-        dest="timeout",
-        type=int,
-        help="force kill non stopped instances after specified seconds",
-        default=None,
-    )
+    for command in [down, stop]:
+        command.add_argument(
+            "--timeout",
+            "-t",
+            dest="timeout",
+            type=int,
+            help="force kill non stopped instances after specified seconds",
+            default=None,
+        )
 
     execute = subparsers.add_parser("exec", help="execute a command to an instance")
 
@@ -175,7 +177,7 @@ def get_parser():
     ps = subparsers.add_parser("ps", help="list instances")
 
     # Add list of names
-    for sub in [build, create, down, logs, up, restart]:
+    for sub in [build, create, down, logs, up, restart, stop]:
         sub.add_argument(
             "names", nargs="*", help="the names of the instances to target"
         )
@@ -189,14 +191,13 @@ def get_parser():
 
 def start():
     """main is the entrypoint to singularity compose. We figure out the sub
-       parser based on the command, and then import and call the appropriate 
-       main.
+    parser based on the command, and then import and call the appropriate
+    main.
     """
     parser = get_parser()
 
     def show_help(return_code=0):
-        """print help, including the software version and exit with return code
-        """
+        """print help, including the software version and exit with return code"""
         version = scompose.__version__
 
         print("\nSingularity Compose v%s" % version)
@@ -231,7 +232,7 @@ def start():
         from .create import main
     elif args.command == "config":
         from .config import main
-    elif args.command == "down":
+    elif args.command in ["down", "stop"]:
         from .down import main
     elif args.command == "exec":
         from .exec import main

@@ -1,6 +1,6 @@
 """
 
-Copyright (C) 2019-2020 Vanessa Sochat.
+Copyright (C) 2019-2021 Vanessa Sochat.
 
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
@@ -15,8 +15,8 @@ from scompose.project import Project
 def main(args, parser, extra):
     """View or validate a configuration file
 
-       This comes down to reading in the config to the project, at which
-       case it is validated. We then print it for the user.
+    This comes down to reading in the config to the project, at which
+    case it is validated. We then print it for the user.
     """
     # Initialize the project
     project = Project(
