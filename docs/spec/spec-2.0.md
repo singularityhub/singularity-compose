@@ -98,7 +98,8 @@ as a network (start) option (you might still be able to use it as a build option
 
 Startscript options generally include those for networking, and any other flags
 that you want to provide. The previous "command" option is deprecated, and moved to be under the "start"
-group. As an example in the configuration above, we are starting with options
+group as "args," since we are technically providing arguments to the start script. 
+As an example in the configuration above, we are starting with options
 for `--fakeroot`:
 
 ```yaml
@@ -109,7 +110,7 @@ for `--fakeroot`:
        - fakeroot
 ```
 
-You could also add a "command" here within the start group to provide arguments to the start script.
+You could also add "args" here within the start group to provide arguments to the start script.
 
 
 ## Environment
@@ -220,7 +221,7 @@ field (not defined above).|
 |build.options| a list of one or more options (single strings for boolean, or key value pairs for arguments) to provide to build.  This is where you could provide fakeroot.|
 |start| a section to define start (networking) arguments and options |
 |start.options| a list of one or more options for starting the instance |
-|start.command| a command (arguments) to provide to the startscript when starting the instance |
+|start.args| arguments to provide to the startscript when starting the instance |
 |exec| a section to define an exec directly after instance start (requires a command) |
 |exec.options| a list of one or more options for exec'ing to the instance |
 |exec.command| the command and arguments to provide the instance exec |

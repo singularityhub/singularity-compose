@@ -5,4 +5,4 @@ instances:
       context: .
       recipe: Singularity
     start:
-      command: "arg0 arg1 arg2"
+      args: "arg0 arg1 arg2"

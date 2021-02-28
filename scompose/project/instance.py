@@ -151,7 +151,7 @@ class Instance(object):
     def set_start(self, params):
         """set arguments to the startscript"""
         start = params.get("start", {})
-        self.args = start.get("command", "")
+        self.args = start.get("args", "")
         self.start_opts = [
             "--%s" % opt if len(opt) > 1 else "-%s" % opt
             for opt in start.get("options", [])
