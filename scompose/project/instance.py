@@ -45,8 +45,9 @@ class Instance(object):
         # Start includes networking args and command
         self.set_start(params)
 
-        # Exec is run after a start, if provided
+        # Exec and run are done after a start, if provided
         self.set_exec(params)
+        self.set_run(params)
 
         self.set_context(params)
         self.set_volumes(params)
@@ -163,10 +164,21 @@ class Instance(object):
         self.exec_args = exec_group.get("command", "")
         if "|" in self.exec_args:
             bot.exit("Pipes are not currently supported.")
-        self.exec_opts = [
-            "--%s" % opt if len(opt) > 1 else "-%s" % opt
-            for opt in exec_group.get("options", [])
-        ]
+        self.exec_opts = self._get_command_opts(exec_group.get("options", []))
+
+    def set_run(self, params):
+        """set arguments for exec"""
+        run_group = params.get("run", {}) or {}
+        self.run_args = run_group.get("args", "")
+        if "|" in self.run_args:
+            bot.exit("Pipes are not currently supported.")
+        self.run_opts = self._get_command_opts(run_group.get("options", []))
+
+    def _get_command_opts(self, group):
+        """Given a string of arguments or options, parse into a list with
+        proper flags added.
+        """
+        return ["--%s" % opt if len(opt) > 1 else "-%s" % opt for opt in group]
 
     def _get_network_commands(self, ip_address=None):
         """take a list of ports, return the list of --network-args to
@@ -177,7 +189,7 @@ class Instance(object):
         # Fakeroot means not needing sudo
         fakeroot = "--fakeroot" in self.start_opts or "-f" in self.start_opts
 
-        # If no sudo, isolates container network with a loopback interface.
+        # If not sudo or fakeroot, we need --network none
         if not self.sudo and not fakeroot:
             ports += ["--network", "none"]
 
@@ -559,5 +571,25 @@ class Instance(object):
                     sudo=self.sudo,
                     stream=True,
                     options=self.exec_opts,
+                ):
+                    print(line)
+
+            # If the user has run defined, finish with the run
+            if "run" in self.params:
+
+                # Show the command to the user
+                commands = "%s %s %s" % (
+                    " ".join(self.run_opts),
+                    self.uri,
+                    self.run_args,
+                )
+                bot.debug("singularity run %s" % commands)
+
+                for line in self.client.run(
+                    image=self.instance,
+                    args=self.exec_args,
+                    sudo=self.sudo,
+                    stream=True,
+                    options=self.run_opts,
                 ):
                     print(line)

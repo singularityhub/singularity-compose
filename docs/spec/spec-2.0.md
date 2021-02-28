@@ -155,6 +155,29 @@ then you can do the following:
 As with the above, make sure to export variables.
 We are only printing there to show that it works.
 
+## Run Group
+
+Let's say that you want to start the container, exec a command, and then run the container.
+This is possible with the run group, and your container must define a runscript.
+If you just want the run to happen (without options or arguments) you can do:
+
+```yaml
+  alp1:
+    run: []
+```
+
+And if you want args or options, you can again add them:
+
+```yaml
+  alp1:
+    args: "arg1 arg2 arg3"
+    options: 
+      - "env-file=myvars.env"
+```
+
+The run and exec sections are separate to allow you to run both, or either without
+the other.
+
 ## Instance
 
 An instance currently must be instantiated from a container built 
@@ -222,6 +245,9 @@ field (not defined above).|
 |start| a section to define start (networking) arguments and options |
 |start.options| a list of one or more options for starting the instance |
 |start.args| arguments to provide to the startscript when starting the instance |
+|run| a section to define run arguments and options (container must have runscript) |
+|run.options| a list of one or more options for running the instance after start |
+|run.args| arguments to provide when running the instance |
 |exec| a section to define an exec directly after instance start (requires a command) |
 |exec.options| a list of one or more options for exec'ing to the instance |
 |exec.command| the command and arguments to provide the instance exec |

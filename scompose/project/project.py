@@ -245,8 +245,8 @@ class Project(object):
         ==========
         lookup: a lookup of ip addresses to assign the containers
         """
-        template = read_file(get_template("hosts"))
         hosts_file = os.path.join(self.working_dir, "etc.hosts")
+        template = read_file(get_template("hosts"))
 
         # Add an entry for each instance hostname to see the others
         for name, ip_address in lookup.items():
