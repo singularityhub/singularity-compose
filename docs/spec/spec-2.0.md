@@ -170,9 +170,10 @@ And if you want args or options, you can again add them:
 
 ```yaml
   alp1:
-    args: "arg1 arg2 arg3"
-    options: 
-      - "env-file=myvars.env"
+    run:
+      args: "arg1 arg2 arg3"
+      options: 
+        - "env-file=myvars.env"
 ```
 
 The run and exec sections are separate to allow you to run both, or either without
