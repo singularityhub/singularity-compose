@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,28 @@
   
 
   
+  <link rel="stylesheet" href="../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../assets/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="../assets/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../assets/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../assets/documentation_options.js"></script>
-        <script type="text/javascript" src="../assets/jquery.js"></script>
-        <script type="text/javascript" src="../assets/underscore.js"></script>
-        <script type="text/javascript" src="../assets/doctools.js"></script>
-        <script type="text/javascript" src="../assets/language_data.js"></script>
+        <script src="../assets/jquery.js"></script>
+        <script src="../assets/underscore.js"></script>
+        <script src="../assets/doctools.js"></script>
     
     <script type="text/javascript" src="../assets/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../assets/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="scompose.tests.testdata package" href="scompose.tests.testdata.html" />
@@ -50,7 +50,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> Singularity Compose API
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Singularity Compose API
           
 
           
@@ -77,6 +77,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -112,6 +113,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -150,7 +152,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="scompose.html">scompose package</a> &raquo;</li>
         
@@ -191,49 +193,49 @@
 </div>
 <div class="section" id="module-scompose.tests.test_client">
 <span id="scompose-tests-test-client-module"></span><h2>scompose.tests.test_client module<a class="headerlink" href="#module-scompose.tests.test_client" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
+<dl class="py function">
 <dt id="scompose.tests.test_client.test_commands">
-<code class="sig-prename descclassname">scompose.tests.test_client.</code><code class="sig-name descname">test_commands</code><span class="sig-paren">(</span><em class="sig-param">tmp_path</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/tests/test_client.html#test_commands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.tests.test_client.test_commands" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scompose.tests.test_client.</code><code class="sig-name descname">test_commands</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tmp_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/tests/test_client.html#test_commands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.tests.test_client.test_commands" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
 <div class="section" id="module-scompose.tests.test_utils">
 <span id="scompose-tests-test-utils-module"></span><h2>scompose.tests.test_utils module<a class="headerlink" href="#module-scompose.tests.test_utils" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
+<dl class="py function">
 <dt id="scompose.tests.test_utils.test_get_installdir">
 <code class="sig-prename descclassname">scompose.tests.test_utils.</code><code class="sig-name descname">test_get_installdir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/tests/test_utils.html#test_get_installdir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.tests.test_utils.test_get_installdir" title="Permalink to this definition">¶</a></dt>
 <dd><p>get install directory should return the base of where sregistry
 is installed</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="scompose.tests.test_utils.test_get_userhome">
 <code class="sig-prename descclassname">scompose.tests.test_utils.</code><code class="sig-name descname">test_get_userhome</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/tests/test_utils.html#test_get_userhome"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.tests.test_utils.test_get_userhome" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="scompose.tests.test_utils.test_print_json">
 <code class="sig-prename descclassname">scompose.tests.test_utils.</code><code class="sig-name descname">test_print_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/tests/test_utils.html#test_print_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.tests.test_utils.test_print_json" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="scompose.tests.test_utils.test_run_command">
 <code class="sig-prename descclassname">scompose.tests.test_utils.</code><code class="sig-name descname">test_run_command</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/tests/test_utils.html#test_run_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.tests.test_utils.test_run_command" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="scompose.tests.test_utils.test_write_bad_json">
-<code class="sig-prename descclassname">scompose.tests.test_utils.</code><code class="sig-name descname">test_write_bad_json</code><span class="sig-paren">(</span><em class="sig-param">tmp_path</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/tests/test_utils.html#test_write_bad_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.tests.test_utils.test_write_bad_json" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scompose.tests.test_utils.</code><code class="sig-name descname">test_write_bad_json</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tmp_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/tests/test_utils.html#test_write_bad_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.tests.test_utils.test_write_bad_json" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="scompose.tests.test_utils.test_write_json">
-<code class="sig-prename descclassname">scompose.tests.test_utils.</code><code class="sig-name descname">test_write_json</code><span class="sig-paren">(</span><em class="sig-param">tmp_path</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/tests/test_utils.html#test_write_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.tests.test_utils.test_write_json" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scompose.tests.test_utils.</code><code class="sig-name descname">test_write_json</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tmp_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/tests/test_utils.html#test_write_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.tests.test_utils.test_write_json" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="scompose.tests.test_utils.test_write_read_files">
-<code class="sig-prename descclassname">scompose.tests.test_utils.</code><code class="sig-name descname">test_write_read_files</code><span class="sig-paren">(</span><em class="sig-param">tmp_path</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/tests/test_utils.html#test_write_read_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.tests.test_utils.test_write_read_files" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scompose.tests.test_utils.</code><code class="sig-name descname">test_write_read_files</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tmp_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/tests/test_utils.html#test_write_read_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.tests.test_utils.test_write_read_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>test_write_read_files will test the functions write_file and read_file</p>
 </dd></dl>
 
@@ -263,11 +265,19 @@ is installed</p>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2019, Vanessa Sochat
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -278,7 +288,6 @@ is installed</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

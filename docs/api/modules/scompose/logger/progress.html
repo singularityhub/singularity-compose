@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,28 @@
   
 
   
+  <link rel="stylesheet" href="../../../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../assets/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="../../../assets/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../../../assets/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../assets/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../assets/jquery.js"></script>
-        <script type="text/javascript" src="../../../assets/underscore.js"></script>
-        <script type="text/javascript" src="../../../assets/doctools.js"></script>
-        <script type="text/javascript" src="../../../assets/language_data.js"></script>
+        <script src="../../../assets/jquery.js"></script>
+        <script src="../../../assets/underscore.js"></script>
+        <script src="../../../assets/doctools.js"></script>
     
     <script type="text/javascript" src="../../../assets/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../../assets/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
@@ -48,7 +48,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home"> Singularity Compose API
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Singularity Compose API
           
 
           
@@ -75,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -89,6 +90,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -127,7 +129,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -156,7 +158,7 @@
 <span class="c1"># Credit to base code goes to https://github.com/kennethreitz/clint/blob/master/clint/textui/progress.py</span>
 
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
 
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">time</span>
@@ -175,14 +177,14 @@
 
 
 <div class="viewcode-block" id="ProgressBar"><a class="viewcode-back" href="../../../source/scompose.logger.html#scompose.logger.progress.ProgressBar">[docs]</a><span class="k">class</span> <span class="nc">ProgressBar</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">done</span><span class="p">()</span>
         <span class="k">return</span> <span class="kc">False</span>  <span class="c1"># we&#39;re not suppressing exceptions</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">label</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
         <span class="n">width</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
@@ -310,11 +312,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2019, Vanessa Sochat
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -325,7 +335,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

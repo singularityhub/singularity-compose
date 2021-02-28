@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,28 @@
   
 
   
+  <link rel="stylesheet" href="../../../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../assets/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="../../../assets/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../../../assets/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../assets/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../assets/jquery.js"></script>
-        <script type="text/javascript" src="../../../assets/underscore.js"></script>
-        <script type="text/javascript" src="../../../assets/doctools.js"></script>
-        <script type="text/javascript" src="../../../assets/language_data.js"></script>
+        <script src="../../../assets/jquery.js"></script>
+        <script src="../../../assets/underscore.js"></script>
+        <script src="../../../assets/doctools.js"></script>
     
     <script type="text/javascript" src="../../../assets/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../../assets/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
@@ -48,7 +48,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home"> Singularity Compose API
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Singularity Compose API
           
 
           
@@ -75,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -89,6 +90,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -127,7 +129,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -147,7 +149,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for scompose.logger.message</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright (C) 2017-2019 Vanessa Sochat.</span>
+<span></span><span class="c1"># Copyright (C) 2017-2021 Vanessa Sochat.</span>
 
 <span class="c1"># This Source Code Form is subject to the terms of the</span>
 <span class="c1"># Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed</span>
@@ -177,7 +179,7 @@
 
 
 <div class="viewcode-block" id="SingularityMessage"><a class="viewcode-back" href="../../../source/scompose.logger.html#scompose.logger.message.SingularityMessage">[docs]</a><span class="k">class</span> <span class="nc">SingularityMessage</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MESSAGELEVEL</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MESSAGELEVEL</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="n">get_logging_level</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">history</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">errorStream</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span>
@@ -203,8 +205,8 @@
 
 <div class="viewcode-block" id="SingularityMessage.useColor"><a class="viewcode-back" href="../../../source/scompose.logger.html#scompose.logger.message.SingularityMessage.useColor">[docs]</a>    <span class="k">def</span> <span class="nf">useColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;useColor will determine if color should be added</span>
-<span class="sd">           to a print. Will check if being run in a terminal, and</span>
-<span class="sd">           if has support for ascii</span>
+<span class="sd">        to a print. Will check if being run in a terminal, and</span>
+<span class="sd">        if has support for ascii</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">COLORIZE</span> <span class="o">=</span> <span class="n">get_user_color_preference</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">COLORIZE</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -219,7 +221,7 @@
 
 <div class="viewcode-block" id="SingularityMessage.addColor"><a class="viewcode-back" href="../../../source/scompose.logger.html#scompose.logger.message.SingularityMessage.addColor">[docs]</a>    <span class="k">def</span> <span class="nf">addColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;addColor to the prompt (usually prefix) if terminal</span>
-<span class="sd">           supports, and specified to do so</span>
+<span class="sd">        supports, and specified to do so</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">colorize</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">level</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">:</span>
@@ -228,7 +230,7 @@
 
 <div class="viewcode-block" id="SingularityMessage.emitError"><a class="viewcode-back" href="../../../source/scompose.logger.html#scompose.logger.message.SingularityMessage.emitError">[docs]</a>    <span class="k">def</span> <span class="nf">emitError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;determine if a level should print to</span>
-<span class="sd">           stderr, includes all levels but INFO and QUIET</span>
+<span class="sd">        stderr, includes all levels but INFO and QUIET</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">level</span> <span class="ow">in</span> <span class="p">[</span>
             <span class="n">ABORT</span><span class="p">,</span>
@@ -251,8 +253,7 @@
         <span class="k">return</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="SingularityMessage.isEnabledFor"><a class="viewcode-back" href="../../../source/scompose.logger.html#scompose.logger.message.SingularityMessage.isEnabledFor">[docs]</a>    <span class="k">def</span> <span class="nf">isEnabledFor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">messageLevel</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;check if a messageLevel is enabled to emit a level</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;check if a messageLevel is enabled to emit a level&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">messageLevel</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="kc">False</span></div>
@@ -406,8 +407,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">DEBUG</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="s2">&quot;DEBUG&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SingularityMessage.is_quiet"><a class="viewcode-back" href="../../../source/scompose.logger.html#scompose.logger.message.SingularityMessage.is_quiet">[docs]</a>    <span class="k">def</span> <span class="nf">is_quiet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;is_quiet returns true if the level is under 1</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;is_quiet returns true if the level is under 1&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="kc">True</span></div>
@@ -415,9 +415,9 @@
     <span class="c1"># Terminal ------------------------------------------</span>
 
 <div class="viewcode-block" id="SingularityMessage.table"><a class="viewcode-back" href="../../../source/scompose.logger.html#scompose.logger.message.SingularityMessage.table">[docs]</a>    <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">col_width</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;table will print a table of entries. If the rows is </span>
-<span class="sd">           a dictionary, the keys are interpreted as column names. if</span>
-<span class="sd">           not, a numbered list is used.</span>
+        <span class="sd">&quot;&quot;&quot;table will print a table of entries. If the rows is</span>
+<span class="sd">        a dictionary, the keys are interpreted as column names. if</span>
+<span class="sd">        not, a numbered list is used.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
@@ -437,9 +437,9 @@
 
 <div class="viewcode-block" id="get_logging_level"><a class="viewcode-back" href="../../../source/scompose.logger.html#scompose.logger.message.get_logging_level">[docs]</a><span class="k">def</span> <span class="nf">get_logging_level</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;configure a logging to standard out based on the user&#39;s</span>
-<span class="sd">       selected level, which should be in an environment variable called</span>
-<span class="sd">       MESSAGELEVEL. if MESSAGELEVEL is not set, the info level</span>
-<span class="sd">       (1) is assumed (all informational messages).</span>
+<span class="sd">    selected level, which should be in an environment variable called</span>
+<span class="sd">    MESSAGELEVEL. if MESSAGELEVEL is not set, the info level</span>
+<span class="sd">    (1) is assumed (all informational messages).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">level</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;MESSAGELEVEL&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">)</span>  <span class="c1"># INFO</span>
 
@@ -497,11 +497,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2019, Vanessa Sochat
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -512,7 +520,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

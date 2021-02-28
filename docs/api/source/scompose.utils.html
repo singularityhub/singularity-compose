@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,28 @@
   
 
   
+  <link rel="stylesheet" href="../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../assets/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="../assets/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../assets/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../assets/documentation_options.js"></script>
-        <script type="text/javascript" src="../assets/jquery.js"></script>
-        <script type="text/javascript" src="../assets/underscore.js"></script>
-        <script type="text/javascript" src="../assets/doctools.js"></script>
-        <script type="text/javascript" src="../assets/language_data.js"></script>
+        <script src="../assets/jquery.js"></script>
+        <script src="../assets/underscore.js"></script>
+        <script src="../assets/doctools.js"></script>
     
     <script type="text/javascript" src="../assets/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../assets/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="&lt;no title&gt;" href="../changelog.html" />
@@ -50,7 +50,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> Singularity Compose API
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Singularity Compose API
           
 
           
@@ -77,6 +77,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -108,6 +109,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -146,7 +148,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="scompose.html">scompose package</a> &raquo;</li>
         
@@ -173,58 +175,58 @@
 <h1>scompose.utils package<a class="headerlink" href="#scompose-utils-package" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-scompose.utils">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-scompose.utils" title="Permalink to this headline">¶</a></h2>
-<p>Copyright (C) 2019-2020 Vanessa Sochat.</p>
+<p>Copyright (C) 2019-2021 Vanessa Sochat.</p>
 <p>This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 with this file, You can obtain one at <a class="reference external" href="http://mozilla.org/MPL/2.0/">http://mozilla.org/MPL/2.0/</a>.</p>
-<dl class="function">
+<dl class="py function">
 <dt id="scompose.utils.get_installdir">
 <code class="sig-prename descclassname">scompose.utils.</code><code class="sig-name descname">get_installdir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#get_installdir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.get_installdir" title="Permalink to this definition">¶</a></dt>
 <dd><p>get_installdir returns the installation directory of the application</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="scompose.utils.get_userhome">
 <code class="sig-prename descclassname">scompose.utils.</code><code class="sig-name descname">get_userhome</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#get_userhome"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.get_userhome" title="Permalink to this definition">¶</a></dt>
 <dd><p>get the user home based on the effective uid</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="scompose.utils.mkdir_p">
-<code class="sig-prename descclassname">scompose.utils.</code><code class="sig-name descname">mkdir_p</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#mkdir_p"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.mkdir_p" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scompose.utils.</code><code class="sig-name descname">mkdir_p</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#mkdir_p"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.mkdir_p" title="Permalink to this definition">¶</a></dt>
 <dd><p>mkdir_p attempts to get the same functionality as mkdir -p
 :param path: the path to create.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="scompose.utils.print_json">
-<code class="sig-prename descclassname">scompose.utils.</code><code class="sig-name descname">print_json</code><span class="sig-paren">(</span><em class="sig-param">json_obj</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#print_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.print_json" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scompose.utils.</code><code class="sig-name descname">print_json</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">json_obj</span></em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#print_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.print_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>just dump the json in a “pretty print” format</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="scompose.utils.read_file">
-<code class="sig-prename descclassname">scompose.utils.</code><code class="sig-name descname">read_file</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">mode='r'</em>, <em class="sig-param">readlines=True</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#read_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.read_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scompose.utils.</code><code class="sig-name descname">read_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'r'</span></em>, <em class="sig-param"><span class="n">readlines</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#read_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.read_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>write_file will open a file, “filename” and write content, “content”
 and properly close the file</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="scompose.utils.read_json">
-<code class="sig-prename descclassname">scompose.utils.</code><code class="sig-name descname">read_json</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">mode='r'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#read_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.read_json" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scompose.utils.</code><code class="sig-name descname">read_json</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'r'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#read_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.read_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>read_json reads in a json file and returns
 the data structure as dict.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="scompose.utils.read_yaml">
-<code class="sig-prename descclassname">scompose.utils.</code><code class="sig-name descname">read_yaml</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">mode='r'</em>, <em class="sig-param">quiet=False</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#read_yaml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.read_yaml" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scompose.utils.</code><code class="sig-name descname">read_yaml</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'r'</span></em>, <em class="sig-param"><span class="n">quiet</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#read_yaml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.read_yaml" title="Permalink to this definition">¶</a></dt>
 <dd><p>read a yaml file, only including sections between dashes</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="scompose.utils.run_command">
-<code class="sig-prename descclassname">scompose.utils.</code><code class="sig-name descname">run_command</code><span class="sig-paren">(</span><em class="sig-param">cmd</em>, <em class="sig-param">sudo=False</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#run_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.run_command" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scompose.utils.</code><code class="sig-name descname">run_command</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cmd</span></em>, <em class="sig-param"><span class="n">sudo</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#run_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.run_command" title="Permalink to this definition">¶</a></dt>
 <dd><p>run_command uses subprocess to send a command to the terminal.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -237,16 +239,16 @@ the data structure as dict.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="scompose.utils.write_file">
-<code class="sig-prename descclassname">scompose.utils.</code><code class="sig-name descname">write_file</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">content</em>, <em class="sig-param">mode='w'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#write_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.write_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scompose.utils.</code><code class="sig-name descname">write_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">content</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'w'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#write_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.write_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>write_file will open a file, “filename” and write content, “content”
 and properly close the file</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="scompose.utils.write_json">
-<code class="sig-prename descclassname">scompose.utils.</code><code class="sig-name descname">write_json</code><span class="sig-paren">(</span><em class="sig-param">json_obj</em>, <em class="sig-param">filename</em>, <em class="sig-param">mode='w'</em>, <em class="sig-param">print_pretty=True</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#write_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.write_json" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scompose.utils.</code><code class="sig-name descname">write_json</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">json_obj</span></em>, <em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'w'</span></em>, <em class="sig-param"><span class="n">print_pretty</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#write_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.write_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>write_json will (optionally,pretty print) a json object to file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -259,9 +261,9 @@ and properly close the file</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="scompose.utils.write_yaml">
-<code class="sig-prename descclassname">scompose.utils.</code><code class="sig-name descname">write_yaml</code><span class="sig-paren">(</span><em class="sig-param">yaml_dict</em>, <em class="sig-param">filename</em>, <em class="sig-param">mode='w'</em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#write_yaml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.write_yaml" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scompose.utils.</code><code class="sig-name descname">write_yaml</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">yaml_dict</span></em>, <em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'w'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../modules/scompose/utils.html#write_yaml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scompose.utils.write_yaml" title="Permalink to this definition">¶</a></dt>
 <dd><p>write a dictionary to yaml file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -297,11 +299,19 @@ and properly close the file</p>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2019, Vanessa Sochat
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -312,7 +322,6 @@ and properly close the file</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {
