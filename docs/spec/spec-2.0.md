@@ -1,7 +1,8 @@
-# Singularity Compose Version 1.0
+# Singularity Compose Version 2.0
 
 The second version of the singularity compose spec has added options for
-starting an instance, and exec'ing commands after that.
+starting an instance, and exec'ing commands after that. Note that spec v2.0 is
+supported for Singularity Compose versions 0.1.0 and later.
 
 ## Overview
 
