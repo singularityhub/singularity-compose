@@ -196,8 +196,9 @@
         <span class="c1"># Start includes networking args and command</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
 
-        <span class="c1"># Exec is run after a start, if provided</span>
+        <span class="c1"># Exec and run are done after a start, if provided</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_exec</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_run</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_volumes</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
@@ -314,10 +315,21 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">exec_args</span> <span class="o">=</span> <span class="n">exec_group</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;command&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="s2">&quot;|&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">exec_args</span><span class="p">:</span>
             <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s2">&quot;Pipes are not currently supported.&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">exec_opts</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s2">&quot;--</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">opt</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">opt</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;-</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">opt</span>
-            <span class="k">for</span> <span class="n">opt</span> <span class="ow">in</span> <span class="n">exec_group</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;options&quot;</span><span class="p">,</span> <span class="p">[])</span>
-        <span class="p">]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exec_opts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_command_opts</span><span class="p">(</span><span class="n">exec_group</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;options&quot;</span><span class="p">,</span> <span class="p">[]))</span></div>
+
+<div class="viewcode-block" id="Instance.set_run"><a class="viewcode-back" href="../../../source/scompose.project.html#scompose.project.instance.Instance.set_run">[docs]</a>    <span class="k">def</span> <span class="nf">set_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;set arguments for run&quot;&quot;&quot;</span>
+        <span class="n">run_group</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;run&quot;</span><span class="p">,</span> <span class="p">{})</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_args</span> <span class="o">=</span> <span class="n">run_group</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;args&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;|&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_args</span><span class="p">:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s2">&quot;Pipes are not currently supported.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_opts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_command_opts</span><span class="p">(</span><span class="n">run_group</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;options&quot;</span><span class="p">,</span> <span class="p">[]))</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_command_opts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Given a string of arguments or options, parse into a list with</span>
+<span class="sd">        proper flags added.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;--</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">opt</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">opt</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;-</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">opt</span> <span class="k">for</span> <span class="n">opt</span> <span class="ow">in</span> <span class="n">group</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">_get_network_commands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip_address</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;take a list of ports, return the list of --network-args to</span>
@@ -328,7 +340,7 @@
         <span class="c1"># Fakeroot means not needing sudo</span>
         <span class="n">fakeroot</span> <span class="o">=</span> <span class="s2">&quot;--fakeroot&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_opts</span> <span class="ow">or</span> <span class="s2">&quot;-f&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_opts</span>
 
-        <span class="c1"># If no sudo, isolates container network with a loopback interface.</span>
+        <span class="c1"># If not sudo or fakeroot, we need --network none</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sudo</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">fakeroot</span><span class="p">:</span>
             <span class="n">ports</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;--network&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">]</span>
 
@@ -710,6 +722,26 @@
                     <span class="n">sudo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sudo</span><span class="p">,</span>
                     <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                     <span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">exec_opts</span><span class="p">,</span>
+                <span class="p">):</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+            <span class="c1"># If the user has run defined, finish with the run</span>
+            <span class="k">if</span> <span class="s2">&quot;run&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
+
+                <span class="c1"># Show the command to the user</span>
+                <span class="n">commands</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run_opts</span><span class="p">),</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">run_args</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">bot</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;singularity run </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">commands</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                    <span class="n">image</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span>
+                    <span class="n">args</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">run_args</span><span class="p">,</span>
+                    <span class="n">sudo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sudo</span><span class="p">,</span>
+                    <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">run_opts</span><span class="p">,</span>
                 <span class="p">):</span>
                     <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span></div></div>
 </pre></div>

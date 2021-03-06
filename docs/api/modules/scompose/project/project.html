@@ -364,8 +364,20 @@
         <span class="c1"># Don&#39;t include the gateway</span>
         <span class="nb">next</span><span class="p">(</span><span class="n">host_iter</span><span class="p">)</span>
 
+        <span class="c1"># Get list of existing instances to skip addresses</span>
+        <span class="n">instances</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">instances</span><span class="p">(</span><span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_json</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># We can only get instances run by sudo if we have it</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sudo</span><span class="p">:</span>
+            <span class="n">instances</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">instances</span><span class="p">(</span><span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_json</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sudo</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">skip_addresses</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;ip&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">instances</span> <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;ip&quot;</span><span class="p">]]</span>
+
+        <span class="c1"># Only use addresses not currently in use</span>
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
-            <span class="n">lookup</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">host_iter</span><span class="p">))</span>
+            <span class="n">ip_address</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">host_iter</span><span class="p">))</span>
+            <span class="k">while</span> <span class="n">ip_address</span> <span class="ow">in</span> <span class="n">skip_addresses</span><span class="p">:</span>
+                <span class="n">ip_address</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">host_iter</span><span class="p">))</span>
+            <span class="n">lookup</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">ip_address</span>
 
         <span class="k">return</span> <span class="n">lookup</span></div>
 
@@ -396,8 +408,8 @@
 <span class="sd">        ==========</span>
 <span class="sd">        lookup: a lookup of ip addresses to assign the containers</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">template</span> <span class="o">=</span> <span class="n">read_file</span><span class="p">(</span><span class="n">get_template</span><span class="p">(</span><span class="s2">&quot;hosts&quot;</span><span class="p">))</span>
         <span class="n">hosts_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">working_dir</span><span class="p">,</span> <span class="s2">&quot;etc.hosts&quot;</span><span class="p">)</span>
+        <span class="n">template</span> <span class="o">=</span> <span class="n">read_file</span><span class="p">(</span><span class="n">get_template</span><span class="p">(</span><span class="s2">&quot;hosts&quot;</span><span class="p">))</span>
 
         <span class="c1"># Add an entry for each instance hostname to see the others</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">ip_address</span> <span class="ow">in</span> <span class="n">lookup</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
