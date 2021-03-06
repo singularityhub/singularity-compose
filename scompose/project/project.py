@@ -86,10 +86,16 @@ class Project(object):
         for instance in self.client.instances(quiet=True, sudo=self.sudo):
             if instance.name in instance_names:
                 image = os.path.basename(instance._image)
-                table.append([instance.name.rjust(12), instance.pid, image])
+                ip_address = getattr(instance, "ip_address", None)
+                table.append(
+                    [instance.name.rjust(13), str(instance.pid), ip_address, image]
+                )
 
-        bot.custom(prefix="INSTANCES ", message="NAME PID     IMAGE", color="CYAN")
-
+        bot.custom(
+            prefix="INSTANCES ",
+            message="NAME         PID     IP              IMAGE",
+            color="CYAN",
+        )
         bot.table(table)
 
     def iter_instances(self, names):
