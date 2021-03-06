@@ -213,8 +213,20 @@ class Project(object):
         # Don't include the gateway
         next(host_iter)
 
+        # Get list of existing instances to skip addresses
+        instances = self.client.instances(quiet=True, return_json=True)
+
+        # We can only get instances run by sudo if we have it
+        if self.sudo:
+            instances += self.client.instances(quiet=True, return_json=True, sudo=True)
+        skip_addresses = [x["ip"] for x in instances if x["ip"]]
+
+        # Only use addresses not currently in use
         for name in names:
-            lookup[name] = str(next(host_iter))
+            ip_address = str(next(host_iter))
+            while ip_address in skip_addresses:
+                ip_address = str(next(host_iter))
+            lookup[name] = ip_address
 
         return lookup
 

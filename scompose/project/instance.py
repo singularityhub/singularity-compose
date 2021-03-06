@@ -167,7 +167,7 @@ class Instance(object):
         self.exec_opts = self._get_command_opts(exec_group.get("options", []))
 
     def set_run(self, params):
-        """set arguments for exec"""
+        """set arguments for run"""
         run_group = params.get("run", {}) or {}
         self.run_args = run_group.get("args", "")
         if "|" in self.run_args:
@@ -587,7 +587,7 @@ class Instance(object):
 
                 for line in self.client.run(
                     image=self.instance,
-                    args=self.exec_args,
+                    args=self.run_args,
                     sudo=self.sudo,
                     stream=True,
                     options=self.run_opts,

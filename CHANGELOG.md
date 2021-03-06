@@ -16,6 +16,7 @@ The versions coincide with releases on pypi.
 ## [0.0.x](https://github.com/singularityhub/singularity-compose/tree/master) (0.0.x)
  - version 2.0 of the spec with added network and exec options (0.1.0)
    - stop option added (equivalent functionality to down)   
+   - spython version 0.1.0 with Singularity 3.x or greater required
  - removed check for sudo when adding network flags (0.0.21)
  - singularity-compose down supporting timeout (0.0.20)
  - command, ability to associate arguments to the instance's startscript (0.0.19)
