@@ -169,8 +169,8 @@ class Instance(object):
     def set_run(self, params):
         """set arguments for run"""
         run_group = params.get("run", {}) or {}
-        self.run_args = run_group.get("args", "")
-        if "|" in self.run_args:
+        self.run_args = run_group.get("args")
+        if self.run_args and "|" in self.run_args:
             bot.exit("Pipes are not currently supported.")
         self.run_opts = self._get_command_opts(run_group.get("options", []))
 
@@ -581,7 +581,7 @@ class Instance(object):
                 commands = "%s %s %s" % (
                     " ".join(self.run_opts),
                     self.uri,
-                    self.run_args,
+                    self.run_args or "",
                 )
                 bot.debug("singularity run %s" % commands)
 
