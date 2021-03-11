@@ -35,6 +35,7 @@ class Project(object):
         self.parse()
         self.env_file = env_file
         self.client = get_client()
+        self.running = self.get_already_running()
 
     # Names
 
@@ -131,6 +132,19 @@ class Project(object):
 
     # Loading Functions
 
+    def get_already_running(self):
+        """Since a user can bring select instances up and down, we need to
+        derive a list of already running instances to include
+        """
+        # Get list of existing instances to skip addresses
+        instances = self.client.instances(quiet=True, return_json=True)
+
+        # We can only get instances run by sudo if we have it
+        if self.sudo:
+            instances += self.client.instances(quiet=True, return_json=True, sudo=True)
+
+        return {x["instance"]: x for x in instances}
+
     def load(self):
         """load a singularity-compose.yml recipe, and validate it."""
 
@@ -219,13 +233,9 @@ class Project(object):
         # Don't include the gateway
         next(host_iter)
 
-        # Get list of existing instances to skip addresses
-        instances = self.client.instances(quiet=True, return_json=True)
-
-        # We can only get instances run by sudo if we have it
-        if self.sudo:
-            instances += self.client.instances(quiet=True, return_json=True, sudo=True)
-        skip_addresses = [x["ip"] for x in instances if x["ip"]]
+        # If an instance is already running, we want to include it
+        all_names = set(self.config["instances"].keys())
+        skip_addresses = [x["ip"] for name, x in self.running.items() if x["ip"]]
 
         # Only use addresses not currently in use
         for name in names:
@@ -233,6 +243,11 @@ class Project(object):
             while ip_address in skip_addresses:
                 ip_address = str(next(host_iter))
             lookup[name] = ip_address
+
+        # Add instances that are already running
+        for name in all_names:
+            if name not in names and name in self.running:
+                lookup[name] = self.running[name]["ip"]
 
         return lookup
 
@@ -458,7 +473,7 @@ class Project(object):
         for instance in self.iter_instances(names):
             depends_on = instance.params.get("depends_on", [])
             for dep in depends_on:
-                if dep not in created:
+                if dep not in created and dep not in self.running:
                     circular_dep = True
 
             # Generate a resolv.conf to bind to the container

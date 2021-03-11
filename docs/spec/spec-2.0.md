@@ -1,7 +1,7 @@
 # Singularity Compose Version 2.0
 
 The second version of the singularity compose spec has added options for
-starting an instance, and exec'ing commands after that. Note that spec v2.0 is
+starting an instance, starting, exec'ing and running commands after that. Note that spec v2.0 is
 supported for Singularity Compose versions 0.1.0 and later.
 
 ## Overview
@@ -21,7 +21,7 @@ instances:
       - "1025:1025"
     start:
       options:
-       - fakeroot
+        - fakeroot
     exec:
       options: 
         - "env-file=myvars.env"
@@ -35,13 +35,13 @@ instances:
       - "1026:1026"
     start:
       options:
-       - fakeroot
+        - fakeroot
     depends_on:
       - alp1
 ```
 
-You'll notice that this differs from v1.0 because we've added groups for start and exec
-options. Start options and arguments are provided to the instance at start,
+You'll notice that this differs from v1.0 because we've added groups for start, exec,
+and run options. Start options and arguments are provided to the instance at start,
 while exec options and arguments are exec'd to the instance after creation (only
 if an exec argument exists). In the example above, we want to generate
 two instances, each with an alpine base, and use fakeroot so that sudo is not required.
@@ -107,7 +107,7 @@ for `--fakeroot`:
     ...
     start:
       options:
-       - fakeroot
+        - fakeroot
 ```
 
 You could also add "args" here within the start group to provide arguments to the start script.
