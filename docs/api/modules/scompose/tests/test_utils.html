@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,28 @@
   
 
   
+  <link rel="stylesheet" href="../../../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../assets/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="../../../assets/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../../../assets/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../assets/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../assets/jquery.js"></script>
-        <script type="text/javascript" src="../../../assets/underscore.js"></script>
-        <script type="text/javascript" src="../../../assets/doctools.js"></script>
-        <script type="text/javascript" src="../../../assets/language_data.js"></script>
+        <script src="../../../assets/jquery.js"></script>
+        <script src="../../../assets/underscore.js"></script>
+        <script src="../../../assets/doctools.js"></script>
     
     <script type="text/javascript" src="../../../assets/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../../assets/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
@@ -48,7 +48,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home"> Singularity Compose API
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Singularity Compose API
           
 
           
@@ -75,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -89,6 +90,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -127,7 +129,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -149,7 +151,7 @@
   <h1>Source code for scompose.tests.test_utils</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/python</span>
 
-<span class="c1"># Copyright (C) 2017-2020 Vanessa Sochat.</span>
+<span class="c1"># Copyright (C) 2017-2021 Vanessa Sochat.</span>
 
 <span class="c1"># This Source Code Form is subject to the terms of the</span>
 <span class="c1"># Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed</span>
@@ -160,10 +162,9 @@
 
 
 <div class="viewcode-block" id="test_write_read_files"><a class="viewcode-back" href="../../../source/scompose.tests.html#scompose.tests.test_utils.test_write_read_files">[docs]</a><span class="k">def</span> <span class="nf">test_write_read_files</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;test_write_read_files will test the functions write_file and read_file</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;test_write_read_files will test the functions write_file and read_file&quot;&quot;&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Testing utils.write_file...&quot;</span><span class="p">)</span>
-    <span class="kn">from</span> <span class="nn">scompose.utils</span> <span class="k">import</span> <span class="n">write_file</span>
+    <span class="kn">from</span> <span class="nn">scompose.utils</span> <span class="kn">import</span> <span class="n">write_file</span>
 
     <span class="n">tmpfile</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">tmp_path</span> <span class="o">/</span> <span class="s2">&quot;written_file.txt&quot;</span><span class="p">)</span>
     <span class="k">assert</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">tmpfile</span><span class="p">)</span>
@@ -171,14 +172,14 @@
     <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">tmpfile</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Testing utils.read_file...&quot;</span><span class="p">)</span>
-    <span class="kn">from</span> <span class="nn">scompose.utils</span> <span class="k">import</span> <span class="n">read_file</span>
+    <span class="kn">from</span> <span class="nn">scompose.utils</span> <span class="kn">import</span> <span class="n">read_file</span>
 
     <span class="n">content</span> <span class="o">=</span> <span class="n">read_file</span><span class="p">(</span><span class="n">tmpfile</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">assert</span> <span class="n">content</span> <span class="o">==</span> <span class="s2">&quot;hello!&quot;</span></div>
 
 
 <div class="viewcode-block" id="test_write_bad_json"><a class="viewcode-back" href="../../../source/scompose.tests.html#scompose.tests.test_utils.test_write_bad_json">[docs]</a><span class="k">def</span> <span class="nf">test_write_bad_json</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">scompose.utils</span> <span class="k">import</span> <span class="n">write_json</span>
+    <span class="kn">from</span> <span class="nn">scompose.utils</span> <span class="kn">import</span> <span class="n">write_json</span>
 
     <span class="n">bad_json</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Wakkawakkawakka&#39;}&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="kc">True</span><span class="p">},</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">]}</span>
     <span class="n">tmpfile</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">tmp_path</span> <span class="o">/</span> <span class="s2">&quot;json_file.txt&quot;</span><span class="p">)</span>
@@ -189,7 +190,7 @@
 
 <div class="viewcode-block" id="test_write_json"><a class="viewcode-back" href="../../../source/scompose.tests.html#scompose.tests.test_utils.test_write_json">[docs]</a><span class="k">def</span> <span class="nf">test_write_json</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">):</span>
     <span class="kn">import</span> <span class="nn">json</span>
-    <span class="kn">from</span> <span class="nn">scompose.utils</span> <span class="k">import</span> <span class="n">write_json</span><span class="p">,</span> <span class="n">read_json</span>
+    <span class="kn">from</span> <span class="nn">scompose.utils</span> <span class="kn">import</span> <span class="n">write_json</span><span class="p">,</span> <span class="n">read_json</span>
 
     <span class="n">good_json</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Wakkawakkawakka&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">]}</span>
     <span class="n">tmpfile</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">tmp_path</span> <span class="o">/</span> <span class="s2">&quot;good_json_file.txt&quot;</span><span class="p">)</span>
@@ -205,10 +206,10 @@
 
 <div class="viewcode-block" id="test_get_installdir"><a class="viewcode-back" href="../../../source/scompose.tests.html#scompose.tests.test_utils.test_get_installdir">[docs]</a><span class="k">def</span> <span class="nf">test_get_installdir</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;get install directory should return the base of where sregistry</span>
-<span class="sd">       is installed</span>
+<span class="sd">    is installed</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Testing utils.get_installdir&quot;</span><span class="p">)</span>
-    <span class="kn">from</span> <span class="nn">scompose.utils</span> <span class="k">import</span> <span class="n">get_installdir</span>
+    <span class="kn">from</span> <span class="nn">scompose.utils</span> <span class="kn">import</span> <span class="n">get_installdir</span>
 
     <span class="n">whereami</span> <span class="o">=</span> <span class="n">get_installdir</span><span class="p">()</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">whereami</span><span class="p">)</span>
@@ -217,7 +218,7 @@
 
 <div class="viewcode-block" id="test_run_command"><a class="viewcode-back" href="../../../source/scompose.tests.html#scompose.tests.test_utils.test_run_command">[docs]</a><span class="k">def</span> <span class="nf">test_run_command</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Testing utils.run_command&quot;</span><span class="p">)</span>
-    <span class="kn">from</span> <span class="nn">scompose.utils</span> <span class="k">import</span> <span class="n">run_command</span>
+    <span class="kn">from</span> <span class="nn">scompose.utils</span> <span class="kn">import</span> <span class="n">run_command</span>
 
     <span class="n">result</span> <span class="o">=</span> <span class="n">run_command</span><span class="p">([</span><span class="s2">&quot;echo&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">])</span>
     <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;hello</span><span class="se">\n</span><span class="s2">&quot;</span>
@@ -226,7 +227,7 @@
 
 <div class="viewcode-block" id="test_get_userhome"><a class="viewcode-back" href="../../../source/scompose.tests.html#scompose.tests.test_utils.test_get_userhome">[docs]</a><span class="k">def</span> <span class="nf">test_get_userhome</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Testing utils.get_userhome&quot;</span><span class="p">)</span>
-    <span class="kn">from</span> <span class="nn">scompose.utils</span> <span class="k">import</span> <span class="n">get_userhome</span>
+    <span class="kn">from</span> <span class="nn">scompose.utils</span> <span class="kn">import</span> <span class="n">get_userhome</span>
 
     <span class="n">home</span> <span class="o">=</span> <span class="n">get_userhome</span><span class="p">()</span>
     <span class="k">assert</span> <span class="n">home</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;HOME&quot;</span><span class="p">)</span></div>
@@ -234,7 +235,7 @@
 
 <div class="viewcode-block" id="test_print_json"><a class="viewcode-back" href="../../../source/scompose.tests.html#scompose.tests.test_utils.test_print_json">[docs]</a><span class="k">def</span> <span class="nf">test_print_json</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Testing utils.print_json&quot;</span><span class="p">)</span>
-    <span class="kn">from</span> <span class="nn">scompose.utils</span> <span class="k">import</span> <span class="n">print_json</span>
+    <span class="kn">from</span> <span class="nn">scompose.utils</span> <span class="kn">import</span> <span class="n">print_json</span>
 
     <span class="n">result</span> <span class="o">=</span> <span class="n">print_json</span><span class="p">({</span><span class="mi">1</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
     <span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="s1">&#39;{</span><span class="se">\n</span><span class="s1">    &quot;1&quot;: 1</span><span class="se">\n</span><span class="s1">}&#39;</span></div>
@@ -250,11 +251,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2019, Vanessa Sochat
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -265,7 +274,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

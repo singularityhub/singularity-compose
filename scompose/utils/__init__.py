@@ -1,6 +1,6 @@
 """
 
-Copyright (C) 2019-2020 Vanessa Sochat.
+Copyright (C) 2019-2021 Vanessa Sochat.
 
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
@@ -19,25 +19,23 @@ from subprocess import Popen, PIPE, STDOUT
 
 
 def get_installdir():
-    """get_installdir returns the installation directory of the application
-    """
+    """get_installdir returns the installation directory of the application"""
     return os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 
 def get_userhome():
-    """get the user home based on the effective uid
-    """
+    """get the user home based on the effective uid"""
     return pwd.getpwuid(os.getuid())[5]
 
 
 def run_command(cmd, sudo=False):
     """run_command uses subprocess to send a command to the terminal.
 
-        Parameters
-        ==========
-        cmd: the command to send, should be a list for subprocess
-        error_message: the error message to give to user if fails,
-        if none specified, will alert that command failed.
+    Parameters
+    ==========
+    cmd: the command to send, should be a list for subprocess
+    error_message: the error message to give to user if fails,
+    if none specified, will alert that command failed.
 
     """
     if sudo is True:
@@ -85,7 +83,7 @@ def mkdir_p(path):
 
 def write_file(filename, content, mode="w"):
     """write_file will open a file, "filename" and write content, "content"
-       and properly close the file
+    and properly close the file
     """
     with open(filename, mode) as filey:
         filey.writelines(content)
@@ -94,7 +92,7 @@ def write_file(filename, content, mode="w"):
 
 def read_file(filename, mode="r", readlines=True):
     """write_file will open a file, "filename" and write content, "content"
-       and properly close the file
+    and properly close the file
     """
     with open(filename, mode) as filey:
         if readlines is True:
@@ -108,20 +106,19 @@ def read_file(filename, mode="r", readlines=True):
 
 
 def read_yaml(filename, mode="r", quiet=False):
-    """read a yaml file, only including sections between dashes
-    """
+    """read a yaml file, only including sections between dashes"""
     stream = read_file(filename, mode, readlines=False)
     return _read_yaml(stream, quiet=quiet)
 
 
 def write_yaml(yaml_dict, filename, mode="w"):
     """write a dictionary to yaml file
- 
-       Parameters
-       ==========
-       yaml_dict: the dict to print to yaml
-       filename: the output file to write to
-       pretty_print: if True, will use nicer formatting
+
+    Parameters
+    ==========
+    yaml_dict: the dict to print to yaml
+    filename: the output file to write to
+    pretty_print: if True, will use nicer formatting
     """
     with open(filename, mode) as filey:
         filey.writelines(yaml.dump(yaml_dict))
@@ -129,12 +126,12 @@ def write_yaml(yaml_dict, filename, mode="w"):
 
 
 def _read_yaml(section, quiet=False):
-    """read yaml from a string, either read from file (read_frontmatter) or 
-       from yml file proper (read_yaml)
+    """read yaml from a string, either read from file (read_frontmatter) or
+    from yml file proper (read_yaml)
 
-       Parameters
-       ==========
-       section: a string of unparsed yaml content.
+    Parameters
+    ==========
+    section: a string of unparsed yaml content.
     """
     metadata = {}
 
@@ -159,11 +156,11 @@ def _read_yaml(section, quiet=False):
 def write_json(json_obj, filename, mode="w", print_pretty=True):
     """write_json will (optionally,pretty print) a json object to file
 
-       Parameters
-       ==========
-       json_obj: the dict to print to json
-       filename: the output file to write to
-       pretty_print: if True, will use nicer formatting
+    Parameters
+    ==========
+    json_obj: the dict to print to json
+    filename: the output file to write to
+    pretty_print: if True, will use nicer formatting
     """
     with open(filename, mode) as filey:
         if print_pretty:
@@ -174,14 +171,13 @@ def write_json(json_obj, filename, mode="w", print_pretty=True):
 
 
 def print_json(json_obj):
-    """ just dump the json in a "pretty print" format
-    """
+    """just dump the json in a "pretty print" format"""
     return json.dumps(json_obj, indent=4, separators=(",", ": "))
 
 
 def read_json(filename, mode="r"):
     """read_json reads in a json file and returns
-       the data structure as dict.
+    the data structure as dict.
     """
     with open(filename, mode) as filey:
         data = json.load(filey)

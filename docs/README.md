@@ -42,7 +42,8 @@ Python 3 is also required, as Python 2 is at end of life.
 ### singularity-compose.yml
 
 For a singularity-compose project, it's expected to have a `singularity-compose.yml`
-in the present working directory. You can look at a simple example here:
+in the present working directory. You can look at a simple example here, here is a 
+version 1.0 spec (before we added networking and exec options):
 
 ```yaml
 version: "1.0"
@@ -57,6 +58,11 @@ instances:
       - ./images:/var/www/images
     ports:
       - 80:80
+```
+
+and here is a version 2.0 spec that shows adding networking and exec options:
+
+```yaml
 ```
 
 If you are familiar with [docker-compose](https://docs.docker.com/compose/) 

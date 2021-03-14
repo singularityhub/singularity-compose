@@ -1,6 +1,6 @@
 """
 
-Copyright (C) 2019-2020 Vanessa Sochat.
+Copyright (C) 2019-2021 Vanessa Sochat.
 
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
@@ -20,15 +20,15 @@ import re
 
 class Instance(object):
     """A section of a singularity-compose.yml, typically includes an image
-       name, volumes, build directory, and any ports or environment variables
-       relevant to the instance.
+    name, volumes, build directory, and any ports or environment variables
+    relevant to the instance.
 
-       Parameters
-       ==========
-       name: should correspond to the section name for the instance.
-       working_dir: should be the projects working directory, where a folder
-                    named according to "name" is created for the image binary.
-       params: all of the parameters defined in the configuration.
+    Parameters
+    ==========
+    name: should correspond to the section name for the instance.
+    working_dir: should be the projects working directory, where a folder
+                 named according to "name" is created for the image binary.
+    params: all of the parameters defined in the configuration.
     """
 
     def __init__(self, name, working_dir, sudo=False, params=None):
@@ -41,7 +41,14 @@ class Instance(object):
         self.instance = None
         self.sudo = sudo
         self.set_name(name, params)
-        self.set_args(params)
+
+        # Start includes networking args and command
+        self.set_start(params)
+
+        # Exec and run are done after a start, if provided
+        self.set_exec(params)
+        self.set_run(params)
+
         self.set_context(params)
         self.set_volumes(params)
         self.set_ports(params)
@@ -59,21 +66,25 @@ class Instance(object):
         return self.__str__()
 
     def set_name(self, name, params):
-        """set the instance name. First priority goes to name  parameter, then 
-           to name in file
+        """set the instance name. First priority goes to name  parameter, then
+        to name in file
 
-           Parameters
-           ==========
-           name: the name of the instance, the first field in the config file.
-           params: dictionary of key, value parameters
+        Parameters
+        ==========
+        name: the name of the instance, the first field in the config file.
+        params: dictionary of key, value parameters
         """
         self.name = params.get("name", name)
 
+    @property
+    def uri(self):
+        return "instance://%s" % self.name
+
     def set_context(self, params):
         """set and validate parameters from the singularity-compose.yml,
-           including build (context and recipe). We don't pull or create
-           anything here, but rather just validate that the sections
-           are provided and files exist.
+        including build (context and recipe). We don't pull or create
+        anything here, but rather just validate that the sections
+        are provided and files exist.
         """
 
         # build the container on the host from a context
@@ -111,20 +122,19 @@ class Instance(object):
     # Volumes and Ports
 
     def set_volumes(self, params):
-        """set volumes from the recipe
-        """
+        """set volumes from the recipe"""
         self.volumes = params.get("volumes", [])
         self._volumes_from = params.get("volumes_from", [])
 
     def set_volumes_from(self, instances):
         """volumes from is called after all instances are read in, and
-           then volumes can be mapped (and shared) with both containers.
-           with Docker, this is done with isolation, but for Singularity
-           we will try sharing a bind on the host.
+        then volumes can be mapped (and shared) with both containers.
+        with Docker, this is done with isolation, but for Singularity
+        we will try sharing a bind on the host.
 
-           Parameters
-           ==========
-           instances: a list of other instances to get volumes from
+        Parameters
+        ==========
+        instances: a list of other instances to get volumes from
         """
         for name in self._volumes_from:
             if name not in instances:
@@ -134,24 +144,53 @@ class Instance(object):
                     self.volumes.append(volume)
 
     def set_ports(self, params):
-        """set ports from the recipe to be used
-        """
+        """set ports from the recipe to be used"""
         self.ports = params.get("ports", [])
 
     # Commands
 
-    def set_args(self, params):
+    def set_start(self, params):
         """set arguments to the startscript"""
-        self.args = params.get("command", "")
+        start = params.get("start", {})
+        self.args = start.get("args", "")
+        self.start_opts = [
+            "--%s" % opt if len(opt) > 1 else "-%s" % opt
+            for opt in start.get("options", [])
+        ]
+
+    def set_exec(self, params):
+        """set arguments for exec"""
+        exec_group = params.get("exec", {})
+        self.exec_args = exec_group.get("command", "")
+        if "|" in self.exec_args:
+            bot.exit("Pipes are not currently supported.")
+        self.exec_opts = self._get_command_opts(exec_group.get("options", []))
+
+    def set_run(self, params):
+        """set arguments for run"""
+        run_group = params.get("run", {}) or {}
+        self.run_args = run_group.get("args")
+        if self.run_args and "|" in self.run_args:
+            bot.exit("Pipes are not currently supported.")
+        self.run_opts = self._get_command_opts(run_group.get("options", []))
+
+    def _get_command_opts(self, group):
+        """Given a string of arguments or options, parse into a list with
+        proper flags added.
+        """
+        return ["--%s" % opt if len(opt) > 1 else "-%s" % opt for opt in group]
 
     def _get_network_commands(self, ip_address=None):
         """take a list of ports, return the list of --network-args to
-           ensure they are bound correctly.
+        ensure they are bound correctly.
         """
-        ports = ["--net"]
+        ports = self.start_opts + ["--net"]
 
-        # If no sudo, isolates container network with a loopback interface.
-        if not self.sudo:
+        # Fakeroot means not needing sudo
+        fakeroot = "--fakeroot" in self.start_opts or "-f" in self.start_opts
+
+        # If not sudo or fakeroot, we need --network none
+        if not self.sudo and not fakeroot:
             ports += ["--network", "none"]
 
         for pair in self.ports:
@@ -164,8 +203,7 @@ class Instance(object):
         return ports
 
     def _get_bind_commands(self):
-        """take a list of volumes, and return the bind commands for Singularity
-        """
+        """take a list of volumes, and return the bind commands for Singularity"""
         binds = []
         for volume in self.volumes:
             src, dest = volume.split(":")
@@ -186,16 +224,16 @@ class Instance(object):
 
     def run_post(self):
         """run post create commands. Can be added to an instance definition
-           either to run a command directly, or execute a script. The path
-           is assumed to be on the host.
-            
-          post:
-            command: ["mkdir", "-p", "./images/_upload/{0..9}"]
-             
-          OR
+         either to run a command directly, or execute a script. The path
+         is assumed to be on the host.
 
-          post:
-            command: "mkdir -p ./images/_upload/{0..9}"
+        post:
+          command: ["mkdir", "-p", "./images/_upload/{0..9}"]
+
+        OR
+
+        post:
+          command: "mkdir -p ./images/_upload/{0..9}"
         """
         if "post" in self.params:
             if "command" in self.params["post"]:
@@ -221,8 +259,8 @@ class Instance(object):
 
     def get_image(self):
         """get the associated instance image name, to be built if it doesn't
-           exit. It can either be defined at the config from self.image, or 
-           ultimately generated via a pull from a uri.
+        exit. It can either be defined at the config from self.image, or
+        ultimately generated via a pull from a uri.
         """
         # If the user gave a direct image
         if self.image is not None:
@@ -243,7 +281,7 @@ class Instance(object):
 
     def build(self, working_dir):
         """build an image if called for based on having a recipe and context.
-           Otherwise, pull a container uri to the instance workspace.
+        Otherwise, pull a container uri to the instance workspace.
         """
         sif_binary = self.get_image()
 
@@ -312,7 +350,7 @@ class Instance(object):
 
     def get_build_options(self):
         """'get build options will parse through params, and return build
-            options (if they exist)
+        options (if they exist)
         """
         options = []
 
@@ -340,14 +378,13 @@ class Instance(object):
 
     def exists(self):
         """return boolean if an instance exists. We do this by way of listing
-           instances, and so the calling user is important.
+        instances, and so the calling user is important.
         """
         instances = [x.name for x in self.client.instances(quiet=True, sudo=self.sudo)]
         return self.name in instances
 
     def get(self):
-        """If an instance exists, add to self.instance
-        """
+        """If an instance exists, add to self.instance"""
         for instance in self.client.instances(quiet=True, sudo=self.sudo):
             if instance.name == self.name:
                 self.instance = instance
@@ -355,7 +392,7 @@ class Instance(object):
 
     def stop(self, timeout=None):
         """delete the instance, if it exists. Singularity doesn't have delete
-           or remove commands, everyting is a stop.
+        or remove commands, everyting is a stop.
         """
         if self.instance:
             bot.info("Stopping %s" % self)
@@ -365,8 +402,8 @@ class Instance(object):
     # Networking
 
     def get_address(self):
-        """get the bridge address of an image. If it's busybox, we can't use 
-           hostname -I.
+        """get the bridge address of an image. If it's busybox, we can't use
+        hostname -I.
         """
         ip_address = None
         if self.sudo:
@@ -403,8 +440,7 @@ class Instance(object):
     # Logs
 
     def clear_logs(self):
-        """delete logs for an instance, if they exist.
-        """
+        """delete logs for an instance, if they exist."""
         log_folder = self._get_log_folder()
 
         for ext in ["out", "err"]:
@@ -422,8 +458,7 @@ class Instance(object):
                 pass
 
     def _get_log_folder(self):
-        """get a log folder that includes a user, home, and host
-        """
+        """get a log folder that includes a user, home, and host"""
         home = get_userhome()
         user = os.path.basename(home)
 
@@ -463,7 +498,7 @@ class Instance(object):
 
     def up(self, working_dir, ip_address=None, sudo=False, writable_tmpfs=False):
         """up is the same as create, but like Docker, we build / pull instances
-           first.
+        first.
         """
         image = self.get_image() or ""
 
@@ -473,8 +508,7 @@ class Instance(object):
         self.create(writable_tmpfs=writable_tmpfs, ip_address=ip_address)
 
     def create(self, ip_address=None, sudo=False, writable_tmpfs=False):
-        """create an instance, if it doesn't exist.
-        """
+        """create an instance, if it doesn't exist."""
         image = self.get_image()
 
         # Case 1: No build context or image defined
@@ -509,7 +543,7 @@ class Instance(object):
                 options += ["--writable-tmpfs"]
 
             # Show the command to the user
-            commands = "%s %s %s %s" % (" ".join(options), image, self.name, self.args,)
+            commands = "%s %s %s %s" % (" ".join(options), image, self.name, self.args)
             bot.debug("singularity instance start %s" % commands)
 
             self.instance = self.client.instance(
@@ -519,3 +553,43 @@ class Instance(object):
                 image=image,
                 args=self.args,
             )
+
+            # If the user has exec defined, exec to it
+            if self.exec_args:
+
+                # Show the command to the user
+                commands = "%s %s %s" % (
+                    " ".join(self.exec_opts),
+                    self.uri,
+                    self.exec_args,
+                )
+                bot.debug("singularity exec %s" % commands)
+
+                for line in self.client.execute(
+                    image=self.instance,
+                    command=self.exec_args,
+                    sudo=self.sudo,
+                    stream=True,
+                    options=self.exec_opts,
+                ):
+                    print(line)
+
+            # If the user has run defined, finish with the run
+            if "run" in self.params:
+
+                # Show the command to the user
+                commands = "%s %s %s" % (
+                    " ".join(self.run_opts),
+                    self.uri,
+                    self.run_args or "",
+                )
+                bot.debug("singularity run %s" % commands)
+
+                for line in self.client.run(
+                    image=self.instance,
+                    args=self.run_args,
+                    sudo=self.sudo,
+                    stream=True,
+                    options=self.run_opts,
+                ):
+                    print(line)

@@ -1,6 +1,6 @@
 """
 
-Copyright (C) 2019-2020 Vanessa Sochat.
+Copyright (C) 2019-2021 Vanessa Sochat.
 
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
@@ -15,9 +15,9 @@ from scompose.project import Project
 def main(args, parser, extra):
     """Build or rebuild containers
 
-       Containers are built once and then named as <project>_<service>,
-       e.g. `folder_db`. If a Singularity recipe changes for a container folder,
-       you can run "singularity-compose build" to rebuild it.
+    Containers are built once and then named as <project>_<service>,
+    e.g. `folder_db`. If a Singularity recipe changes for a container folder,
+    you can run "singularity-compose build" to rebuild it.
     """
     # Initialize the project
     project = Project(

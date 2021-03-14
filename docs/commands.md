@@ -188,7 +188,7 @@ nginx: [emerg] host not found in upstream "uwsgi" in /etc/nginx/conf.d/default.c
 nginx: [emerg] host not found in upstream "uwsgi" in /etc/nginx/conf.d/default.conf:22
 2019/06/18 16:51:32 [emerg] 15#15: host not found in upstream "uwsgi" in /etc/nginx/conf.d/default.conf:22
 nginx: [emerg] host not found in upstream "uwsgi" in /etc/nginx/conf.d/default.conf:22
-``
+```
 
 ## Config
 

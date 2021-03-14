@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,28 @@
   
 
   
+  <link rel="stylesheet" href="../../assets/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../assets/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="../../assets/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../../assets/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../assets/documentation_options.js"></script>
-        <script type="text/javascript" src="../../assets/jquery.js"></script>
-        <script type="text/javascript" src="../../assets/underscore.js"></script>
-        <script type="text/javascript" src="../../assets/doctools.js"></script>
-        <script type="text/javascript" src="../../assets/language_data.js"></script>
+        <script src="../../assets/jquery.js"></script>
+        <script src="../../assets/underscore.js"></script>
+        <script src="../../assets/doctools.js"></script>
     
     <script type="text/javascript" src="../../assets/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../assets/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../assets/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
 </head>
@@ -48,7 +48,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home"> Singularity Compose API
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Singularity Compose API
           
 
           
@@ -75,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -89,6 +90,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -127,7 +129,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../index.html">Module code</a> &raquo;</li>
         
@@ -149,7 +151,7 @@
   <h1>Source code for scompose.utils</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">Copyright (C) 2019-2020 Vanessa Sochat.</span>
+<span class="sd">Copyright (C) 2019-2021 Vanessa Sochat.</span>
 
 <span class="sd">This Source Code Form is subject to the terms of the</span>
 <span class="sd">Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed</span>
@@ -161,33 +163,30 @@
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">pwd</span>
-<span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">yaml</span>
 
-<span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="n">Popen</span><span class="p">,</span> <span class="n">PIPE</span><span class="p">,</span> <span class="n">STDOUT</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">Popen</span><span class="p">,</span> <span class="n">PIPE</span><span class="p">,</span> <span class="n">STDOUT</span>
 
 
 <div class="viewcode-block" id="get_installdir"><a class="viewcode-back" href="../../source/scompose.utils.html#scompose.utils.get_installdir">[docs]</a><span class="k">def</span> <span class="nf">get_installdir</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;get_installdir returns the installation directory of the application</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;get_installdir returns the installation directory of the application&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)))</span></div>
 
 
 <div class="viewcode-block" id="get_userhome"><a class="viewcode-back" href="../../source/scompose.utils.html#scompose.utils.get_userhome">[docs]</a><span class="k">def</span> <span class="nf">get_userhome</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;get the user home based on the effective uid</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;get the user home based on the effective uid&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">pwd</span><span class="o">.</span><span class="n">getpwuid</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getuid</span><span class="p">())[</span><span class="mi">5</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="run_command"><a class="viewcode-back" href="../../source/scompose.utils.html#scompose.utils.run_command">[docs]</a><span class="k">def</span> <span class="nf">run_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">sudo</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;run_command uses subprocess to send a command to the terminal.</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ==========</span>
-<span class="sd">        cmd: the command to send, should be a list for subprocess</span>
-<span class="sd">        error_message: the error message to give to user if fails,</span>
-<span class="sd">        if none specified, will alert that command failed.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ==========</span>
+<span class="sd">    cmd: the command to send, should be a list for subprocess</span>
+<span class="sd">    error_message: the error message to give to user if fails,</span>
+<span class="sd">    if none specified, will alert that command failed.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">sudo</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
@@ -235,7 +234,7 @@
 
 <div class="viewcode-block" id="write_file"><a class="viewcode-back" href="../../source/scompose.utils.html#scompose.utils.write_file">[docs]</a><span class="k">def</span> <span class="nf">write_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;write_file will open a file, &quot;filename&quot; and write content, &quot;content&quot;</span>
-<span class="sd">       and properly close the file</span>
+<span class="sd">    and properly close the file</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">filey</span><span class="p">:</span>
         <span class="n">filey</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
@@ -244,7 +243,7 @@
 
 <div class="viewcode-block" id="read_file"><a class="viewcode-back" href="../../source/scompose.utils.html#scompose.utils.read_file">[docs]</a><span class="k">def</span> <span class="nf">read_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">readlines</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;write_file will open a file, &quot;filename&quot; and write content, &quot;content&quot;</span>
-<span class="sd">       and properly close the file</span>
+<span class="sd">    and properly close the file</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">filey</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">readlines</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
@@ -258,20 +257,19 @@
 
 
 <div class="viewcode-block" id="read_yaml"><a class="viewcode-back" href="../../source/scompose.utils.html#scompose.utils.read_yaml">[docs]</a><span class="k">def</span> <span class="nf">read_yaml</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;read a yaml file, only including sections between dashes</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;read a yaml file, only including sections between dashes&quot;&quot;&quot;</span>
     <span class="n">stream</span> <span class="o">=</span> <span class="n">read_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">readlines</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">_read_yaml</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="n">quiet</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="write_yaml"><a class="viewcode-back" href="../../source/scompose.utils.html#scompose.utils.write_yaml">[docs]</a><span class="k">def</span> <span class="nf">write_yaml</span><span class="p">(</span><span class="n">yaml_dict</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;write a dictionary to yaml file</span>
-<span class="sd"> </span>
-<span class="sd">       Parameters</span>
-<span class="sd">       ==========</span>
-<span class="sd">       yaml_dict: the dict to print to yaml</span>
-<span class="sd">       filename: the output file to write to</span>
-<span class="sd">       pretty_print: if True, will use nicer formatting</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ==========</span>
+<span class="sd">    yaml_dict: the dict to print to yaml</span>
+<span class="sd">    filename: the output file to write to</span>
+<span class="sd">    pretty_print: if True, will use nicer formatting</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">filey</span><span class="p">:</span>
         <span class="n">filey</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">yaml_dict</span><span class="p">))</span>
@@ -279,12 +277,12 @@
 
 
 <span class="k">def</span> <span class="nf">_read_yaml</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;read yaml from a string, either read from file (read_frontmatter) or </span>
-<span class="sd">       from yml file proper (read_yaml)</span>
+    <span class="sd">&quot;&quot;&quot;read yaml from a string, either read from file (read_frontmatter) or</span>
+<span class="sd">    from yml file proper (read_yaml)</span>
 
-<span class="sd">       Parameters</span>
-<span class="sd">       ==========</span>
-<span class="sd">       section: a string of unparsed yaml content.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ==========</span>
+<span class="sd">    section: a string of unparsed yaml content.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -309,11 +307,11 @@
 <div class="viewcode-block" id="write_json"><a class="viewcode-back" href="../../source/scompose.utils.html#scompose.utils.write_json">[docs]</a><span class="k">def</span> <span class="nf">write_json</span><span class="p">(</span><span class="n">json_obj</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">print_pretty</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;write_json will (optionally,pretty print) a json object to file</span>
 
-<span class="sd">       Parameters</span>
-<span class="sd">       ==========</span>
-<span class="sd">       json_obj: the dict to print to json</span>
-<span class="sd">       filename: the output file to write to</span>
-<span class="sd">       pretty_print: if True, will use nicer formatting</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ==========</span>
+<span class="sd">    json_obj: the dict to print to json</span>
+<span class="sd">    filename: the output file to write to</span>
+<span class="sd">    pretty_print: if True, will use nicer formatting</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">filey</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">print_pretty</span><span class="p">:</span>
@@ -324,14 +322,13 @@
 
 
 <div class="viewcode-block" id="print_json"><a class="viewcode-back" href="../../source/scompose.utils.html#scompose.utils.print_json">[docs]</a><span class="k">def</span> <span class="nf">print_json</span><span class="p">(</span><span class="n">json_obj</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; just dump the json in a &quot;pretty print&quot; format</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;just dump the json in a &quot;pretty print&quot; format&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">json_obj</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;: &quot;</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="read_json"><a class="viewcode-back" href="../../source/scompose.utils.html#scompose.utils.read_json">[docs]</a><span class="k">def</span> <span class="nf">read_json</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;read_json reads in a json file and returns</span>
-<span class="sd">       the data structure as dict.</span>
+<span class="sd">    the data structure as dict.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">filey</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filey</span><span class="p">)</span>
@@ -348,11 +345,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2019, Vanessa Sochat
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -363,7 +368,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {
