@@ -496,7 +496,7 @@ class Instance(object):
 
     # Create and Delete
 
-    def up(self, working_dir, ip_address=None, sudo=False, writable_tmpfs=False):
+    def up(self, working_dir, ip_address=None, writable_tmpfs=False):
         """up is the same as create, but like Docker, we build / pull instances
         first.
         """
