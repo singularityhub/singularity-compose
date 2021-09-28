@@ -64,7 +64,6 @@ jobs:
   run-scompose-ci-tests:
     machine: true
     working_directory: ~/repo
-    machine: "machine"
     steps:
       - checkout
       - restore_cache:
