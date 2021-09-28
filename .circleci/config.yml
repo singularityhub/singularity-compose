@@ -18,6 +18,11 @@ workflows:
             branches:
               ignore: master
 
+executors:
+  ubuntu-machine:
+    machine:
+      image: ubuntu-2004:202107-02
+
 ################################################################################
 # Functions
 ################################################################################
@@ -62,7 +67,7 @@ install_dependencies: &install_dependencies
 
 jobs:
   run-scompose-ci-tests:
-    machine: true
+    executor: "ubuntu-machine"
     working_directory: ~/repo
     steps:
       - checkout
