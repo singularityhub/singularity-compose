@@ -23,7 +23,7 @@ def test_commands(tmp_path):
     run_command(["git", "clone", repo, tmpdir])
 
     # Test the simple apache example
-    workdir = os.path.join(tmpdir, "apache-simple")
+    workdir = os.path.join(tmpdir, "v1.0", "apache-simple")
     os.chdir(workdir)
 
     # Check for required files
