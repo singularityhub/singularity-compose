@@ -51,6 +51,7 @@ class Instance(object):
 
         self.set_context(params)
         self.set_volumes(params)
+        self.set_network(params)
         self.set_ports(params)
         self.params = params
         self.client = get_client()
@@ -143,6 +144,14 @@ class Instance(object):
                 if volume not in self.volumes:
                     self.volumes.append(volume)
 
+    def set_network(self, params):
+        """set network from the recipe to be used"""
+        self.network = params.get("network", {})
+
+        # if not specified, set the default value for allocate_ip property
+        if "allocate_ip" not in self.network:
+            self.network["allocate_ip"] = True
+
     def set_ports(self, params):
         """set ports from the recipe to be used"""
         self.ports = params.get("ports", [])
@@ -197,7 +206,7 @@ class Instance(object):
             ports += ["--network-args", '"portmap=%s/tcp"' % pair]
 
         # Ask for a custom ip address
-        if ip_address is not None:
+        if ip_address is not None and self.network["allocate_ip"]:
             ports += ["--network-args", '"IP=%s"' % ip_address]
 
         return ports

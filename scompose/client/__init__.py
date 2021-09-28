@@ -133,10 +133,6 @@ def get_parser():
             help="the address of the bridge to derive others from.",
         )
 
-        sub.add_argument(
-            "--no-ip-alloc", default=False, dest="no_ip_alloc", action="store_true",
-        )
-
     # Down or stop
 
     down = subparsers.add_parser("down", help="stop instances")

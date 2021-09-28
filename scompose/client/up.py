@@ -28,5 +28,4 @@ def main(args, parser, extra):
         writable_tmpfs=not args.read_only,
         bridge=args.bridge,
         no_resolv=args.no_resolv,
-        no_ip_alloc=args.no_ip_alloc,
     )
