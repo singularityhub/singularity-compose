@@ -56,7 +56,6 @@ install_dependencies: &install_dependencies
         [ $(python -c'import sys;print(sys.version_info.major)') -eq $PYTHON_VERSION ]
         pip install --upgrade pytest setuptools
 
-
 ################################################################################
 # Jobs
 ################################################################################
