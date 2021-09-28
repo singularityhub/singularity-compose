@@ -1,7 +1,7 @@
 version: 2.1
 
 # https://circleci.com/orbs/registry/orb/singularity/singularity
-# defaults to golang 1.13 and singularity 3.7.3
+# defaults to golang 1.13 and singularity 3.8.3
 orbs:
   singularity: singularity/singularity@dev:alpha
 
@@ -73,7 +73,7 @@ jobs:
       - run: *install_dependencies
       - singularity/install-go
       - singularity/debian-install-3:
-          singularity-version: 3.7.3
+          singularity-version: 3.8.3
       - save_cache:
           paths:
             - ~/conda
