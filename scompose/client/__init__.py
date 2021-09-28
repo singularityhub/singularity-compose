@@ -134,10 +134,7 @@ def get_parser():
         )
 
         sub.add_argument(
-            "--no-ip-alloc",
-            default=False,
-            dest="no_ip_alloc",
-            action="store_true",
+            "--no-ip-alloc", default=False, dest="no_ip_alloc", action="store_true",
         )
 
     # Down or stop
