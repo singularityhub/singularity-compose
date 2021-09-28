@@ -3,7 +3,7 @@ version: 2.1
 # https://circleci.com/orbs/registry/orb/singularity/singularity
 # defaults to golang 1.13 and singularity 3.7.3
 orbs:
-  singularity: singularity/singularity@1.0.10
+  singularity: singularity/singularity@dev:alpha
 
 
 ################################################################################
