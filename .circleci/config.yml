@@ -62,7 +62,6 @@ install_dependencies: &install_dependencies
 
 jobs:
   run-scompose-ci-tests:
-    machine: true
     working_directory: ~/repo
     steps:
       - checkout
