@@ -227,27 +227,27 @@ def start():
 
     # Does the user want a shell?
     if args.command == "build":
-        from .build import main
+        from scompose.client.build import main
     elif args.command == "create":
-        from .create import main
+        from scompose.client.create import main
     elif args.command == "config":
-        from .config import main
+        from scompose.client.config import main
     elif args.command in ["down", "stop"]:
-        from .down import main
+        from scompose.client.down import main
     elif args.command == "exec":
-        from .exec import main
+        from scompose.client.exec import main
     elif args.command == "logs":
-        from .logs import main
+        from scompose.client.logs import main
     elif args.command == "ps":
-        from .ps import main
+        from scompose.client.ps import main
     elif args.command == "restart":
-        from .restart import main
+        from scompose.client.restart import main
     elif args.command == "run":
-        from .run import main
+        from scompose.client.run import main
     elif args.command == "shell":
-        from .shell import main
+        from scompose.client.shell import main
     elif args.command == "up":
-        from .up import main
+        from scompose.client.up import main
 
     # Pass on to the correct parser
     return_code = 0

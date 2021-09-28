@@ -421,14 +421,14 @@ class Project(object):
         return self._create(names, writable_tmpfs=writable_tmpfs, no_resolv=no_resolv)
 
     def up(
-        self, names=None, writable_tmpfs=True, bridge="10.22.0.0/16", no_resolv=False
+        self, names=None, writable_tmpfs=True, bridge="10.22.0.0/16", no_resolv=False,
     ):
 
         """call the up function, instance.up(), which will build before if
         a container binary does not exist.
         """
         return self._create(
-            names, command="up", writable_tmpfs=writable_tmpfs, no_resolv=no_resolv
+            names, command="up", writable_tmpfs=writable_tmpfs, no_resolv=no_resolv,
         )
 
     def _create(

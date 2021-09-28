@@ -1,10 +1,9 @@
 version: 2.1
 
 # https://circleci.com/orbs/registry/orb/singularity/singularity
-# defaults to golang 1.13 and singularity 3.5.0
+# defaults to golang 1.17.1 and singularity 3.8.2
 orbs:
-  singularity: singularity/singularity@1.0.10
-
+  singularity: singularity/singularity@1.0.11
 
 ################################################################################
 # Workflows
@@ -18,6 +17,11 @@ workflows:
           filters:
             branches:
               ignore: master
+
+executors:
+  ubuntu-machine:
+    machine:
+      image: ubuntu-2004:202107-02
 
 ################################################################################
 # Functions
@@ -57,14 +61,13 @@ install_dependencies: &install_dependencies
         [ $(python -c'import sys;print(sys.version_info.major)') -eq $PYTHON_VERSION ]
         pip install --upgrade pytest setuptools
 
-
 ################################################################################
 # Jobs
 ################################################################################
 
 jobs:
   run-scompose-ci-tests:
-    machine: true
+    executor: "ubuntu-machine"
     working_directory: ~/repo
     steps:
       - checkout
@@ -72,7 +75,8 @@ jobs:
           keys: v3-dependencies
       - run: *install_dependencies
       - singularity/install-go
-      - singularity/debian-install-3
+      - singularity/debian-install-3:
+          singularity-version: 3.8.3
       - save_cache:
           paths:
             - ~/conda

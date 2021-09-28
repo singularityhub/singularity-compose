@@ -94,6 +94,25 @@ network configuration at `/usr/local/etc/singularity/network/40_fakeroot.conflis
 If you don't want to make these changes, then you won't be able to use fakeroot
 as a network (start) option (you might still be able to use it as a build option).
 
+## Network Group
+
+By default `singularity-compose` will allocate an IP address for every instance in 
+the listed yaml file. Binding an IP address to a process requires `sudo` so in certain
+scenarios in which access to a privileged user isn't an option, you might want to tell
+`singularity-compose` not to allocate an IP address, that way you can run instances 
+without `sudo`. 
+
+The example below will run a container that exposes the port `5432` to the host. 
+
+```yaml
+  instance1:
+    ...
+    network:
+      allocate_ip: true | false
+    ports:
+      - 5432:5432
+```
+
 ## Start Group
 
 Startscript options generally include those for networking, and any other flags
