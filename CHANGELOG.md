@@ -14,7 +14,7 @@ and **Merged pull requests**. Critical items to know are:
 The versions coincide with releases on pypi.
 
 ## [0.0.x](https://github.com/singularityhub/singularity-compose/tree/master) (0.0.x)
- - add network->allocate_ip option on composer file (0.1.1)
+ - add network->allocate_ip option on composer file (0.1.10)
  - version 2.0 of the spec with added fakeroot network, start, exec, and run options (0.1.0)
    - stop option added (equivalent functionality to down)   
    - spython version 0.1.0 with Singularity 3.x or greater required

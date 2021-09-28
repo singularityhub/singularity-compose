@@ -8,11 +8,11 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """
 
-__version__ = "0.1.1"
+__version__ = "0.1.10"
 AUTHOR = "Vanessa Sochat"
-AUTHOR_EMAIL = "vsochat@stanford.edu"
+AUTHOR_EMAIL = "vsoch@users.noreply.github.com"
 NAME = "singularity-compose"
-PACKAGE_URL = "http://www.github.com/singularityhub/singularity-compose"
+PACKAGE_URL = "http://github.com/singularityhub/singularity-compose"
 KEYWORDS = "singularity, compose"
 DESCRIPTION = "simple orchestration for singularity containers"
 LICENSE = "LICENSE"
