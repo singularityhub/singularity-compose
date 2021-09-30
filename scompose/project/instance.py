@@ -546,7 +546,7 @@ class Instance(object):
             options += self._get_bind_commands()
 
             # Network configuration + Ports
-            if self.network['enable']:
+            if self.network["enable"]:
                 options += self._get_network_commands(ip_address)
 
             # Hostname
