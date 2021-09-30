@@ -113,6 +113,22 @@ The example below will run a container that exposes the port `5432` to the host.
       - 5432:5432
 ```
 
+**Obs.:** In recent versions of the Singularity CLI, there is the need for tweaking the 
+`/etc/singularity/singularity.conf` to allow `fakeroot` to bind to ports otherwise 
+an error will be thrown at container execution similar to this:
+
+```
+INFO:    Converting SIF file to temporary sandbox...
+ERROR:   Network fakeroot is not permitted for unprivileged users.
+INFO:    Cleaning up image...
+```
+
+To allow fakeroot to bind ports without sudo you need to execute this:
+
+```
+echo "allow net networks = bridge, fakeroot" >> /etc/singularity/singularity.conf
+```
+
 ## Start Group
 
 Startscript options generally include those for networking, and any other flags
