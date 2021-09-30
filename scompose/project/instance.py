@@ -152,6 +152,10 @@ class Instance(object):
         if "allocate_ip" not in self.network:
             self.network["allocate_ip"] = True
 
+        # if not specified, set the default value for enable property
+        if "enable" not in self.network:
+            self.network["enable"] = True
+
     def set_ports(self, params):
         """set ports from the recipe to be used"""
         self.ports = params.get("ports", [])
@@ -541,8 +545,9 @@ class Instance(object):
             # Volumes
             options += self._get_bind_commands()
 
-            # Ports
-            options += self._get_network_commands(ip_address)
+            # Network configuration + Ports
+            if self.network['enable']:
+                options += self._get_network_commands(ip_address)
 
             # Hostname
             options += ["--hostname", self.name]

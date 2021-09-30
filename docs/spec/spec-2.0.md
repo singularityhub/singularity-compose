@@ -96,6 +96,8 @@ as a network (start) option (you might still be able to use it as a build option
 
 ## Network Group
 
+### Allocate IP Address
+
 By default `singularity-compose` will allocate an IP address for every instance in 
 the listed yaml file. Binding an IP address to a process requires `sudo` so in certain
 scenarios in which access to a privileged user isn't an option, you might want to tell
@@ -107,7 +109,7 @@ The example below will run a container that exposes the port `5432` to the host.
 ```yaml
   instance1:
     ...
-    network:
+    network:      
       allocate_ip: true | false
     ports:
       - 5432:5432
@@ -128,6 +130,25 @@ To allow fakeroot to bind ports without sudo you need to execute this:
 ```
 echo "allow net networks = bridge, fakeroot" >> /etc/singularity/singularity.conf
 ```
+
+### Enable/Disable Network
+
+By default `singularity-compose` will always append `--net` to command to be executed which in
+will prompt for either having `--network=none` or `--fakeroot` added.
+
+Depending on your environment's configuration and isolation requirements you may want to be able
+to instruct `singularity-compose` not to append `--net` or any network-related params to the command
+sent to singularity CLI.
+
+The example below will disable the network features:
+
+```yaml
+  instance1:
+    ...
+    network:      
+      enable: true | false
+```
+
 
 ## Start Group
 
