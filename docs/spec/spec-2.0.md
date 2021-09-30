@@ -133,7 +133,7 @@ echo "allow net networks = bridge, fakeroot" >> /etc/singularity/singularity.con
 
 ### Enable/Disable Network
 
-By default `singularity-compose` will always append `--net` to command to be executed which in
+By default `singularity-compose` will always append `--net` to command to be executed in which it
 will prompt for either having `--network=none` or `--fakeroot` added.
 
 Depending on your environment's configuration and isolation requirements you may want to be able
