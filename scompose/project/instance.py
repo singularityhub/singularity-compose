@@ -148,13 +148,9 @@ class Instance(object):
         """set network from the recipe to be used"""
         self.network = params.get("network", {})
 
-        # if not specified, set the default value for allocate_ip property
-        if "allocate_ip" not in self.network:
-            self.network["allocate_ip"] = True
-
-        # if not specified, set the default value for enable property
-        if "enable" not in self.network:
-            self.network["enable"] = True
+        # if not specified, set the default value for the property
+        for key in ["enable", "allocate_ip"]:
+            self.network[key] = self.network.get(key, True)
 
     def set_ports(self, params):
         """set ports from the recipe to be used"""
