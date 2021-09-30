@@ -113,7 +113,7 @@ The example below will run a container that exposes the port `5432` to the host.
       - 5432:5432
 ```
 
-**Obs.:** In recent versions of the Singularity CLI, there is the need for tweaking the 
+**Observation:** In recent versions of the Singularity CLI, there is the need for tweaking the 
 `/etc/singularity/singularity.conf` to allow `fakeroot` to bind to ports otherwise 
 an error will be thrown at container execution similar to this:
 
