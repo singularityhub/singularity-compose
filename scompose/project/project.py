@@ -10,7 +10,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from scompose.templates import get_template
 from scompose.logger import bot
-from scompose.utils import read_yaml, read_file, write_file
+from scompose.utils import read_file, write_file, build_interpolated_config
 from spython.main import get_client
 from .instance import Instance
 from ipaddress import IPv4Network
@@ -67,7 +67,14 @@ class Project(object):
         ==========
         filename: the singularity-compose.yml file to use
         """
-        self.filename = filename
+        default_value = ["singularity-compose.yml"]
+        if filename is None:
+            self.filenames = default_value
+        elif isinstance(filename, list):
+            self.filenames = filename or default_value
+        else:
+            self.filenames = [filename]
+
         self.working_dir = os.getcwd()
 
     def set_name(self, name):
@@ -156,62 +163,9 @@ class Project(object):
         return {x["instance"]: x for x in instances}
 
     def load(self):
-        """
-        Load a singularity-compose.yml recipe, and validate it.
-        """
-
-        try:
-            yaml_files = []
-
-            for f in self.filename:
-                # ensure file exists
-                if not os.path.exists(f):
-                    bot.error("%s does not exist." % f)
-                    sys.exit(1)
-                # read yaml file
-                yaml_files.append(read_yaml(f, quiet=True))
-
-            # merge/override yaml properties where applicable
-            self.config = self.deep_merge(yaml_files)
-        except:  # ParserError
-            bot.exit("Cannot parse %s, invalid yaml." % self.filename)
-
-    def deep_merge(self, yaml_files):
-        """merge singularity-compose.yml files into a single dict"""
-        if len(yaml_files) == 1:
-            # nothing to merge as the user specified a single file
-            return yaml_files[0]
-
-        base_yaml = None
-        for idx, item in enumerate(yaml_files):
-            if idx == 0:
-                base_yaml = item
-            else:
-                base_yaml = self.merge(base_yaml, item)
-
-        return base_yaml
-
-    def merge(self, a, b):
-        """merge dict b into a"""
-        for key in b:
-            if key in a:
-                # merge dicts recursively
-                if isinstance(a[key], dict) and isinstance(b[key], dict):
-                    a[key] = self.merge(a[key], b[key])
-
-                # if types are equal, b takes precedence
-                elif isinstance(a[key], type(b[key])):
-                    a[key] = b[key]
-
-                # if nothing matches then this means a conflict of types which shouldn't exist in the first place
-                else:
-                    bot.error(
-                        "key %s has property type mismatch in different files." % key
-                    )
-                    sys.exit(1)
-            else:
-                a[key] = b[key]
-        return a
+        """load a singularity-compose.yml recipe, and validate it."""
+        # merge/override yaml properties where applicable
+        self.config = build_interpolated_config(self.filenames)
 
     def parse(self):
         """
