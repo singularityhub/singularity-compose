@@ -188,7 +188,7 @@ class Project(object):
                 elif isinstance(a[key], type(b[key])):
                     a[key] = b[key]
 
-                # if nothing matches then this means a conflict of types which should exist in the first place
+                # if nothing matches then this means a conflict of types which shouldn't exist in the first place
                 else:
                     bot.error(
                         "key %s has property type mismatch in different files." % key
