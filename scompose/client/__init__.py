@@ -54,7 +54,8 @@ def get_parser():
         "-f",
         dest="file",
         help="specify compose file (default singularity-compose.yml)",
-        default="singularity-compose.yml",
+        action="append",
+        default=[],
     )
 
     parser.add_argument(
@@ -230,6 +231,11 @@ def start():
     if args.command == "version" or args.version is True:
         print(scompose.__version__)
         sys.exit(0)
+
+    # argparse inherits a funny behaviour that appends default values to the dest value whether you've specified a value
+    # or not. The bug/behaviour is documented here: https://bugs.python.org/issue16399
+    if len(args.file) == 0:
+        args.file = ["singularity-compose.yml"]
 
     # Does the user want a shell?
     if args.command == "build":

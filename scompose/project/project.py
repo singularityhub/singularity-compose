@@ -67,8 +67,8 @@ class Project(object):
         ==========
         filename: the singularity-compose.yml file to use
         """
-        self.filename = filename or "singularity-compose.yml"
-        self.working_dir = os.path.dirname(os.path.abspath(self.filename))
+        self.filename = filename
+        self.working_dir = os.getcwd()
 
     def set_name(self, name):
         """
@@ -80,11 +80,9 @@ class Project(object):
         ==========
         name: if a customize name is provided, use it
         """
-        pwd = os.path.basename(os.path.dirname(os.path.abspath(self.filename)))
-        self.name = (name or pwd).lower()
+        self.name = (name or self.working_dir).lower()
 
     # Listing
-
     def ps(self):
         """
         Ps will print a table of instances, including pids and names.
@@ -141,7 +139,6 @@ class Project(object):
         return instance
 
     # Loading Functions
-
     def get_already_running(self):
         """
         Get already running instances.
@@ -163,14 +160,58 @@ class Project(object):
         Load a singularity-compose.yml recipe, and validate it.
         """
 
-        if not os.path.exists(self.filename):
-            bot.error("%s does not exist." % self.filename)
-            sys.exit(1)
-
         try:
-            self.config = read_yaml(self.filename, quiet=True)
+            yaml_files = []
+
+            for f in self.filename:
+                # ensure file exists
+                if not os.path.exists(f):
+                    bot.error("%s does not exist." % f)
+                    sys.exit(1)
+                # read yaml file
+                yaml_files.append(read_yaml(f, quiet=True))
+
+            # merge/override yaml properties where applicable
+            self.config = self.deep_merge(yaml_files)
         except:  # ParserError
             bot.exit("Cannot parse %s, invalid yaml." % self.filename)
+
+    def deep_merge(self, yaml_files):
+        """merge singularity-compose.yml files into a single dict"""
+        if len(yaml_files) == 1:
+            # nothing to merge as the user specified a single file
+            return yaml_files[0]
+
+        base_yaml = None
+        for idx, item in enumerate(yaml_files):
+            if idx == 0:
+                base_yaml = item
+            else:
+                base_yaml = self.merge(base_yaml, item)
+
+        return base_yaml
+
+    def merge(self, a, b):
+        """merge dict b into a"""
+        for key in b:
+            if key in a:
+                # merge dicts recursively
+                if isinstance(a[key], dict) and isinstance(b[key], dict):
+                    a[key] = self.merge(a[key], b[key])
+
+                # if types are equal, b takes precedence
+                elif isinstance(a[key], type(b[key])):
+                    a[key] = b[key]
+
+                # if nothing matches then this means a conflict of types which should exist in the first place
+                else:
+                    bot.error(
+                        "key %s has property type mismatch in different files." % key
+                    )
+                    sys.exit(1)
+            else:
+                a[key] = b[key]
+        return a
 
     def parse(self):
         """
