@@ -10,9 +10,44 @@ To do a sanity check of your singularity-compose.yml, you can use `singularity-c
 ```bash
 $ singularity-compose check
 singularity-compose.yml is valid.
+
+$ singularity-compose -f singularity-compose.yml \ 
+          -f singularity-compose.override.yml check 
+singularity-compose.yml is valid.
+singularity-compose.override.yml is valid.
 ```
-This will eventually be extended to allow checking for combined files, which
-is under development.
+
+To view the combined compose files you can use `--preview`.
+
+```bash
+$ singularity-compose -f singularity-compose.yml \ 
+          -f singularity-compose.override.yml check  --preview
+singularity-compose.yml is valid.
+singularity-compose.override.yml is valid.
+Combined configs:
+{
+    "version": "2.0",
+    "instances": {
+        "cvatdb": {
+            "network": {
+                "enable": false
+            },
+            "volumes": [
+                "./recipes/postgres/env.sh:/.singularity.d/env/env.sh",
+                "./volumes/postgres/conf:/opt/bitnami/postgresql/conf",
+                "./volumes/postgres/tmp:/opt/bitnami/postgresql/tmp",
+                "/home/vagrant/postgres_data:/bitnami/postgresql"
+            ],
+            "build": {
+                "context": ".",
+                "recipe": "./recipes/postgres/main.def",
+                "options": [
+                    "fakeroot"
+                ]
+            }
+        },
+ }
+```
 
 ## build
 
