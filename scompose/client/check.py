@@ -13,12 +13,13 @@ from scompose.logger import bot
 
 
 def main(args, parser, extra):
-    """validate a singularity-compose.yml for correctness.
+    """validate compose files for correctness.
 
     Eventually this will also have a --preview flag to show combined configs.
     """
-    result = validate_config(args.file)
-    if not result:
-        bot.info("%s is valid." % args.file)
-    else:
-        bot.exit("%s is not valid." % args.file)
+    for f in args.file:
+        result = validate_config(f)
+        if not result:
+            bot.info("%s is valid." % f)
+        else:
+            bot.exit("%s is not valid." % f)
