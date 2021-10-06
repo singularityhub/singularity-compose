@@ -53,7 +53,7 @@ def get_parser():
         "--file",
         "-f",
         dest="file",
-        help="specify compose file (default singularity-compose.yml)",
+        help="specify compose file (default singularity-compose.yml). It can be used multiple times",
         action="append",
         default=[],
     )
