@@ -10,16 +10,27 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from scompose.project.config import validate_config
 from scompose.logger import bot
+from scompose.utils import build_interpolated_config, print_json
 
 
 def main(args, parser, extra):
-    """validate compose files for correctness.
-
-    Eventually this will also have a --preview flag to show combined configs.
     """
+    Validate compose files for correctness.
+
+    CLI Arguments
+    ==========
+        --preview flag to show combined configs.
+    """
+
+    # validate compose files
     for f in args.file:
         result = validate_config(f)
         if not result:
             bot.info("%s is valid." % f)
         else:
             bot.exit("%s is not valid." % f)
+
+    if args.preview:
+        # preview
+        config = build_interpolated_config(args.file)
+        print("Combined configs:\n %s" % print_json(config))

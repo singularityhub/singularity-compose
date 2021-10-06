@@ -103,6 +103,14 @@ def get_parser():
         "check", help="check or validate singularity-compose.yml"
     )
 
+    check.add_argument(
+        "--preview",
+        dest="preview",
+        help="print compose file(s) interpolated content",
+        default=False,
+        action="store_true",
+    )
+
     # Config
 
     config = subparsers.add_parser("config", help="Validate and view the compose file")
@@ -157,7 +165,7 @@ def get_parser():
 
     execute = subparsers.add_parser("exec", help="execute a command to an instance")
 
-    run = subparsers.add_parser("run", help="run an instance runscript.")
+    run = subparsers.add_parser("run", help="run an instance runscript")
 
     shell = subparsers.add_parser("shell", help="shell into an instance")
 
