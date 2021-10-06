@@ -9,6 +9,8 @@
 import os
 import pytest
 
+here = os.path.dirname(os.path.abspath(__file__))
+
 
 def test_write_read_files(tmp_path):
     """test_write_read_files will test the functions write_file and read_file"""
@@ -88,3 +90,107 @@ def test_print_json():
 
     result = print_json({1: 1})
     assert result == '{\n    "1": 1\n}'
+
+
+def test_merge():
+    print("Testing utils._merge")
+    from scompose.utils import _merge
+
+    # No override
+    a = {"a": 123}
+    b = {"b": 456}
+    assert _merge(a, b) == {"a": 123, "b": 456}
+
+    # Override + merge
+    a = {"a": 123}
+    b = {"b": 456, "a": 789}
+    assert _merge(a, b) == {"a": 789, "b": 456}
+
+    # Override only
+    a = {"a": 123}
+    b = {"a": 789}
+    assert _merge(a, b) == {"a": 789}
+
+    # Dict merge
+    a = {"a": 123, "b": {"c": "d"}}
+    b = {"b": {"e": "f"}}
+    assert _merge(a, b) == {"a": 123, "b": {"c": "d", "e": "f"}}
+
+    # Dict merge + key override
+    a = {"a": 123, "b": {"c": "d"}}
+    b = {"b": {"c": "f"}}
+    assert _merge(a, b) == {"a": 123, "b": {"c": "f"}}
+
+
+def test_deep_merge():
+    print("Testing utils._deep_merge")
+    from scompose.utils import _deep_merge, read_yaml
+    config_override = os.path.join(here, "configs", "config_override")
+
+    # single file
+    yaml_files = [
+        read_yaml(
+            os.path.join(config_override, "singularity-compose-1.yml"), quiet=True
+        )
+    ]
+    ret = _deep_merge(yaml_files)
+    assert ret["instances"] == {
+        "echo": {
+            "build": {"context": ".", "recipe": "Singularity"},
+            "start": {"args": "arg0 arg1 arg2"},
+        }
+    }
+
+    # multiple files
+    yaml_files = [
+        read_yaml(
+            os.path.join(config_override, "singularity-compose-1.yml"), quiet=True
+        ),
+        read_yaml(
+            os.path.join(config_override, "singularity-compose-2.yml"), quiet=True
+        ),
+    ]
+    ret = _deep_merge(yaml_files)
+    assert ret["instances"] == {
+        "echo": {
+            "build": {"context": ".", "recipe": "Singularity"},
+            "start": {"args": "arg0 arg1", "options": ["fakeroot"]},
+        },
+        "hello": {
+            "image": "from_the_other_side.sif",
+            "start": {"args": "how are you?"},
+        },
+    }
+
+
+def test_build_interpolated_config():
+    print("Testing utils.build_interpolated_config")
+    from scompose.utils import build_interpolated_config
+    config_override = os.path.join(here, "configs", "config_override")
+
+    # single file
+    file_list = [os.path.join(config_override, "singularity-compose-1.yml")]
+    ret = build_interpolated_config(file_list)
+    assert ret["instances"] == {
+        "echo": {
+            "build": {"context": ".", "recipe": "Singularity"},
+            "start": {"args": "arg0 arg1 arg2"},
+        }
+    }
+
+    # multiple files
+    file_list = [
+            os.path.join(config_override, "singularity-compose-1.yml"),
+            os.path.join(config_override, "singularity-compose-2.yml"),
+    ]
+    ret = build_interpolated_config(file_list)
+    assert ret["instances"] == {
+        "echo": {
+            "build": {"context": ".", "recipe": "Singularity"},
+            "start": {"args": "arg0 arg1", "options": ["fakeroot"]},
+        },
+        "hello": {
+            "image": "from_the_other_side.sif",
+            "start": {"args": "how are you?"},
+        },
+    }

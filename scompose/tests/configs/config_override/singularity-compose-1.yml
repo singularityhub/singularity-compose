@@ -1,0 +1,8 @@
+version: "2.0"
+instances:
+  echo:
+    build:
+      context: .
+      recipe: Singularity
+    start:
+      args: "arg0 arg1 arg2"
