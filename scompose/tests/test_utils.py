@@ -125,6 +125,7 @@ def test_merge():
 def test_deep_merge():
     print("Testing utils._deep_merge")
     from scompose.utils import _deep_merge, read_yaml
+
     config_override = os.path.join(here, "configs", "config_override")
 
     # single file
@@ -166,6 +167,7 @@ def test_deep_merge():
 def test_build_interpolated_config():
     print("Testing utils.build_interpolated_config")
     from scompose.utils import build_interpolated_config
+
     config_override = os.path.join(here, "configs", "config_override")
 
     # single file
@@ -180,8 +182,8 @@ def test_build_interpolated_config():
 
     # multiple files
     file_list = [
-            os.path.join(config_override, "singularity-compose-1.yml"),
-            os.path.join(config_override, "singularity-compose-2.yml"),
+        os.path.join(config_override, "singularity-compose-1.yml"),
+        os.path.join(config_override, "singularity-compose-2.yml"),
     ]
     ret = build_interpolated_config(file_list)
     assert ret["instances"] == {
