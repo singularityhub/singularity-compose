@@ -3,6 +3,17 @@
 The following commands are currently supported. Remember, you must be in the 
 present working directory of the compose file to reference the correct instances.
 
+## Check
+
+To do a sanity check of your singularity-compose.yml, you can use `singularity-compose check`
+
+```bash
+$ singularity-compose check
+singularity-compose.yml is valid.
+```
+This will eventually be extended to allow checking for combined files, which
+is under development.
+
 ## Build
 
 Build will either build a container recipe, or pull a container to the
@@ -20,6 +31,7 @@ The working directory is the parent folder of the singularity-compose.yml file.
 If the build requires sudo (if you've defined sections in the config that warrant
 setting up networking with sudo) the build will instead give you an instruction
 to run with sudo.
+
 
 ## Up
 

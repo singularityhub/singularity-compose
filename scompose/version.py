@@ -8,7 +8,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """
 
-__version__ = "0.1.11"
+__version__ = "0.1.12"
 AUTHOR = "Vanessa Sochat"
 AUTHOR_EMAIL = "vsoch@users.noreply.github.com"
 NAME = "singularity-compose"
@@ -25,6 +25,8 @@ INSTALL_REQUIRES = (
     ("spython", {"min_version": "0.1.1"}),
     ("pyaml", {"min_version": "5.1.1"}),
 )
+
+INSTALL_REQUIRES_CHECKS = INSTALL_REQUIRES + (("jsonschema", {"min_version": None}),)
 
 TESTS_REQUIRES = (("pytest", {"min_version": "4.6.2"}),)
 

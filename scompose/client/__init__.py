@@ -96,6 +96,12 @@ def get_parser():
 
     build = subparsers.add_parser("build", help="Build or rebuild containers")
 
+    # Check
+
+    check = subparsers.add_parser(
+        "check", help="check or validate singularity-compose.yml"
+    )
+
     # Config
 
     config = subparsers.add_parser("config", help="Validate and view the compose file")
@@ -228,6 +234,8 @@ def start():
     # Does the user want a shell?
     if args.command == "build":
         from scompose.client.build import main
+    elif args.command == "check":
+        from scompose.client.check import main
     elif args.command == "create":
         from scompose.client.create import main
     elif args.command == "config":

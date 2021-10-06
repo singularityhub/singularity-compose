@@ -68,6 +68,7 @@ if __name__ == "__main__":
 
     INSTALL_REQUIRES = get_reqs(lookup)
     INSTALL_REQUIRES_ALL = get_reqs(lookup, "INSTALL_REQUIRES_ALL")
+    INSTALL_REQUIRES_CHECKS = get_reqs(lookup, "INSTALL_REQUIRES_CHECKS")
     TESTS_REQUIRES = get_reqs(lookup, "TESTS_REQUIRES")
 
     setup(
@@ -89,7 +90,7 @@ if __name__ == "__main__":
         install_requires=INSTALL_REQUIRES,
         setup_requires=["pytest-runner"],
         tests_require=TESTS_REQUIRES,
-        extras_require={"all": [INSTALL_REQUIRES_ALL]},
+        extras_require={"all": [INSTALL_REQUIRES_ALL], "checks": [INSTALL_REQUIRES_CHECKS]},
         classifiers=[
             "Intended Audience :: Science/Research",
             "Intended Audience :: Developers",
