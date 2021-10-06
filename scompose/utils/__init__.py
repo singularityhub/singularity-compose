@@ -180,13 +180,13 @@ def _deep_merge(yaml_files):
     return base_yaml
 
 
-def _merge(self, a, b):
+def _merge(a, b):
     """merge dict b into a"""
     for key in b:
         if key in a:
             # merge dicts recursively
             if isinstance(a[key], dict) and isinstance(b[key], dict):
-                a[key] = self.merge(a[key], b[key])
+                a[key] = _merge(a[key], b[key])
             # if types are equal, b takes precedence
             elif isinstance(a[key], type(b[key])):
                 a[key] = b[key]
