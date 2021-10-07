@@ -9,8 +9,8 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 """
 
 import os
-import sys
 
+from scompose.logger import bot
 from scompose.utils import read_yaml
 
 
@@ -23,13 +23,12 @@ def merge_config(file_list):
         try:
             # ensure file exists
             if not os.path.exists(f):
-                print("%s does not exist." % f)
-                sys.exit(1)
+                bot.exit("%s does not exist." % f)
+
             # read yaml file
             yaml_files.append(read_yaml(f, quiet=True))
         except:  # ParserError
-            print("Cannot parse %s, invalid yaml." % f)
-            sys.exit(1)
+            bot.exit("Cannot parse %s, invalid yaml." % f)
 
     # merge/override yaml properties where applicable
     return _deep_merge(yaml_files)
@@ -63,8 +62,7 @@ def _merge(a, b):
                 a[key] = b[key]
             # if nothing matches then this means a conflict of types which shouldn't exist in the first place
             else:
-                print("key '%s': type mismatch in different files." % key)
-                sys.exit(1)
+                bot.exit("key '%s': type mismatch in different files." % key)
         else:
             a[key] = b[key]
     return a
