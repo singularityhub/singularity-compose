@@ -35,4 +35,3 @@ def main(args, parser, extra):
         # preview
         config = merge_config(args.file)
         print(yaml.dump(config, sort_keys=False))
-
