@@ -1,22 +1,17 @@
+"""
+
+Copyright (C) 2019-2021 Vanessa Sochat.
+
+This Source Code Form is subject to the terms of the
+Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
+with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+"""
+
 import os
 import sys
 
 from scompose.utils import read_yaml
-
-# We don't require jsonschema, so catch import error and alert user
-try:
-    from jsonschema import validate
-except ImportError as e:
-    msg = "pip install jsonschema"
-    sys.exit("jsonschema is required for checking and validation: %s\n %s" % (e, msg))
-
-
-def validate_config(filepath):
-    """
-    Validate a singularity-compose.yaml file.
-    """
-    cfg = read_yaml(filepath, quiet=True)
-    return validate(cfg, compose_schema)
 
 
 def merge_config(file_list):

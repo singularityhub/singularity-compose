@@ -8,6 +8,27 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """
 
+import os
+import sys
+
+from scompose.utils import read_yaml
+
+# We don't require jsonschema, so catch import error and alert user
+try:
+    from jsonschema import validate
+except ImportError as e:
+    msg = "pip install jsonschema"
+    sys.exit("jsonschema is required for checking and validation: %s\n %s" % (e, msg))
+
+
+def validate_config(filepath):
+    """
+    Validate a singularity-compose.yaml file.
+    """
+    cfg = read_yaml(filepath, quiet=True)
+    return validate(cfg, compose_schema)
+
+
 ## Singularity Compose Schema
 
 schema_url = "https://json-schema.org/draft-07/schema/#"
