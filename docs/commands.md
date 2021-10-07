@@ -22,31 +22,26 @@ To view the combined compose files you can use `--preview`.
 ```bash
 $ singularity-compose -f singularity-compose.yml \ 
           -f singularity-compose.override.yml check  --preview
-singularity-compose.yml is valid.
-singularity-compose.override.yml is valid.
-Combined configs:
-{
-    "version": "2.0",
-    "instances": {
-        "cvatdb": {
-            "network": {
-                "enable": false
-            },
-            "volumes": [
-                "./recipes/postgres/env.sh:/.singularity.d/env/env.sh",
-                "./volumes/postgres/conf:/opt/bitnami/postgresql/conf",
-                "./volumes/postgres/tmp:/opt/bitnami/postgresql/tmp",
-                "/home/vagrant/postgres_data:/bitnami/postgresql"
-            ],
-            "build": {
-                "context": ".",
-                "recipe": "./recipes/postgres/main.def",
-                "options": [
-                    "fakeroot"
-                ]
-            }
-        },
- }
+          
+version: '2.0'
+instances:
+  cvatdb:
+    start:
+      options:
+      - containall
+    network:
+      enable: false
+    volumes:
+    - ./recipes/postgres/env.sh:/.singularity.d/env/env.sh
+    - ./volumes/postgres/conf:/opt/bitnami/postgresql/conf
+    - ./volumes/postgres/tmp:/opt/bitnami/postgresql/tmp
+    - /home/vagrant/postgres_data:/bitnami/postgresql
+    build:
+      context: .
+      recipe: ./recipes/postgres/main.def
+      options:
+      - fakeroot
+
 ```
 
 ## build
