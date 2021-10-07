@@ -3,8 +3,26 @@ import sys
 
 from scompose.utils import read_yaml
 
+# We don't require jsonschema, so catch import error and alert user
+try:
+    from jsonschema import validate
+except ImportError as e:
+    msg = "pip install jsonschema"
+    sys.exit("jsonschema is required for checking and validation: %s\n %s" % (e, msg))
+
+
+def validate_config(filepath):
+    """
+    Validate a singularity-compose.yaml file.
+    """
+    cfg = read_yaml(filepath, quiet=True)
+    return validate(cfg, compose_schema)
+
 
 def merge_config(file_list):
+    """
+    Given one or more config files, merge into one
+    """
     yaml_files = []
     for f in file_list:
         try:
@@ -23,7 +41,9 @@ def merge_config(file_list):
 
 
 def _deep_merge(yaml_files):
-    """merge yaml files into a single dict"""
+    """
+    Merge yaml files into a single dict
+    """
     base_yaml = None
     for idx, item in enumerate(yaml_files):
         if idx == 0:
@@ -35,7 +55,9 @@ def _deep_merge(yaml_files):
 
 
 def _merge(a, b):
-    """merge dict b into a"""
+    """
+    Merge dict b into a
+    """
     for key in b:
         if key in a:
             # merge dicts recursively

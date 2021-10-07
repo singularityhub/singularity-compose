@@ -90,7 +90,10 @@ if __name__ == "__main__":
         install_requires=INSTALL_REQUIRES,
         setup_requires=["pytest-runner"],
         tests_require=TESTS_REQUIRES,
-        extras_require={"all": [INSTALL_REQUIRES_ALL], "checks": [INSTALL_REQUIRES_CHECKS]},
+        extras_require={
+            "all": [INSTALL_REQUIRES_ALL],
+            "checks": [INSTALL_REQUIRES_CHECKS],
+        },
         classifiers=[
             "Intended Audience :: Science/Research",
             "Intended Audience :: Developers",

@@ -8,25 +8,6 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """
 
-import sys
-from scompose.utils import read_yaml
-
-# We don't require jsonschema, so catch import error and alert user
-try:
-    from jsonschema import validate
-except ImportError as e:
-    msg = "pip install jsonschema"
-    sys.exit("jsonschema is required for checking and validation: %s\n %s" % (e, msg))
-
-
-def validate_config(filepath):
-    """
-    Validate a singularity-compose.yaml file.
-    """
-    cfg = read_yaml(filepath, quiet=True)
-    return validate(cfg, compose_schema)
-
-
 ## Singularity Compose Schema
 
 schema_url = "https://json-schema.org/draft-07/schema/#"
@@ -46,29 +27,42 @@ instance_build = {
 
 instance_network = {
     "type": "object",
-    "properties": {"allocate_ip": {"type": "boolean"}, "enable": {"type": "boolean"},},
+    "properties": {
+        "allocate_ip": {"type": "boolean"},
+        "enable": {"type": "boolean"},
+    },
 }
 
 
 instance_start = {
     "type": "object",
-    "properties": {"args": {"type": ["string", "array"]}, "options": string_list,},
+    "properties": {
+        "args": {"type": ["string", "array"]},
+        "options": string_list,
+    },
 }
 
 instance_run = {
     "type": "object",
-    "properties": {"args": {"type": ["string", "array"]}, "options": string_list,},
+    "properties": {
+        "args": {"type": ["string", "array"]},
+        "options": string_list,
+    },
 }
 
 instance_post = {
     "type": "object",
-    "properties": {"commands": string_list,},
+    "properties": {
+        "commands": string_list,
+    },
 }
 
 instance_exec = {
     "type": "object",
     "properties": {"options": string_list, "command": {"type": "string"}},
-    "required": ["command",],
+    "required": [
+        "command",
+    ],
 }
 
 # A single instance
@@ -99,7 +93,10 @@ compose_schema = {
     "$schema": schema_url,
     "title": "Singularity Compose Schema",
     "type": "object",
-    "required": ["version", "instances",],
+    "required": [
+        "version",
+        "instances",
+    ],
     "properties": properties,
     "additionalProperties": False,
 }
