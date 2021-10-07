@@ -94,7 +94,7 @@ def test_print_json():
 
 def test_merge():
     print("Testing utils._merge")
-    from scompose.utils import _merge
+    from scompose.config import _merge
 
     # No override
     a = {"a": 123}
@@ -124,7 +124,8 @@ def test_merge():
 
 def test_deep_merge():
     print("Testing utils._deep_merge")
-    from scompose.utils import _deep_merge, read_yaml
+    from scompose.utils import read_yaml
+    from scompose.config import _deep_merge
 
     config_override = os.path.join(here, "configs", "config_override")
 
@@ -166,13 +167,13 @@ def test_deep_merge():
 
 def test_build_interpolated_config():
     print("Testing utils.build_interpolated_config")
-    from scompose.utils import build_interpolated_config
+    from scompose.config import merge_config
 
     config_override = os.path.join(here, "configs", "config_override")
 
     # single file
     file_list = [os.path.join(config_override, "singularity-compose-1.yml")]
-    ret = build_interpolated_config(file_list)
+    ret = merge_config(file_list)
     assert ret["instances"] == {
         "echo": {
             "build": {"context": ".", "recipe": "Singularity"},
@@ -185,7 +186,7 @@ def test_build_interpolated_config():
         os.path.join(config_override, "singularity-compose-1.yml"),
         os.path.join(config_override, "singularity-compose-2.yml"),
     ]
-    ret = build_interpolated_config(file_list)
+    ret = merge_config(file_list)
     assert ret["instances"] == {
         "echo": {
             "build": {"context": ".", "recipe": "Singularity"},

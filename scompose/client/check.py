@@ -10,7 +10,8 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from scompose.project.config import validate_config
 from scompose.logger import bot
-from scompose.utils import build_interpolated_config, print_json
+from scompose.config import merge_config
+import yaml
 
 
 def main(args, parser, extra):
@@ -32,5 +33,6 @@ def main(args, parser, extra):
 
     if args.preview:
         # preview
-        config = build_interpolated_config(args.file)
-        print("Combined configs:\n %s" % print_json(config))
+        config = merge_config(args.file)
+        print("Combined configs:")
+        print(yaml.dump(config, sort_keys=False))

@@ -10,7 +10,8 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from scompose.templates import get_template
 from scompose.logger import bot
-from scompose.utils import read_file, write_file, build_interpolated_config
+from scompose.utils import read_file, write_file
+from ..config import merge_config
 from spython.main import get_client
 from .instance import Instance
 from ipaddress import IPv4Network
@@ -165,7 +166,7 @@ class Project(object):
     def load(self):
         """load a singularity-compose.yml recipe, and validate it."""
         # merge/override yaml properties where applicable
-        self.config = build_interpolated_config(self.filenames)
+        self.config = merge_config(self.filenames)
 
     def parse(self):
         """
