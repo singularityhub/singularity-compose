@@ -291,7 +291,7 @@ $ singularity-compose config
 }
 ```
 
-#Global arguments
+# Global arguments
 
 The following arguments are supported for all commands available.
 
@@ -300,13 +300,13 @@ The following arguments are supported for all commands available.
 Set logging verbosity to debug.
 
 ```bash
-singularity-compose --debug version
+$ singularity-compose --debug version
 ```
 
 This is equivalent to passing `--log-level=DEBUG` to the CLI.
 
 ```bash
-singularity-compose --log-level='DEBUG' version
+$ singularity-compose --log-level='DEBUG' version
 ```
 
 ## log_level
@@ -314,7 +314,7 @@ singularity-compose --log-level='DEBUG' version
 Change logging verbosity. Accepted values are: `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`
 
 ```bash
-singularity-compose --log-level='INFO' version
+$ singularity-compose --log-level='INFO' version
 ```
 
 ## file
@@ -329,10 +329,10 @@ You can supply multiple `-f` configuration files. When you supply multiple files
  combines them into a single configuration. It builds the configuration in the order you supply the
 files. Subsequent files override and add to their predecessors.
 
-For example consider this command line:
+For example consider this command:
 
 ```bash
-singularity-compose -f singularity-compose.yml -f singularity-compose.dev.yml up
+$ singularity-compose -f singularity-compose.yml -f singularity-compose.dev.yml up
 ```
 
 The `singularity-compose.yml` file might specify a `webapp` instance:
@@ -384,7 +384,7 @@ Default value: `$PWD`
 Aliases `--project-name`, `-p`. 
 
 ```bash
-singularity-compose --project-name 'my_cool_project' up
+$ singularity-compose --project-name 'my_cool_project' up
 ```
 
 ## project-directory
@@ -395,7 +395,7 @@ Default value: compose file location
 
 
 ```bash
-singularity-compose --project-directory /home/user/myfolder up
+$ singularity-compose --project-directory /home/user/myfolder up
 ```
 
 [home](/README.md#singularity-compose)
