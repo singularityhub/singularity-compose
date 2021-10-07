@@ -23,15 +23,16 @@ def main(args, parser, extra):
         --preview flag to show combined configs.
     """
 
+    # validate compose files
+    for f in args.file:
+        result = validate_config(f)
+        if not result and not args.preview:
+            bot.info("%s is valid." % f)
+        elif result:
+            bot.exit("%s is not valid." % f)
+
     if args.preview:
         # preview
         config = merge_config(args.file)
         print(yaml.dump(config, sort_keys=False))
-    else:
-        # validate compose files
-        for f in args.file:
-            result = validate_config(f)
-            if not result:
-                bot.info("%s is valid." % f)
-            else:
-                bot.exit("%s is not valid." % f)
+
