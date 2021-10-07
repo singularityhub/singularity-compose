@@ -3,7 +3,48 @@
 The following commands are currently supported. Remember, you must be in the 
 present working directory of the compose file to reference the correct instances.
 
-## Build
+## check
+
+To do a sanity check of your singularity-compose.yml, you can use `singularity-compose check`
+
+```bash
+$ singularity-compose check
+singularity-compose.yml is valid.
+
+$ singularity-compose -f singularity-compose.yml \ 
+          -f singularity-compose.override.yml check 
+singularity-compose.yml is valid.
+singularity-compose.override.yml is valid.
+```
+
+To view the combined compose files you can use `--preview`.
+
+```bash
+$ singularity-compose -f singularity-compose.yml \ 
+          -f singularity-compose.override.yml check  --preview
+          
+version: '2.0'
+instances:
+  cvatdb:
+    start:
+      options:
+      - containall
+    network:
+      enable: false
+    volumes:
+    - ./recipes/postgres/env.sh:/.singularity.d/env/env.sh
+    - ./volumes/postgres/conf:/opt/bitnami/postgresql/conf
+    - ./volumes/postgres/tmp:/opt/bitnami/postgresql/tmp
+    - /home/vagrant/postgres_data:/bitnami/postgresql
+    build:
+      context: .
+      recipe: ./recipes/postgres/main.def
+      options:
+      - fakeroot
+
+```
+
+## build
 
 Build will either build a container recipe, or pull a container to the
 instance folder. In both cases, it's named after the instance so we can
@@ -21,7 +62,7 @@ If the build requires sudo (if you've defined sections in the config that warran
 setting up networking with sudo) the build will instead give you an instruction
 to run with sudo.
 
-## Up
+## up
 
 If you want to both build and bring them up, you can use "up." Note that for
 builds that require sudo, this will still stop and ask you to build with sudo.
@@ -52,7 +93,7 @@ $ singularity-compose up --no-resolv
 Creating app
 ```
 
-## Create
+## create
 
 Given that you have built your containers with `singularity-compose build`,
 you can create your instances as follows:
@@ -93,7 +134,7 @@ INSTANCES  NAME PID     IMAGE
 3         nginx	6543	nginx.sif
 ```
 
-## Shell
+## shell
 
 It's sometimes helpful to peek inside a running instance, either to look at permissions,
 inspect binds, or manually test running something.
@@ -104,7 +145,7 @@ $ singularity-compose shell app
 Singularity app.sif:~/Documents/Dropbox/Code/singularity/singularity-compose-example> 
 ```
 
-## Exec
+## exec
 
 You can easily execute a command to a running instance:
 
@@ -134,7 +175,7 @@ usr
 var
 ```
 
-## Run
+## run
 
 If a container has a `%runscript` section (or a Docker entrypoint/cmd that 
 was converted to one), you can run that script easily:
@@ -147,7 +188,7 @@ If your container didn't have any kind of runscript, the startscript
 will be used instead.
 
 
-## Down
+## down
 
 You can bring one or more instances down (meaning, stopping them) by doing:
 
@@ -172,7 +213,7 @@ in order to kill instances after the specified number of seconds:
 singularity-compose down -t 100
 ```
 
-## Logs
+## logs
 
 You can of course view logs for all instances, or just specific named ones:
 
@@ -190,7 +231,7 @@ nginx: [emerg] host not found in upstream "uwsgi" in /etc/nginx/conf.d/default.c
 nginx: [emerg] host not found in upstream "uwsgi" in /etc/nginx/conf.d/default.conf:22
 ```
 
-## Config
+## config
 
 You can load and validate the configuration file (singularity-compose.yml) and
 print it to the screen as follows:
@@ -243,6 +284,113 @@ $ singularity-compose config
         }
     }
 }
+```
+
+# Global arguments
+
+The following arguments are supported for all commands available.
+
+## debug
+
+Set logging verbosity to debug.
+
+```bash
+$ singularity-compose --debug version
+```
+
+This is equivalent to passing `--log-level=DEBUG` to the CLI.
+
+```bash
+$ singularity-compose --log-level='DEBUG' version
+```
+
+## log_level
+
+Change logging verbosity. Accepted values are: `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`
+
+```bash
+$ singularity-compose --log-level='INFO' version
+```
+
+## file
+
+Specify the location of a Compose configuration file
+
+Default value: `singularity-compose.yml`
+
+Aliases `--file`, `-f`. 
+
+You can supply multiple `-f` configuration files. When you supply multiple files, `singularity-compose`
+ combines them into a single configuration. It builds the configuration in the order you supply the
+files. Subsequent files override and add to their predecessors.
+
+For example consider this command:
+
+```bash
+$ singularity-compose -f singularity-compose.yml -f singularity-compose.dev.yml up
+```
+
+The `singularity-compose.yml` file might specify a `webapp` instance:
+
+```yaml
+instances:
+  webapp:
+    image: webapp.sif
+    start:
+      args: "start-daemon"
+    port:
+      - "80:80"
+    volumes:
+      - /mnt/shared_drive/folder:/webapp/data
+```
+
+if the `singularity-compose.dev.yml` also specifies this same service, any matching fields override 
+the previous files.
+
+```yaml
+instances:
+  webapp:
+    start:
+      args: "start-daemon -debug"
+    volumes:
+      - /home/user/folder:/webapp/data
+```
+
+The result of the examples above would be translated in runtime to:
+
+```yaml
+instances:
+  webapp:
+    image: webapp.sif
+    start:
+      args: "start-daemon -debug"
+    port:
+      - "80:80"
+    volumes:
+      - /home/user/folder:/webapp/data
+```
+
+## project-name
+
+Specify project name.
+
+Default value: `$PWD`
+
+Aliases `--project-name`, `-p`. 
+
+```bash
+$ singularity-compose --project-name 'my_cool_project' up
+```
+
+## project-directory
+
+Specify project working directory
+
+Default value: compose file location
+
+
+```bash
+$ singularity-compose --project-directory /home/user/myfolder up
 ```
 
 [home](/README.md#singularity-compose)

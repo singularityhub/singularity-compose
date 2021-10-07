@@ -53,8 +53,9 @@ def get_parser():
         "--file",
         "-f",
         dest="file",
-        help="specify compose file (default singularity-compose.yml)",
-        default="singularity-compose.yml",
+        help="specify compose file (default singularity-compose.yml). It can be used multiple times",
+        action="append",
+        default=[],
     )
 
     parser.add_argument(
@@ -95,6 +96,20 @@ def get_parser():
     # Build
 
     build = subparsers.add_parser("build", help="Build or rebuild containers")
+
+    # Check
+
+    check = subparsers.add_parser(
+        "check", help="check or validate singularity-compose.yml"
+    )
+
+    check.add_argument(
+        "--preview",
+        dest="preview",
+        help="print compose file(s) interpolated content",
+        default=False,
+        action="store_true",
+    )
 
     # Config
 
@@ -150,7 +165,7 @@ def get_parser():
 
     execute = subparsers.add_parser("exec", help="execute a command to an instance")
 
-    run = subparsers.add_parser("run", help="run an instance runscript.")
+    run = subparsers.add_parser("run", help="run an instance runscript")
 
     shell = subparsers.add_parser("shell", help="shell into an instance")
 
@@ -225,9 +240,16 @@ def start():
         print(scompose.__version__)
         sys.exit(0)
 
+    # argparse inherits a funny behaviour that appends default values to the dest value whether you've specified a value
+    # or not. The bug/behaviour is documented here: https://bugs.python.org/issue16399
+    if len(args.file) == 0:
+        args.file = ["singularity-compose.yml"]
+
     # Does the user want a shell?
     if args.command == "build":
         from scompose.client.build import main
+    elif args.command == "check":
+        from scompose.client.check import main
     elif args.command == "create":
         from scompose.client.create import main
     elif args.command == "config":

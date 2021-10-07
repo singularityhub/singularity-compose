@@ -1,0 +1,12 @@
+version: "2.0"
+instances:
+  echo:
+    start:
+      options:
+        - fakeroot
+      args: "arg0 arg1"
+
+  hello:
+    image: from_the_other_side.sif
+    start:
+      args: "how are you?"

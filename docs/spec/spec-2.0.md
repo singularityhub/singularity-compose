@@ -293,8 +293,7 @@ The fields for instances are discussed below:
 
 |Name| Description |
 |----|-------------|
-|name|The name of the instance will be "nginx" unless the user provides a "name"
-field (not defined above).|
+|name|The name of the instance will be "nginx" unless the user provides a "name" field (not defined above).|
 |build| a section to define how and where to build the base container from.|
 |build.context| the folder with the Singularity file (and other relevant files). Must exist.
 |build.recipe| the Singularity recipe in the build context folder. It defaults to `Singularity`|
