@@ -14,7 +14,7 @@ and **Merged pull requests**. Critical items to know are:
 The versions coincide with releases on pypi.
 
 ## [0.0.x](https://github.com/singularityhub/singularity-compose/tree/master) (0.0.x)
- - 
+ 
  - adding jsonschema validation and check command (0.0.12)
    - implement configuration override feature
    - implement `--preview` argument for the `check` command 
