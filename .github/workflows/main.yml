@@ -19,7 +19,7 @@ jobs:
       - name: Check formatting with black
         run: |
           export PATH="/usr/share/miniconda/bin:$PATH"
-          source activate blackpy
+          source activate black
           pip install black==21.6b0
           black --check scompose
 
