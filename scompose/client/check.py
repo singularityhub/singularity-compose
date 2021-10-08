@@ -10,7 +10,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from scompose.logger import bot
 from scompose.config import merge_config
-from scompose.config.validate import validate_config
+from scompose.config.schema import validate_config
 import yaml
 
 
