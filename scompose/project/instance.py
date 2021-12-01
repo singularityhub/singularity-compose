@@ -216,6 +216,7 @@ class Instance(object):
         binds = []
         for volume in self.volumes:
             src, dest = volume.split(":")
+            src = os.path.expanduser(src)
 
             # First try, assume file in root folder
             if not os.path.exists(os.path.abspath(src)):
