@@ -42,6 +42,7 @@ test_scompose: &test_scompose
         pytest -sv scompose/tests/test_client.py
         pytest -sv scompose/tests/test_utils.py
         pytest -sv scompose/tests/test_command_args.py
+        pytest -sv scompose/tests/test_config.py
 
 install_dependencies: &install_dependencies
   name: Install Python dependencies

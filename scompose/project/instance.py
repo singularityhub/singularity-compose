@@ -193,7 +193,7 @@ class Instance(object):
         """take a list of ports, return the list of --network-args to
         ensure they are bound correctly.
         """
-        ports = self.start_opts + ["--net"]
+        ports = ["--net"]
 
         # Fakeroot means not needing sudo
         fakeroot = "--fakeroot" in self.start_opts or "-f" in self.start_opts
@@ -545,6 +545,9 @@ class Instance(object):
             # Network configuration + Ports
             if self.network["enable"]:
                 options += self._get_network_commands(ip_address)
+
+            # Start options
+            options += self.start_opts
 
             # Hostname
             options += ["--hostname", self.name]
