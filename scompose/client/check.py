@@ -25,10 +25,10 @@ def main(args, parser, extra):
 
     # validate compose files
     for f in args.file:
-        result = validate_config(f)
-        if not result and not args.preview:
+        valid = validate_config(f)
+        if valid and not args.preview:
             bot.info("%s is valid." % f)
-        elif result:
+        else:
             bot.exit("%s is not valid." % f)
 
     if args.preview:
