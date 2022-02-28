@@ -28,7 +28,7 @@ def main(args, parser, extra):
         valid = validate_config(f)
         if valid and not args.preview:
             bot.info("%s is valid." % f)
-        else:
+        elif not valid:
             bot.exit("%s is not valid." % f)
 
     if args.preview:
