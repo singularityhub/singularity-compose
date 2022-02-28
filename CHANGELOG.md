@@ -13,11 +13,12 @@ and **Merged pull requests**. Critical items to know are:
 
 The versions coincide with releases on pypi.
 
-## [0.0.x](https://github.com/singularityhub/singularity-compose/tree/master) (0.0.x)
- - fix a bug triggered when using startoptions in conjunction with network=false (0.0.15)
- - bind volumes can handle tilde expansion (0.0.14)
- - fix module import used by check command (0.0.13)
- - adding jsonschema validation and check command (0.0.12)
+## [0.1.x](https://github.com/singularityhub/singularity-compose/tree/master) (0.1.x)
+ - fix check command validation (0.1.16)
+ - fix a bug triggered when using startoptions in conjunction with network=false (0.1.15)
+ - bind volumes can handle tilde expansion (0.1.14)
+ - fix module import used by check command (0.1.13)
+ - adding jsonschema validation and check command (0.1.12)
    - implement configuration override feature
    - implement `--preview` argument for the `check` command 
  - add network->enable option on composer file (0.1.11)
@@ -25,6 +26,8 @@ The versions coincide with releases on pypi.
  - version 2.0 of the spec with added fakeroot network, start, exec, and run options (0.1.0)
    - stop option added (equivalent functionality to down)   
    - spython version 0.1.0 with Singularity 3.x or greater required
+
+## [0.0.x](https://github.com/singularityhub/singularity-compose/tree/master) (0.0.x) 
  - removed check for sudo when adding network flags (0.0.21)
  - singularity-compose down supporting timeout (0.0.20)
  - command, ability to associate arguments to the instance's startscript (0.0.19)

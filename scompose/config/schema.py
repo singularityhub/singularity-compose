@@ -11,6 +11,8 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 import os
 import sys
 
+from jsonschema.exceptions import ValidationError
+
 from scompose.utils import read_yaml
 
 # We don't require jsonschema, so catch import error and alert user
@@ -25,8 +27,12 @@ def validate_config(filepath):
     """
     Validate a singularity-compose.yaml file.
     """
-    cfg = read_yaml(filepath, quiet=True)
-    return validate(cfg, compose_schema)
+    try:
+        cfg = read_yaml(filepath, quiet=True)
+        validate(cfg, compose_schema)
+        return True
+    except ValidationError:
+        return False
 
 
 ## Singularity Compose Schema
