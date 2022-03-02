@@ -56,4 +56,4 @@ def test_command_args(tmp_path):
     project.down()
 
     log = bot.get_logs()
-    assert "echo arg0 arg1 arg2" in log
+    assert "arg0 arg1 arg2" in log
