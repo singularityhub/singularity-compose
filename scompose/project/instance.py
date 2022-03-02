@@ -332,7 +332,7 @@ class Instance(object):
                 # If remote or fakeroot included, don't need sudo
                 sudo = not ("--fakeroot" in options or "--remote" in options)
 
-                bot.info("Building %s" % self.name)
+                bot.info("Building %s" % self.config_name)
 
                 _, stream = self.client.build(
                     image=sif_binary,
