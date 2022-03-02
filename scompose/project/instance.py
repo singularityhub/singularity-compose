@@ -31,7 +31,7 @@ class Instance(object):
     params: all of the parameters defined in the configuration.
     """
 
-    def __init__(self, name, working_dir, sudo=False, params=None):
+    def __init__(self, name, config_name, working_dir, sudo=False, params=None):
 
         if not params:
             params = {}
@@ -41,6 +41,7 @@ class Instance(object):
         self.instance = None
         self.sudo = sudo
         self.set_name(name, params)
+        self.config_name = config_name
 
         # Start includes networking args and command
         self.set_start(params)
