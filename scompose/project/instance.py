@@ -282,11 +282,11 @@ class Instance(object):
 
         # if the context directory doesn't exist, create it
         if not os.path.exists(context):
-            bot.info("Creating image context folder for %s" % self.name)
+            bot.info("Creating image context folder for %s" % self.config_name)
             os.mkdir(context)
 
         # The sif binary should have a predictible name
-        return os.path.join(context, "%s.sif" % self.name)
+        return os.path.join(context, "%s.sif" % self.config_name)
 
     # Build
 
