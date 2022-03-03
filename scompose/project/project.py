@@ -198,18 +198,16 @@ class Project(object):
 
                 # 1-indexed to mimic docker-compose behaviour
                 for idx in range(1, replicas + 1):
-                    instance_name = "{name}{replica}".format(name=name, replica=idx)
-
-                    # Validates params
-                    self.instances[instance_name] = Instance(
-                        name=instance_name,
-                        config_name=name,
+                    tmp_inst = Instance(
+                        name=name,
+                        replica_number=idx,
                         # deepcopy is required otherwise changes to one replica would reflect on
                         # others since they point to the same memory reference
                         params=deepcopy(params),
                         sudo=self.sudo,
                         working_dir=self.working_dir,
                     )
+                    self.instances[tmp_inst.get_replica_name()] = tmp_inst
 
             self.instances = self._sort_instances(self.instances)
 
@@ -233,8 +231,8 @@ class Project(object):
 
             for dep in depends_on:
                 for inst in instances.values():
-                    if dep == inst.config_name:
-                        sorted_instances.insert(index, inst.name)
+                    if dep == inst.name:
+                        sorted_instances.insert(index, inst.get_replica_name())
 
         return {k: self.instances[k] for k in sorted_instances}
 
@@ -539,10 +537,10 @@ class Project(object):
             create_func(
                 working_dir=self.working_dir,
                 writable_tmpfs=writable_tmpfs,
-                ip_address=lookup[instance.name],
+                ip_address=lookup[instance.get_replica_name()],
             )
 
-            created.add(instance.config_name)
+            created.add(instance.name)
 
             # Run post create commands
             instance.run_post()

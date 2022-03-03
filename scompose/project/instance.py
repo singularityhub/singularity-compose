@@ -31,7 +31,7 @@ class Instance(object):
     params: all of the parameters defined in the configuration.
     """
 
-    def __init__(self, name, config_name, working_dir, sudo=False, params=None):
+    def __init__(self, name, replica_number, working_dir, sudo=False, params=None):
 
         if not params:
             params = {}
@@ -41,7 +41,7 @@ class Instance(object):
         self.instance = None
         self.sudo = sudo
         self.set_name(name, params)
-        self.config_name = config_name
+        self.replica_number = replica_number
 
         # Start includes networking args and command
         self.set_start(params)
@@ -62,7 +62,7 @@ class Instance(object):
         self.get()
 
     def __str__(self):
-        return "(instance:%s)" % self.name
+        return "(instance:%s)" % self.get_replica_name()
 
     def __repr__(self):
         return self.__str__()
@@ -78,9 +78,12 @@ class Instance(object):
         """
         self.name = params.get("name", name)
 
+    def get_replica_name(self):
+        return f"{self.name}{self.replica_number}"
+
     @property
     def uri(self):
-        return "instance://%s" % self.name
+        return "instance://%s" % self.get_replica_name()
 
     def set_context(self, params):
         """set and validate parameters from the singularity-compose.yml,
@@ -282,11 +285,11 @@ class Instance(object):
 
         # if the context directory doesn't exist, create it
         if not os.path.exists(context):
-            bot.info("Creating image context folder for %s" % self.config_name)
+            bot.info("Creating image context folder for %s" % self.name)
             os.mkdir(context)
 
         # The sif binary should have a predictible name
-        return os.path.join(context, "%s.sif" % self.config_name)
+        return os.path.join(context, "%s.sif" % self.name)
 
     # Build
 
@@ -332,7 +335,7 @@ class Instance(object):
                 # If remote or fakeroot included, don't need sudo
                 sudo = not ("--fakeroot" in options or "--remote" in options)
 
-                bot.info("Building %s" % self.config_name)
+                bot.info("Building %s" % self.name)
 
                 _, stream = self.client.build(
                     image=sif_binary,
@@ -386,24 +389,23 @@ class Instance(object):
         return options
 
     # State
-
     def exists(self):
         """return boolean if an instance exists. We do this by way of listing
         instances, and so the calling user is important.
         """
         instances = [x.name for x in self.client.instances(quiet=True, sudo=self.sudo)]
-        return self.name in instances
+        return self.get_replica_name() in instances
 
     def get(self):
         """If an instance exists, add to self.instance"""
         for instance in self.client.instances(quiet=True, sudo=self.sudo):
-            if instance.name == self.name:
+            if instance.name == self.get_replica_name():
                 self.instance = instance
                 break
 
     def stop(self, timeout=None):
         """delete the instance, if it exists. Singularity doesn't have delete
-        or remove commands, everyting is a stop.
+        or remove commands, everything is a stop.
         """
         if self.instance:
             bot.info("Stopping %s" % self)
@@ -455,7 +457,9 @@ class Instance(object):
         log_folder = self._get_log_folder()
 
         for ext in ["out", "err"]:
-            logfile = os.path.join(log_folder, "%s.%s" % (self.name, ext.lower()))
+            logfile = os.path.join(
+                log_folder, "%s.%s" % (self.get_replica_name(), ext.lower())
+            )
 
             # Use Try/catch to account for not existing.
             try:
@@ -487,7 +491,9 @@ class Instance(object):
         log_folder = self._get_log_folder()
 
         for ext in ["OUT", "ERR"]:
-            logfile = os.path.join(log_folder, "%s.%s" % (self.name, ext.lower()))
+            logfile = os.path.join(
+                log_folder, "%s.%s" % (self.get_replica_name(), ext.lower())
+            )
 
             # Use Try/catch to account for not existing.
             try:
@@ -498,7 +504,9 @@ class Instance(object):
                     # If the user only wants to see certain number
                     if tail > 0:
                         result = "\n".join(result.split("\n")[-tail:])
-                    bot.custom(prefix=self.name, message=ext, color="CYAN")
+                    bot.custom(
+                        prefix=self.get_replica_name(), message=ext, color="CYAN"
+                    )
                     print(result)
                     bot.newline()
 
@@ -535,7 +543,7 @@ class Instance(object):
         # Finally, create the instance
         if not self.exists():
 
-            bot.info("Creating %s" % self.name)
+            bot.info("Creating %s" % self.get_replica_name())
 
             # Command options
             options = []
@@ -551,18 +559,23 @@ class Instance(object):
             options += self.start_opts
 
             # Hostname
-            options += ["--hostname", self.name]
+            options += ["--hostname", self.get_replica_name()]
 
             # Writable Temporary Directory
             if writable_tmpfs:
                 options += ["--writable-tmpfs"]
 
             # Show the command to the user
-            commands = "%s %s %s %s" % (" ".join(options), image, self.name, self.args)
+            commands = "%s %s %s %s" % (
+                " ".join(options),
+                image,
+                self.get_replica_name(),
+                self.args,
+            )
             bot.debug("singularity instance start %s" % commands)
 
             self.instance = self.client.instance(
-                name=self.name,
+                name=self.get_replica_name(),
                 sudo=self.sudo,
                 options=options,
                 image=image,
