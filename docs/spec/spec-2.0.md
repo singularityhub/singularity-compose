@@ -168,6 +168,22 @@ for `--fakeroot`:
 
 You could also add "args" here within the start group to provide arguments to the start script.
 
+## Deploy Group
+
+### Replicas
+
+By default `singularity-compose` will launch a single replica of each instance listed in the compose file.
+If your use-case requires multiple instances of the exact same configuration, you can use `deploy->replicas`
+option.
+
+The example below will run 2 container instances with the same instance configuration. 
+
+```yaml
+  instance:
+    ...
+    deploy:      
+      replicas: 2    
+```
 
 ## Environment
 

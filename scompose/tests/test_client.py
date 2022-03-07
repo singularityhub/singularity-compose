@@ -51,17 +51,17 @@ def test_commands(tmp_path):
     sleep(10)
 
     print("Testing logs")
-    project.logs(["httpd"], tail=20)
+    project.logs(["httpd1"], tail=20)
 
     print("Clearing logs")
-    project.clear_logs(["httpd"])
-    project.logs(["httpd"], tail=20)
+    project.clear_logs(["httpd1"])
+    project.logs(["httpd1"], tail=20)
 
     print("Testing ps")
     project.ps()
 
     print("Testing exec")
-    project.execute("httpd", ["echo", "MarsBar"])
+    project.execute("httpd1", ["echo", "MarsBar"])
 
     # Ensure running
     print(requests.get("http://127.0.0.1").status_code)
@@ -70,6 +70,6 @@ def test_commands(tmp_path):
     project.down()
 
     print("Testing ip lookup")
-    lookup = project.get_ip_lookup(["httpd"])
-    assert "httpd" in lookup
-    assert lookup["httpd"] == "10.22.0.2"
+    lookup = project.get_ip_lookup(["httpd1"])
+    assert "httpd1" in lookup
+    assert lookup["httpd1"] == "10.22.0.2"

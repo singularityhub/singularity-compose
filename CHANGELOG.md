@@ -14,6 +14,7 @@ and **Merged pull requests**. Critical items to know are:
 The versions coincide with releases on pypi.
 
 ## [0.1.x](https://github.com/singularityhub/singularity-compose/tree/master) (0.1.x)
+ - add support for instance replicas (0.1.17)
  - fix check command validation (0.1.16)
  - fix a bug triggered when using startoptions in conjunction with network=false (0.1.15)
  - bind volumes can handle tilde expansion (0.1.14)

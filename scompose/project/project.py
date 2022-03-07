@@ -19,6 +19,7 @@ import json
 import os
 import re
 import subprocess
+from copy import deepcopy
 
 
 class Project(object):
@@ -193,14 +194,20 @@ class Project(object):
             # Create each instance object
             for name in self.config.get("instances", []):
                 params = self.config["instances"][name]
+                replicas = params.get("deploy", {"replicas": 1})["replicas"]
 
-                # Validates params
-                self.instances[name] = Instance(
-                    name=name,
-                    params=params,
-                    sudo=self.sudo,
-                    working_dir=self.working_dir,
-                )
+                # 1-indexed to mimic docker-compose behaviour
+                for idx in range(1, replicas + 1):
+                    tmp_inst = Instance(
+                        name=name,
+                        replica_number=idx,
+                        # deepcopy is required otherwise changes to one replica would reflect on
+                        # others since they point to the same memory reference
+                        params=deepcopy(params),
+                        sudo=self.sudo,
+                        working_dir=self.working_dir,
+                    )
+                    self.instances[tmp_inst.get_replica_name()] = tmp_inst
 
             self.instances = self._sort_instances(self.instances)
 
@@ -223,8 +230,9 @@ class Project(object):
                 index = sorted_instances.index(instance)
 
             for dep in depends_on:
-                if not dep in sorted_instances:
-                    sorted_instances.insert(index, dep)
+                for inst in instances.values():
+                    if dep == inst.name:
+                        sorted_instances.insert(index, inst.get_replica_name())
 
         return {k: self.instances[k] for k in sorted_instances}
 
@@ -251,7 +259,7 @@ class Project(object):
         next(host_iter)
 
         # If an instance is already running, we want to include it
-        all_names = set(self.config["instances"].keys())
+        all_names = set(self.get_instance_names())
         skip_addresses = [x["ip"] for name, x in self.running.items() if x["ip"]]
 
         # Only use addresses not currently in use
@@ -500,7 +508,7 @@ class Project(object):
         names = names or self.get_instance_names()
 
         # Keep track of created instances to determine if we have circular dependency structure
-        created = []
+        created = set()
         circular_dep = False
 
         # Generate ip addresses for each
@@ -529,10 +537,10 @@ class Project(object):
             create_func(
                 working_dir=self.working_dir,
                 writable_tmpfs=writable_tmpfs,
-                ip_address=lookup[instance.name],
+                ip_address=lookup[instance.get_replica_name()],
             )
 
-            created.append(instance.name)
+            created.add(instance.name)
 
             # Run post create commands
             instance.run_post()

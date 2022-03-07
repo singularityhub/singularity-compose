@@ -89,7 +89,7 @@ def test_no_circular_dependency(tmp_path):
 
     # Test depends_on DAG order
     keys = list(project.instances.keys())
-    assert keys == ["first", "second", "third"]
+    assert keys == ["first1", "second1", "third1"]
 
     print("Testing up")
     project.up()

@@ -92,6 +92,13 @@ instance_exec = {
     ],
 }
 
+instance_deploy = {
+    "type": "object",
+    "properties": {
+        "replicas": {"type": "number", "minimum": 1},
+    },
+}
+
 # A single instance
 instance = {
     "type": "object",
@@ -107,6 +114,7 @@ instance = {
         "exec": instance_exec,
         "run": {"oneOf": [instance_run, {"type": "array"}]},
         "post": instance_post,
+        "deploy": instance_deploy,
     },
 }
 
