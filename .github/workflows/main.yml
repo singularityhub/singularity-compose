@@ -20,7 +20,7 @@ jobs:
         run: |
           export PATH="/usr/share/miniconda/bin:$PATH"
           source activate black
-          pip install black==21.6b0
+          pip install black
           black --check scompose
 
       - name: Check imports with pyflakes
