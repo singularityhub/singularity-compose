@@ -60,9 +60,39 @@ instances:
       - 80:80
 ```
 
-and here is a version 2.0 spec that shows adding networking and exec options:
+and [here](https://github.com/singularityhub/singularity-compose-examples/tree/4241ea8b4e068d93859acb7d2b924702815af0ce/v2.0/ping) 
+is a version 2.0 spec that shows adding networking and exec options:
 
 ```yaml
+version: "2.0"
+instances:
+  alp1:
+    build:
+      context: ./alp1
+      options:
+        - fakeroot
+    ports:
+      - "1025:1025"
+    start:
+      options:
+       - fakeroot
+    exec:
+      options: 
+        - "env-file=myvars.env"
+      command: printenv SUPERHERO
+  alp2:
+    build:
+      context: ./alp2
+      options:
+        - fakeroot
+    ports:
+      - "1026:1026"
+    start:
+      options:
+       - fakeroot
+    run: []
+    depends_on:
+      - alp1
 ```
 
 If you are familiar with [docker-compose](https://docs.docker.com/compose/) 
