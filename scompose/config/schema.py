@@ -65,6 +65,7 @@ instance_start = {
     "type": "object",
     "properties": {
         "args": {"type": ["string", "array"]},
+        "background": {"type": "boolean"},
         "options": string_list,
     },
 }

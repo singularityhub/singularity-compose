@@ -248,7 +248,29 @@ And if you want args or options, you can again add them:
         - "env-file=myvars.env"
 ```
 
-The run and exec sections are separate to allow you to run both, or either without
+As of version 0.1.17, you can also ask the run command to be placed in the background.
+Here is an example that starts a notebook and then still is able to execute a start adn run command:
+
+```yaml
+version: "2.0"
+instances:
+  jupyter:
+    image: docker://umids/jupyterlab
+    volumes:
+       - ./work:/usr/local/share/jupyter/lab/settings/
+    ports:
+      - 8888:8888
+    run:
+      background: true
+  second:
+    build:
+      context: ./second
+    run: []
+    depends_on:
+      - jupyter
+```
+
+This full example is provided under [singularity-compose-examples](https://github.com/singularityhub/singularity-compose-examples/tree/master/v2.0/jupyterlab). Finally, note that the run and exec sections are separate to allow you to run both, or either without
 the other.
 
 ## Instance

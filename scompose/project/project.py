@@ -22,8 +22,10 @@ import subprocess
 from copy import deepcopy
 
 
-class Project(object):
-    """A compose project is a group of containers read in from a config file."""
+class Project:
+    """
+    A compose project is a group of containers read in from a config file.
+    """
 
     config = None
     instances = {}
