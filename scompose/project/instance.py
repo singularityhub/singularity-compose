@@ -16,10 +16,12 @@ import shlex
 import os
 import platform
 import re
+import time
 
 
-class Instance(object):
-    """A section of a singularity-compose.yml, typically includes an image
+class Instance:
+    """
+    A section of a singularity-compose.yml, typically includes an image
     name, volumes, build directory, and any ports or environment variables
     relevant to the instance.
 
@@ -85,6 +87,16 @@ class Instance(object):
     def uri(self):
         return "instance://%s" % self.get_replica_name()
 
+    @property
+    def run_background(self):
+        """
+        Determine if the process should be run in the background.
+        """
+        run = self.params.get("run", {}) or {}
+        if isinstance(run, list):
+            return False
+        return run.get("background") or False
+
     def set_context(self, params):
         """set and validate parameters from the singularity-compose.yml,
         including build (context and recipe). We don't pull or create
@@ -127,12 +139,15 @@ class Instance(object):
     # Volumes and Ports
 
     def set_volumes(self, params):
-        """set volumes from the recipe"""
+        """
+        Set volumes from the recipe
+        """
         self.volumes = params.get("volumes", [])
         self._volumes_from = params.get("volumes_from", [])
 
     def set_volumes_from(self, instances):
-        """volumes from is called after all instances are read in, and
+        """
+        Volumes from is called after all instances are read in, and
         then volumes can be mapped (and shared) with both containers.
         with Docker, this is done with isolation, but for Singularity
         we will try sharing a bind on the host.
@@ -149,7 +164,9 @@ class Instance(object):
                     self.volumes.append(volume)
 
     def set_network(self, params):
-        """set network from the recipe to be used"""
+        """
+        Set network from the recipe to be used
+        """
         self.network = params.get("network", {})
 
         # if not specified, set the default value for the property
@@ -188,13 +205,15 @@ class Instance(object):
         self.run_opts = self._get_command_opts(run_group.get("options", []))
 
     def _get_command_opts(self, group):
-        """Given a string of arguments or options, parse into a list with
+        """
+        Given a string of arguments or options, parse into a list with
         proper flags added.
         """
         return ["--%s" % opt if len(opt) > 1 else "-%s" % opt for opt in group]
 
     def _get_network_commands(self, ip_address=None):
-        """take a list of ports, return the list of --network-args to
+        """
+        Take a list of ports, return the list of --network-args to
         ensure they are bound correctly.
         """
         ports = ["--net"]
@@ -216,7 +235,9 @@ class Instance(object):
         return ports
 
     def _get_bind_commands(self):
-        """take a list of volumes, and return the bind commands for Singularity"""
+        """
+        Take a list of volumes, and return the bind commands for Singularity
+        """
         binds = []
         for volume in self.volumes:
             src, dest = volume.split(":")
@@ -237,7 +258,8 @@ class Instance(object):
         return binds
 
     def run_post(self):
-        """run post create commands. Can be added to an instance definition
+        """
+        Run post create commands. Can be added to an instance definition
          either to run a command directly, or execute a script. The path
          is assumed to be on the host.
 
@@ -272,7 +294,8 @@ class Instance(object):
     # Image
 
     def get_image(self):
-        """get the associated instance image name, to be built if it doesn't
+        """
+        Get the associated instance image name, to be built if it doesn't
         exit. It can either be defined at the config from self.image, or
         ultimately generated via a pull from a uri.
         """
@@ -294,7 +317,8 @@ class Instance(object):
     # Build
 
     def build(self, working_dir):
-        """build an image if called for based on having a recipe and context.
+        """
+        Build an image if called for based on having a recipe and context.
         Otherwise, pull a container uri to the instance workspace.
         """
         sif_binary = self.get_image()
@@ -363,7 +387,8 @@ class Instance(object):
             bot.exit("neither image and build defined for %s" % self.name)
 
     def get_build_options(self):
-        """'get build options will parse through params, and return build
+        """
+        Get build options will parse through params, and return build
         options (if they exist)
         """
         options = []
@@ -390,7 +415,8 @@ class Instance(object):
 
     # State
     def exists(self):
-        """return boolean if an instance exists. We do this by way of listing
+        """
+        Return boolean if an instance exists. We do this by way of listing
         instances, and so the calling user is important.
         """
         instances = [x.name for x in self.client.instances(quiet=True, sudo=self.sudo)]
@@ -404,7 +430,8 @@ class Instance(object):
                 break
 
     def stop(self, timeout=None):
-        """delete the instance, if it exists. Singularity doesn't have delete
+        """
+        Delete the instance, if it exists. Singularity doesn't have delete
         or remove commands, everything is a stop.
         """
         if self.instance:
@@ -415,7 +442,8 @@ class Instance(object):
     # Networking
 
     def get_address(self):
-        """get the bridge address of an image. If it's busybox, we can't use
+        """
+        Get the bridge address of an image. If it's busybox, we can't use
         hostname -I.
         """
         ip_address = None
@@ -453,7 +481,9 @@ class Instance(object):
     # Logs
 
     def clear_logs(self):
-        """delete logs for an instance, if they exist."""
+        """
+        Delete logs for an instance, if they exist.
+        """
         log_folder = self._get_log_folder()
 
         for ext in ["out", "err"]:
@@ -473,7 +503,9 @@ class Instance(object):
                 pass
 
     def _get_log_folder(self):
-        """get a log folder that includes a user, home, and host"""
+        """
+        Get a log folder that includes a user, home, and host
+        """
         home = get_userhome()
         user = os.path.basename(home)
 
@@ -486,7 +518,9 @@ class Instance(object):
         return os.path.join(home, ".singularity", "instances", "logs", hostname, user)
 
     def logs(self, tail=0):
-        """show logs for an instance"""
+        """
+        Show logs for an instance
+        """
 
         log_folder = self._get_log_folder()
 
@@ -516,7 +550,8 @@ class Instance(object):
     # Create and Delete
 
     def up(self, working_dir, ip_address=None, writable_tmpfs=False):
-        """up is the same as create, but like Docker, we build / pull instances
+        """
+        Up is the same as create, but like Docker, we build / pull instances
         first.
         """
         image = self.get_image() or ""
@@ -527,7 +562,9 @@ class Instance(object):
         self.create(writable_tmpfs=writable_tmpfs, ip_address=ip_address)
 
     def create(self, ip_address=None, sudo=False, writable_tmpfs=False):
-        """create an instance, if it doesn't exist."""
+        """
+        Create an instance, if it doesn't exist.
+        """
         image = self.get_image()
 
         # Case 1: No build context or image defined
@@ -605,19 +642,25 @@ class Instance(object):
             # If the user has run defined, finish with the run
             if "run" in self.params:
 
+                run_args = self.run_args or ""
+
                 # Show the command to the user
                 commands = "%s %s %s" % (
                     " ".join(self.run_opts),
                     self.uri,
-                    self.run_args or "",
+                    run_args,
                 )
-                bot.debug("singularity run %s" % commands)
 
-                for line in self.client.run(
-                    image=self.instance,
-                    args=self.run_args,
-                    sudo=self.sudo,
-                    stream=True,
-                    options=self.run_opts,
+                bot.debug("singularity run %s" % commands)
+                for line in (
+                    self.client.run(
+                        image=self.instance,
+                        args=run_args,
+                        sudo=self.sudo,
+                        stream=True,
+                        options=self.run_opts,
+                        background=self.run_background,
+                    )
+                    or []
                 ):
-                    print(line)
+                    print(line.strip("\n"))
