@@ -61,7 +61,8 @@ class Project:
         return names
 
     def set_filename(self, filename):
-        """Set the filename to read the recipe from.
+        """
+        Set the filename to read the recipe from.
 
         If not provided, defaults to singularity-compose.yml. The working directory
         is set to be the directory name of the configuration file.
@@ -297,7 +298,8 @@ class Project:
         return bridge_address
 
     def create_hosts(self, lookup):
-        """create a hosts file to bind to all containers, where we define the
+        """
+        Create a hosts file to bind to all containers, where we define the
         correct hostnames to correspond with the ip addresses created.
         Note: This function is terrible. Singularity should easily expose
               these addresses. See issue here:
@@ -503,8 +505,7 @@ class Project:
         bridge: the bridge ip address to use for networking, and generating
                 addresses for the individual containers.
                 see /usr/local/etc/singularity/network/00_bridge.conflist
-        no_resolv: if True, don't create and bind a resolv.conf with Google
-                   nameservers.
+        no_resolv: if True, don't create and bind a resolv.conf.
         """
         # If no names provided, we create all
         names = names or self.get_instance_names()

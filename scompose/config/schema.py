@@ -8,7 +8,6 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """
 
-import os
 import sys
 
 from jsonschema.exceptions import ValidationError
@@ -57,6 +56,8 @@ instance_network = {
     "properties": {
         "allocate_ip": {"type": "boolean"},
         "enable": {"type": "boolean"},
+        # --network-args
+        "args": string_list,
     },
 }
 

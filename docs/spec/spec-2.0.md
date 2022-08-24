@@ -127,7 +127,7 @@ INFO:    Cleaning up image...
 
 To allow fakeroot to bind ports without sudo you need to execute this:
 
-```
+```bash
 echo "allow net networks = bridge, fakeroot" >> /etc/singularity/singularity.conf
 ```
 
@@ -149,6 +149,41 @@ The example below will disable the network features:
       enable: true | false
 ```
 
+### Custom Network
+
+As of version 0.1.19 we have support for custom network args, and a full example of using a custom network
+[here](https://github.com/singularityhub/singularity-compose-examples/tree/master/v2.0/custom-network). 
+To summarize, let's say you start with this configuration at `/usr/local/etc/singularity/network/50_static-redis.conflist`:
+
+```yaml
+version: "2.0"
+instances:
+  cg-cache:
+    name: redis
+    run:
+      background: true
+    build:
+      context: .
+      recipe: redis.def
+    start:
+      background: true
+      options:
+        - "env-file=./env-file.sh"
+      command: redis-server --bind 0.0.0.0 --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - ./env-file.sh:/.singularity.d/env/env-file.sh
+    network:
+      enable: true
+      allocate_ip: true
+
+      # If network args are provided, --network none is not used
+      args:
+        - '"portmap=6379:6379/tcp"'
+      ports:
+        - 6379:6379
+```
+
+The addition is support for ``--network-args`` and the custom network (the portmap) that you've defined above.
 
 ## Start Group
 
