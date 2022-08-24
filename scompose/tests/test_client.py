@@ -10,7 +10,6 @@ from scompose.project import Project
 from scompose.utils import run_command
 from time import sleep
 import requests
-import pytest
 import os
 
 

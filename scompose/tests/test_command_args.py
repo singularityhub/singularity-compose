@@ -8,10 +8,8 @@
 
 from scompose.logger import bot
 from scompose.project import Project
-from scompose.utils import run_command
 from time import sleep
 import shutil
-import pytest
 import os
 
 here = os.path.dirname(os.path.abspath(__file__))

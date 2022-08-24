@@ -91,7 +91,7 @@ def get_parser():
     )
 
     # print version and exit
-    version = subparsers.add_parser("version", help="show software version")
+    subparsers.add_parser("version", help="show software version")
 
     # Build
 
@@ -112,8 +112,7 @@ def get_parser():
     )
 
     # Config
-
-    config = subparsers.add_parser("config", help="Validate and view the compose file")
+    subparsers.add_parser("config", help="Validate and view the compose file")
 
     # Create (assumes built already), Up (will also build, if able)
 
@@ -189,7 +188,7 @@ def get_parser():
         action="store_true",
     )
 
-    ps = subparsers.add_parser("ps", help="list instances")
+    subparsers.add_parser("ps", help="list instances")
 
     # Add list of names
     for sub in [build, create, down, logs, up, restart, stop]:

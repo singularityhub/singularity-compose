@@ -16,7 +16,6 @@ import shlex
 import os
 import platform
 import re
-import time
 
 
 class Instance:
@@ -174,13 +173,17 @@ class Instance:
             self.network[key] = self.network.get(key, True)
 
     def set_ports(self, params):
-        """set ports from the recipe to be used"""
+        """
+        Set ports from the recipe to be used
+        """
         self.ports = params.get("ports", [])
 
     # Commands
 
     def set_start(self, params):
-        """set arguments to the startscript"""
+        """
+        Set arguments to the startscript
+        """
         start = params.get("start", {})
         self.args = start.get("args", "")
         self.start_opts = [
@@ -211,6 +214,13 @@ class Instance:
         """
         return ["--%s" % opt if len(opt) > 1 else "-%s" % opt for opt in group]
 
+    @property
+    def network_args(self):
+        """
+        Return a list of network args.
+        """
+        return self.params.get("network", {}).get("args", [])
+
     def _get_network_commands(self, ip_address=None):
         """
         Take a list of ports, return the list of --network-args to
@@ -221,8 +231,12 @@ class Instance:
         # Fakeroot means not needing sudo
         fakeroot = "--fakeroot" in self.start_opts or "-f" in self.start_opts
 
-        # If not sudo or fakeroot, we need --network none
-        if not self.sudo and not fakeroot:
+        # Add all network args
+        network_args = self.network_args
+        for arg in network_args:
+            ports += ["--network-args", arg]
+
+        if not network_args and (not self.sudo and not fakeroot):
             ports += ["--network", "none"]
 
         for pair in self.ports:
