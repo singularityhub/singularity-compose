@@ -236,7 +236,7 @@ class Instance:
         for arg in network_args:
             ports += ["--network-args", arg]
 
-        if network_type is not None
+        if network_type is not None:
             # network_type is "bridge" by default when network.enable is True
             ports += ["--network", network_type]
 
