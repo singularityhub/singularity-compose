@@ -171,6 +171,11 @@ class Instance:
         # if not specified, set the default value for the property
         for key in ["enable", "allocate_ip"]:
             self.network[key] = self.network.get(key, True)
+        
+        fakeroot = "--fakeroot" in self.start_opts or "-f" in self.start_opts
+        default_network_value = "fakeroot" if fakeroot else "bridge"
+
+        self.network["type"] = self.network.get("type", default_network_value if self.network["enable"] is True else "none")
 
     def set_ports(self, params):
         """
@@ -240,7 +245,7 @@ class Instance:
             # network_type is "bridge" by default when network.enable is True
             ports += ["--network", network_type]
 
-        if network_type is None and (not self.sudo and not fakeroot):
+        if network_type is None:# and (not self.sudo and not fakeroot):
             ports += ["--network", "none"]
 
         for pair in self.ports:
@@ -609,8 +614,9 @@ class Instance:
             # Network configuration + Ports
             if self.network["enable"]:
                 # if network.enable is true a --network must be always added
-                # using bridge as default
-                network_type = self.network["type"] or "bridge"
+                # using bridge or fakeroot as default
+                fakeroot = "--fakeroot" in self.start_opts or "-f" in self.start_opts
+                network_type = self.network["type"] or "fakeroot" if fakeroot else "bridge" 
                 options += self._get_network_commands(ip_address, network_type)
 
             # Start options
