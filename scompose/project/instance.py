@@ -221,7 +221,7 @@ class Instance:
         """
         return self.params.get("network", {}).get("args", [])
 
-    def _get_network_commands(self, ip_address=None):
+    def _get_network_commands(self, ip_address=None, network_type=None):
         """
         Take a list of ports, return the list of --network-args to
         ensure they are bound correctly.
@@ -236,7 +236,11 @@ class Instance:
         for arg in network_args:
             ports += ["--network-args", arg]
 
-        if not network_args and (not self.sudo and not fakeroot):
+        if network_type is not None
+            # network_type is "bridge" by default when network.enable is True
+            ports += ["--network", network_type]
+
+        if network_type is None and (not self.sudo and not fakeroot):
             ports += ["--network", "none"]
 
         for pair in self.ports:
@@ -604,7 +608,10 @@ class Instance:
 
             # Network configuration + Ports
             if self.network["enable"]:
-                options += self._get_network_commands(ip_address)
+                # if network.enable is true a --network must be always added
+                # using bridge as default
+                network_type = self.network["type"] or "bridge"
+                options += self._get_network_commands(ip_address, network_type)
 
             # Start options
             options += self.start_opts
