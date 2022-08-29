@@ -243,11 +243,14 @@ class Project:
     # Networking
 
     def subnet_from_cni_config(self, config_name="bridge"):
-        if config_name == "bridge":
+        if config_name == "bridge" and os.path.exists("/usr/local/etc/singularity/network/00_bridge.conflist"):
             bridge_file = open("/usr/local/etc/singularity/network/00_bridge.conflist")
             bridge_config = json.load(bridge_file)
             return bridge_config["plugins"][0]["ipam"]["subnet"] or self.get_bridge_address()
         else:
+            if not os.path.exists("/usr/local/etc/singularity/network"):
+                return self.get_bridge_address()
+
             for config_file in os.listdir("/usr/local/etc/singularity/network"):
                 config = json.load(open("/usr/local/etc/singularity/network/" + config_file))
                 if config["name"] == config_name: 
