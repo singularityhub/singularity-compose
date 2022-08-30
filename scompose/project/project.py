@@ -246,16 +246,17 @@ class Project:
         if config_name == "bridge" and os.path.exists("/usr/local/etc/singularity/network/00_bridge.conflist"):
             bridge_file = open("/usr/local/etc/singularity/network/00_bridge.conflist")
             bridge_config = json.load(bridge_file)
-            return bridge_config["plugins"][0]["ipam"]["subnet"] or self.get_bridge_address()
+            return bridge_config["plugins"][0]["ipam"]["subnet"] or "10.22.0.0/16"
         else:
             if not os.path.exists("/usr/local/etc/singularity/network"):
-                return self.get_bridge_address()
+                return "10.22.0.0/16"
 
             for config_file in os.listdir("/usr/local/etc/singularity/network"):
                 config = json.load(open("/usr/local/etc/singularity/network/" + config_file))
                 if config["name"] == config_name: 
-                    return config["plugins"][0]["ipam"].get("subnet") or config["plugins"][0]["ipam"].get("addresses")[0]["address"] or self.get_bridge_address()
-        
+                    return config["plugins"][0]["ipam"].get("subnet") or config["plugins"][0]["ipam"].get("addresses")[0]["address"] or "10.22.0.0/16"
+
+
     def get_ip_lookup(self, names, bridge="10.22.0.0/16"):
         """
         Generate a pre-determined address for each container.
