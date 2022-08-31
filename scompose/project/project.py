@@ -255,7 +255,7 @@ class Project:
                 config = json.load(open("/usr/local/etc/singularity/network/" + config_file))
                 if config["name"] == config_name: 
                     return config["plugins"][0]["ipam"].get("subnet") or config["plugins"][0]["ipam"].get("addresses")[0]["address"] or "10.22.0.0/16"
-
+        return "10.22.0.0/16"
 
     def get_ip_lookup(self, names, bridge="10.22.0.0/16"):
         """

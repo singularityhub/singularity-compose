@@ -616,7 +616,8 @@ class Instance:
                 # if network.enable is true a --network must be always added
                 # using bridge or fakeroot as default
                 fakeroot = "--fakeroot" in self.start_opts or "-f" in self.start_opts
-                network_type = self.network["type"] or "fakeroot" if fakeroot else "bridge" 
+                network_type = self.network["type"] or ("fakeroot" if fakeroot else "bridge")
+                bot.debug("network_type is: " + network_type)
                 options += self._get_network_commands(ip_address, network_type)
 
             # Start options
