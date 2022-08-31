@@ -171,6 +171,11 @@ class Instance:
         # if not specified, set the default value for the property
         for key in ["enable", "allocate_ip"]:
             self.network[key] = self.network.get(key, True)
+        
+        fakeroot = "--fakeroot" in self.start_opts or "-f" in self.start_opts
+        default_network_value = "fakeroot" if fakeroot else "bridge"
+
+        self.network["type"] = self.network.get("type", default_network_value if self.network["enable"] is True else "none")
 
     def set_ports(self, params):
         """
@@ -221,7 +226,7 @@ class Instance:
         """
         return self.params.get("network", {}).get("args", [])
 
-    def _get_network_commands(self, ip_address=None):
+    def _get_network_commands(self, ip_address=None, network_type=None):
         """
         Take a list of ports, return the list of --network-args to
         ensure they are bound correctly.
@@ -236,7 +241,11 @@ class Instance:
         for arg in network_args:
             ports += ["--network-args", arg]
 
-        if not network_args and (not self.sudo and not fakeroot):
+        if network_type is not None:
+            # network_type is "bridge" by default when network.enable is True
+            ports += ["--network", network_type]
+
+        if network_type is None:# and (not self.sudo and not fakeroot):
             ports += ["--network", "none"]
 
         for pair in self.ports:
@@ -604,7 +613,12 @@ class Instance:
 
             # Network configuration + Ports
             if self.network["enable"]:
-                options += self._get_network_commands(ip_address)
+                # if network.enable is true a --network must be always added
+                # using bridge or fakeroot as default
+                fakeroot = "--fakeroot" in self.start_opts or "-f" in self.start_opts
+                network_type = self.network["type"] or ("fakeroot" if fakeroot else "bridge")
+                bot.debug("network_type is: " + network_type)
+                options += self._get_network_commands(ip_address, network_type)
 
             # Start options
             options += self.start_opts

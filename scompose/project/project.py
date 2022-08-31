@@ -8,6 +8,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """
 
+import traceback
 from scompose.templates import get_template
 from scompose.logger import bot
 from scompose.utils import read_file, write_file
@@ -240,6 +241,21 @@ class Project:
         return {k: self.instances[k] for k in sorted_instances}
 
     # Networking
+
+    def subnet_from_cni_config(self, config_name="bridge"):
+        if config_name == "bridge" and os.path.exists("/usr/local/etc/singularity/network/00_bridge.conflist"):
+            bridge_file = open("/usr/local/etc/singularity/network/00_bridge.conflist")
+            bridge_config = json.load(bridge_file)
+            return bridge_config["plugins"][0]["ipam"]["subnet"] or "10.22.0.0/16"
+        else:
+            if not os.path.exists("/usr/local/etc/singularity/network"):
+                return "10.22.0.0/16"
+
+            for config_file in os.listdir("/usr/local/etc/singularity/network"):
+                config = json.load(open("/usr/local/etc/singularity/network/" + config_file))
+                if config["name"] == config_name: 
+                    return config["plugins"][0]["ipam"].get("subnet") or config["plugins"][0]["ipam"].get("addresses")[0]["address"] or "10.22.0.0/16"
+        return "10.22.0.0/16"
 
     def get_ip_lookup(self, names, bridge="10.22.0.0/16"):
         """
@@ -514,13 +530,6 @@ class Project:
         created = set()
         circular_dep = False
 
-        # Generate ip addresses for each
-        lookup = self.get_ip_lookup(names, bridge)
-
-        if not no_resolv:
-            # Generate shared hosts file
-            hosts_file = self.create_hosts(lookup)
-
         for instance in self.iter_instances(names):
             depends_on = instance.params.get("depends_on", [])
             for dep in depends_on:
@@ -532,6 +541,8 @@ class Project:
                 resolv = self.generate_resolv_conf()
                 instance.volumes.append("%s:/etc/resolv.conf" % resolv)
 
+                lookup = self.get_ip_lookup(names, self.subnet_from_cni_config(instance.network.get("type", "bridge")))
+                hosts_file = self.create_hosts(lookup)
                 # Create a hosts file for the instance based, add as volume
                 instance.volumes.append("%s:/etc/hosts" % hosts_file)
 

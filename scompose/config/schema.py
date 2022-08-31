@@ -56,6 +56,7 @@ instance_network = {
     "properties": {
         "allocate_ip": {"type": "boolean"},
         "enable": {"type": "boolean"},
+        "type": {"type": "string"},
         # --network-args
         "args": string_list,
     },
