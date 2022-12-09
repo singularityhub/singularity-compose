@@ -1,18 +1,24 @@
 # Commands
 
-The following commands are currently supported. Remember, you must be in the 
+The following commands are currently supported. Remember, you must be in the
 present working directory of the compose file to reference the correct instances.
 
 ## check
 
-To do a sanity check of your singularity-compose.yml, you can use `singularity-compose check`
+To do a sanity check of your singularity-compose.yml, you can use `singularity-compose check`. Note that
+this command requires jsonschema, so you should install via:
+
+```bash
+$ pip install singularity-compose[checks]
+```
+or directly `pip install jsonschema`
 
 ```bash
 $ singularity-compose check
 singularity-compose.yml is valid.
 
-$ singularity-compose -f singularity-compose.yml \ 
-          -f singularity-compose.override.yml check 
+$ singularity-compose -f singularity-compose.yml \
+          -f singularity-compose.override.yml check
 singularity-compose.yml is valid.
 singularity-compose.override.yml is valid.
 ```
@@ -20,9 +26,9 @@ singularity-compose.override.yml is valid.
 To view the combined compose files you can use `--preview`.
 
 ```bash
-$ singularity-compose -f singularity-compose.yml \ 
+$ singularity-compose -f singularity-compose.yml \
           -f singularity-compose.override.yml check  --preview
-          
+
 version: '2.0'
 instances:
   cvatdb:
@@ -142,7 +148,7 @@ You can easily shell inside of a running instance:
 
 ```bash
 $ singularity-compose shell app
-Singularity app.sif:~/Documents/Dropbox/Code/singularity/singularity-compose-example> 
+Singularity app.sif:~/Documents/Dropbox/Code/singularity/singularity-compose-example>
 ```
 
 ## exec
@@ -177,7 +183,7 @@ var
 
 ## run
 
-If a container has a `%runscript` section (or a Docker entrypoint/cmd that 
+If a container has a `%runscript` section (or a Docker entrypoint/cmd that
 was converted to one), you can run that script easily:
 
 ```bash
@@ -318,7 +324,7 @@ Specify the location of a Compose configuration file
 
 Default value: `singularity-compose.yml`
 
-Aliases `--file`, `-f`. 
+Aliases `--file`, `-f`.
 
 You can supply multiple `-f` configuration files. When you supply multiple files, `singularity-compose`
  combines them into a single configuration. It builds the configuration in the order you supply the
@@ -344,7 +350,7 @@ instances:
       - /mnt/shared_drive/folder:/webapp/data
 ```
 
-if the `singularity-compose.dev.yml` also specifies this same service, any matching fields override 
+if the `singularity-compose.dev.yml` also specifies this same service, any matching fields override
 the previous files.
 
 ```yaml
@@ -376,7 +382,7 @@ Specify project name.
 
 Default value: `$PWD`
 
-Aliases `--project-name`, `-p`. 
+Aliases `--project-name`, `-p`.
 
 ```bash
 $ singularity-compose --project-name 'my_cool_project' up

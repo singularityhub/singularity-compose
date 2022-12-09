@@ -8,16 +8,15 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """
 
-import os
 import sys
-
-from jsonschema.exceptions import ValidationError
 
 from scompose.utils import read_yaml
 
 # We don't require jsonschema, so catch import error and alert user
 try:
     from jsonschema import validate
+    from jsonschema.exceptions import ValidationError
+
 except ImportError as e:
     msg = "pip install jsonschema"
     sys.exit("jsonschema is required for checking and validation: %s\n %s" % (e, msg))

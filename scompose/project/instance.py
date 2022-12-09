@@ -8,15 +8,15 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """
 
-from scompose.logger import bot
-from scompose.utils import get_userhome
-from spython.main import get_client
-
-import shlex
 import os
 import platform
 import re
-import time
+import shlex
+
+from spython.main import get_client
+
+from scompose.logger import bot
+from scompose.utils import get_userhome
 
 
 class Instance:
@@ -372,7 +372,7 @@ class Instance:
                 for line in stream:
                     print(line)
 
-            except:
+            except Exception:
                 build = "sudo singularity build %s %s" % (
                     os.path.basename(sif_binary),
                     self.recipe,
@@ -499,7 +499,7 @@ class Instance:
                 else:
                     self.client._run_command(["sudo", "rm", logfile], quiet=True)
                     self.client._run_command(["sudo", "touch", logfile], quiet=True)
-            except:
+            except Exception:
                 pass
 
     def _get_log_folder(self):
@@ -544,7 +544,7 @@ class Instance:
                     print(result)
                     bot.newline()
 
-            except:
+            except Exception:
                 pass
 
     # Create and Delete

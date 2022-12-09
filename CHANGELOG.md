@@ -1,7 +1,7 @@
 # CHANGELOG
 
-This is a manually generated log to track changes to the repository for each release. 
-Each section should include general headers such as **Implemented enhancements** 
+This is a manually generated log to track changes to the repository for each release.
+Each section should include general headers such as **Implemented enhancements**
 and **Merged pull requests**. Critical items to know are:
 
  - renamed commands
@@ -14,6 +14,7 @@ and **Merged pull requests**. Critical items to know are:
 The versions coincide with releases on pypi.
 
 ## [0.1.x](https://github.com/singularityhub/singularity-compose/tree/master) (0.1.x)
+ - improve linting and docs on jsonschma (checks install) (0.1.18)
  - add support for instance replicas (0.1.17)
  - fix check command validation (0.1.16)
  - fix a bug triggered when using startoptions in conjunction with network=false (0.1.15)
@@ -21,14 +22,14 @@ The versions coincide with releases on pypi.
  - fix module import used by check command (0.1.13)
  - adding jsonschema validation and check command (0.1.12)
    - implement configuration override feature
-   - implement `--preview` argument for the `check` command 
+   - implement `--preview` argument for the `check` command
  - add network->enable option on composer file (0.1.11)
  - add network->allocate_ip option on composer file (0.1.10)
  - version 2.0 of the spec with added fakeroot network, start, exec, and run options (0.1.0)
-   - stop option added (equivalent functionality to down)   
+   - stop option added (equivalent functionality to down)
    - spython version 0.1.0 with Singularity 3.x or greater required
 
-## [0.0.x](https://github.com/singularityhub/singularity-compose/tree/master) (0.0.x) 
+## [0.0.x](https://github.com/singularityhub/singularity-compose/tree/master) (0.0.x)
  - removed check for sudo when adding network flags (0.0.21)
  - singularity-compose down supporting timeout (0.0.20)
  - command, ability to associate arguments to the instance's startscript (0.0.19)

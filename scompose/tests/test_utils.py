@@ -7,6 +7,7 @@
 # with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import os
+
 import pytest
 
 here = os.path.dirname(os.path.abspath(__file__))
@@ -41,7 +42,8 @@ def test_write_bad_json(tmp_path):
 
 def test_write_json(tmp_path):
     import json
-    from scompose.utils import write_json, read_json
+
+    from scompose.utils import read_json, write_json
 
     good_json = {"Wakkawakkawakka": [True, "2", 3]}
     tmpfile = str(tmp_path / "good_json_file.txt")
