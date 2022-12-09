@@ -8,18 +8,21 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """
 
-from scompose.templates import get_template
-from scompose.logger import bot
-from scompose.utils import read_file, write_file
-from ..config import merge_config
-from spython.main import get_client
-from .instance import Instance
-from ipaddress import IPv4Network
 import json
 import os
 import re
 import subprocess
 from copy import deepcopy
+from ipaddress import IPv4Network
+
+from spython.main import get_client
+
+from scompose.logger import bot
+from scompose.templates import get_template
+from scompose.utils import read_file, write_file
+
+from ..config import merge_config
+from .instance import Instance
 
 
 class Project:

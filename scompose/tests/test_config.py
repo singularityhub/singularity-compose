@@ -43,8 +43,8 @@ def test_merge():
 
 def test_deep_merge():
     print("Testing utils._deep_merge")
-    from scompose.utils import read_yaml
     from scompose.config import _deep_merge
+    from scompose.utils import read_yaml
 
     config_override = os.path.join(here, "configs", "config_merge")
 

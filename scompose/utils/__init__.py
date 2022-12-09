@@ -13,9 +13,9 @@ import json
 import os
 import pwd
 import sys
-import yaml
+from subprocess import PIPE, STDOUT, Popen
 
-from subprocess import Popen, PIPE, STDOUT
+import yaml
 
 
 def get_installdir():

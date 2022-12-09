@@ -27,7 +27,7 @@ def merge_config(file_list):
 
             # read yaml file
             yaml_files.append(read_yaml(f, quiet=True))
-        except:  # ParserError
+        except Exception:  # ParserError
             bot.exit("Cannot parse %s, invalid yaml." % f)
 
     # merge/override yaml properties where applicable

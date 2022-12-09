@@ -20,6 +20,8 @@
 import os
 import sys
 
+from recommonmark.parser import CommonMarkParser
+
 sys.path.insert(0, os.path.abspath("."))
 
 # -- General configuration ------------------------------------------------
@@ -50,12 +52,6 @@ napoleon_use_ivar = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
-
-# The suffix(es) of source filenames.
-# You can specify multiple suffix as a list of string:
-#
-# source_suffix = ['.rst', '.md']
-from recommonmark.parser import CommonMarkParser
 
 source_parsers = {
     ".md": CommonMarkParser,
@@ -90,6 +86,11 @@ release = "1"
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
 language = None
+
+# The suffix(es) of source filenames.
+# You can specify multiple suffix as a list of string:
+#
+# source_suffix = ['.rst', '.md']
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
