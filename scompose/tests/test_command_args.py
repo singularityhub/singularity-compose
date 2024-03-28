@@ -37,6 +37,8 @@ def test_command_args(tmp_path):
     # Loading project validates config
     project = Project()
 
+    print(os.getcwd())
+    print(os.listdir())
     print("Testing build")
     project.build()
 
