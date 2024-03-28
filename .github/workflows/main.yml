@@ -22,6 +22,7 @@ jobs:
       - name: Run unit tests
         run: |
           which singularity
+          sudo cp /usr/local/bin/singularity /usr/bin/singularity
           pytest -xs scompose/tests/test_*.py
 
   formatting:
