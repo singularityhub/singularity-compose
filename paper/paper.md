@@ -25,9 +25,9 @@ Singularity Compose is an orchestration tool for Singularity container instances
 The Singularity container technology started to become popular in 2016,
 as it offered a more secure option to run encapsulated environments [@Kurtzer2017-xj].
 Traditionally, this meant that Singularity users could run a script built into the container
-(called a runscript), execute a custom command, or shell into a container. 
-Unlike Docker [@Merkel2014-da], these basic interactions simply interacted with processes in the 
-foreground (e.g., running a script and exiting) and were not appropriate to run 
+(called a runscript), execute a custom command, or shell into a container.
+Unlike Docker [@Merkel2014-da], these basic interactions simply interacted with processes in the
+foreground (e.g., running a script and exiting) and were not appropriate to run
 background services. This was a task for container instances [@SingularityInstances].
 
 A container instance [@SingularityInstances] equates to running a container in a detached or
@@ -37,23 +37,23 @@ Examples of services include databases, web servers, and associated applications
 that interact with them. While a container technology can provide command line
 and other programmatic interfaces for interaction with instances, what is also needed
 is a configuration file for orchestration and customization of several instances.
-For sibling container technology Docker, Docker Compose [@DockerCompose] was developed 
-for this purpose. For local and production usage, the user could create a `docker-compose.yml` 
+For sibling container technology Docker, Docker Compose [@DockerCompose] was developed
+for this purpose. For local and production usage, the user could create a `docker-compose.yml`
 file to define services, volumes, ports exposed, and other customizations to networking and environment
 [@DockerCompose]. Notably, there was strong incentive for the development of such a tool,
 because Docker Compose existed before Kubernetes was available in the middle of 2015 [@Wikipedia_contributors2019-bw].
 
 No equivalent orchestration tool was created for Singularity container
-instances. While Singularity has empowered enterprise users to run 
+instances. While Singularity has empowered enterprise users to run
 services via platforms such as Kubernetes [@Meyer2019-sd], these platforms come
-with privilege. It is often the case that a production Kubernetes cluster is not 
-readily available to a user via his or her institution, or that the user 
+with privilege. It is often the case that a production Kubernetes cluster is not
+readily available to a user via his or her institution, or that the user
 cannot pay a cloud provider to deploy one. However, this does not imply that
 a non enterprise user (e.g., an open source developer
 or academic) would not benefit from such an orchestration tool. Unfortunately,
 since the current trend and strongest potential for making profits is centered
 around encouraging usage of enterprise tools like Kubernetes [@Wikipedia_contributors2019-bw],
-there is not any urgent incentive on part of the provider companies to 
+there is not any urgent incentive on part of the provider companies to
 invest in a non-enterprise orchestration tool. It is logical, rational, and
 understandable that companies exist to make profit, and must make profit
 to exist. As the need is unfulfilled, it is the responsibility of the open source community to step up.
@@ -62,8 +62,8 @@ to exist. As the need is unfulfilled, it is the responsibility of the open sourc
 ## Singularity Compose
 
 The solution for orchestration of container instances from the open source
-community is Singularity Compose [@SingularityCompose]. Singularity Compose 
-is software for non enterprise users to easily create a configuration file to 
+community is Singularity Compose [@SingularityCompose]. Singularity Compose
+is software for non enterprise users to easily create a configuration file to
 control creation and interaction of Singularity container instances.
 It allows for the creation of a `singularity-compose.yml` file, in which
 the user can define one or more container services, optionally with exposed ports
@@ -71,7 +71,7 @@ and volumes on the host. The user can easily define a container binary
 to build or pull from a remote resource, along with custom scripts to
 run after creation of the instances. Singularity Compose handles designation
 of addresses on a local bridge network for each container, and creation of
-resource files to bind to the containers to "see" one another. 
+resource files to bind to the containers to "see" one another.
 Importantly, by way of adding a Singularity Compose to a repository,
 a user is ensuring not just reproducibility of a container recipe, but also
 reproducibility of it's build and creation of services. For example, a simplified
@@ -112,13 +112,13 @@ We then start instances for them. If we save these commands in a file,
 we need to consistently hard code the paths to the container binaries,
 along with the ip addresses, hostnames, and volumes. There are no checks
 done before attempting the creation if the volumes meant to be bound
-actually exist. We also take for granted that we've already generated an 
+actually exist. We also take for granted that we've already generated an
 `etc.hosts` file to bind to the container at `/etc/hosts`, which will
-define the container instances to have the same names supplied with `--hostname`. 
-For the networking, we have to be mindful of the default bridge provided by Singularity, 
-along with how to specify networking arguments under different conditions. 
+define the container instances to have the same names supplied with `--hostname`.
+For the networking, we have to be mindful of the default bridge provided by Singularity,
+along with how to specify networking arguments under different conditions.
 This entire practice is clearly tedious. For a user to constantly need to generate and then
-re-issue these commands, it's not a comfortable workflow. However, 
+re-issue these commands, it's not a comfortable workflow. However,
 with Singularity Compose, the user writes a `singularity-compose.yml`
 file once:
 
@@ -177,8 +177,8 @@ any development workflow that is not appropriate for an enterprise cluster but
 relies on orchestration of container instances.
 
 For the interested reader, the complete documentation for Singularity Compose [@SingularityCompose]
-is provided, along with the code on GitHub [@SingularityComposeGithub]. For 
-additional walkthroughs and complete examples, we direct the reader to the examples 
+is provided, along with the code on GitHub [@SingularityComposeGithub]. For
+additional walkthroughs and complete examples, we direct the reader to the examples
 repository, also on GitHub [@SingularityComposeExamples]. Contribution by way
 of additional examples, questions, or requests for development of a new example
 are appreciated and welcome.

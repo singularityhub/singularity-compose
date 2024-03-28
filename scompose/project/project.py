@@ -1,6 +1,6 @@
 """
 
-Copyright (C) 2019-2022 Vanessa Sochat.
+Copyright (C) 2019-2024 Vanessa Sochat.
 
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
@@ -8,18 +8,21 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """
 
-from scompose.templates import get_template
-from scompose.logger import bot
-from scompose.utils import read_file, write_file
-from ..config import merge_config
-from spython.main import get_client
-from .instance import Instance
-from ipaddress import IPv4Network
 import json
 import os
 import re
 import subprocess
 from copy import deepcopy
+from ipaddress import IPv4Network
+
+from spython.main import get_client
+
+from scompose.logger import bot
+from scompose.templates import get_template
+from scompose.utils import read_file, write_file
+
+from ..config import merge_config
+from .instance import Instance
 
 
 class Project:
@@ -31,7 +34,6 @@ class Project:
     instances = {}
 
     def __init__(self, filename=None, name=None, env_file=None):
-
         self.set_filename(filename)
         self.set_name(name)
         self.load()
@@ -179,7 +181,6 @@ class Project:
         self.sudo = False
 
         if self.config is not None:
-
             # If any of config has ports, and no fakeroot, must use sudo
             for name in self.config.get("instances", []):
                 params = self.config["instances"][name]

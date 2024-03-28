@@ -14,8 +14,8 @@ or services.
 
 Singularity compose uses Singularity on the backend, so anything that would require sudo (root)
 permissions for Singularity is also required for Singularity compose. This includes most
-networking commands (e.g., asking to allocate ports) and builds from recipe files. 
-However, if you are using Singularity v3.3 or higher, you can take advantage of 
+networking commands (e.g., asking to allocate ports) and builds from recipe files.
+However, if you are using Singularity v3.3 or higher, you can take advantage of
 [fakeroot](https://sylabs.io/guides/3.3/user-guide/fakeroot.html) to try and get around this.
 The snippet below shows how to add fakeroot as an option under a build section:
 
@@ -34,7 +34,7 @@ And a complete example is provided [here](https://github.com/singularityhub/sing
 
 ### Dependencies
 
-Singularity Compose *must* use a version of [Singularity](https://sylabs.io/guides/latest/user-guide/) 
+Singularity Compose *must* use a version of [Singularity](https://sylabs.io/guides/latest/user-guide/)
 3.2.1 or greater. It's recommended to use the latest (3.3.0 release at the time of this writing) otherwise there was
 a bug with some versions of 3.2.1. Singularity 2.x absolutely will not work.
 Python 3 is also required, as Python 2 is at end of life.
@@ -42,7 +42,7 @@ Python 3 is also required, as Python 2 is at end of life.
 ### singularity-compose.yml
 
 For a singularity-compose project, it's expected to have a `singularity-compose.yml`
-in the present working directory. You can look at a simple example here, here is a 
+in the present working directory. You can look at a simple example here, here is a
 version 1.0 spec (before we added networking and exec options):
 
 ```yaml
@@ -60,7 +60,7 @@ instances:
       - 80:80
 ```
 
-and [here](https://github.com/singularityhub/singularity-compose-examples/tree/4241ea8b4e068d93859acb7d2b924702815af0ce/v2.0/ping) 
+and [here](https://github.com/singularityhub/singularity-compose-examples/tree/4241ea8b4e068d93859acb7d2b924702815af0ce/v2.0/ping)
 is a version 2.0 spec that shows adding networking and exec options:
 
 ```yaml
@@ -77,7 +77,7 @@ instances:
       options:
        - fakeroot
     exec:
-      options: 
+      options:
         - "env-file=myvars.env"
       command: printenv SUPERHERO
   alp2:
@@ -95,17 +95,17 @@ instances:
       - alp1
 ```
 
-If you are familiar with [docker-compose](https://docs.docker.com/compose/) 
-the file should look very familiar. A key difference is that instead of 
-"services" we have "instances." And you guessed correctly - each 
-section there corresponds to a 
+If you are familiar with [docker-compose](https://docs.docker.com/compose/)
+the file should look very familiar. A key difference is that instead of
+"services" we have "instances." And you guessed correctly - each
+section there corresponds to a
 [Singularity instance](https://sylabs.io/guides/3.2/user-guide/running_services.html)
 that will be created. In this guide, we will walk through each of the sections
 in detail.
 
 ### Instance folders
 
-Generally, each section in the yaml file corresponds with a container instance to be run, 
+Generally, each section in the yaml file corresponds with a container instance to be run,
 and each container instance is matched to a folder in the present working directory.
 For example, if I give instruction to build an `nginx` instance from
 a `nginx/Singularity.nginx` file, I should have the
@@ -155,15 +155,15 @@ This will pull a container `nginx.sif` into a `nginx` context folder:
 ```
 
 It's less likely that you will be able to pull a container that is ready to
-go, as typically you will want to customize the 
-[startscript](https://sylabs.io/guides/3.2/user-guide/definition_files.html#startscript) 
+go, as typically you will want to customize the
+[startscript](https://sylabs.io/guides/3.2/user-guide/definition_files.html#startscript)
 for the instance. Now that we understand the basic organization, let's
 bring up some instances.
 
 ## Quick Start
 
-For this quick start, we are going to use the 
-[singularity-compose-simple](https://www.github.com/singularityhub/singularity-compose-simple) 
+For this quick start, we are going to use the
+[singularity-compose-simple](https://www.github.com/singularityhub/singularity-compose-simple)
 example. Singularity has a networking issue that currently doesn't allow communication
 between multiple containers (due to iptables and firewall issues) so for now the most we
 can do is show you one container. First, install singularity-compose from pip:
@@ -255,7 +255,7 @@ $ singularity-compose exec app uname -a
 ```
 
 When you open your browser to [http://127.0.0.1](http://127.0.0.1)
-you should see the upload interface. 
+you should see the upload interface.
 
 ![img/upload.png](img/upload.png)
 
@@ -277,7 +277,7 @@ The images that you upload are stored in `images` at the root:
 
 ```bash
 $ ls images/
-2018-02-20-172617.jpg  40-acos.png  _upload 
+2018-02-20-172617.jpg  40-acos.png  _upload
 ```
 
 And static files are in `static`.
@@ -349,7 +349,7 @@ $ singularity instance start \
 
 Control and customization of these instances is probably the coolest (and not widely
 used) feature of Singularity. You can create your own network configurations,
-and customie the arguments to the command. Read [here](https://sylabs.io/guides/3.2/user-guide/running_services.html) for more detalis.
+and customize the arguments to the command. Read [here](https://sylabs.io/guides/3.2/user-guide/running_services.html) for more detalis.
 
 ## Commands
 
@@ -360,7 +360,7 @@ Python API, see [here](/singularity-compose/api/).
 
 The [specification](spec/) describes in more detail the sections of the singularity-compose.yml.
 For example, in the quick start above, we have a post command for the app instance
-that creates a series of folders on the host. 
+that creates a series of folders on the host.
 
 ## Examples
 

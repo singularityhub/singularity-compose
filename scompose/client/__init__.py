@@ -2,7 +2,7 @@
 
 """
 
-Copyright (C) 2019-2022 Vanessa Sochat.
+Copyright (C) 2019-2024 Vanessa Sochat.
 
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
@@ -11,10 +11,11 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """
 
-import scompose
 import argparse
-import sys
 import os
+import sys
+
+import scompose
 
 
 def get_parser():
@@ -91,7 +92,7 @@ def get_parser():
     )
 
     # print version and exit
-    version = subparsers.add_parser("version", help="show software version")
+    subparsers.add_parser("version", help="show software version")
 
     # Build
 
@@ -112,11 +113,9 @@ def get_parser():
     )
 
     # Config
-
-    config = subparsers.add_parser("config", help="Validate and view the compose file")
+    subparsers.add_parser("config", help="Validate and view the compose file")
 
     # Create (assumes built already), Up (will also build, if able)
-
     create = subparsers.add_parser("create", help="create instances")
 
     up = subparsers.add_parser("up", help="build and start containers")
@@ -189,7 +188,7 @@ def get_parser():
         action="store_true",
     )
 
-    ps = subparsers.add_parser("ps", help="list instances")
+    subparsers.add_parser("ps", help="list instances")
 
     # Add list of names
     for sub in [build, create, down, logs, up, restart, stop]:
@@ -224,7 +223,7 @@ def start():
         show_help()
     try:
         args, extra = parser.parse_known_args()
-    except:
+    except Exception:
         sys.exit(0)
 
     if args.debug is True:

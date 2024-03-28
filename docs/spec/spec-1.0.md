@@ -40,7 +40,7 @@ instances:
 ```
 
 Each of nginx, uwsgi, and db are instances to be built as containers, and run
-as instances. 
+as instances.
 
 ## Networking
 
@@ -65,7 +65,7 @@ startscript of instance `app`,
 
 ## Environment
 
-While Singularity compose doesn't currently have support for an environment 
+While Singularity compose doesn't currently have support for an environment
 section, it's easy to add custom environments by way of binding an environment
 file to the instance! For example:
 
@@ -90,8 +90,8 @@ Make sure to export variables.
 
 ## Instance
 
-An instance currently must be instantiated from a container built 
-from a Singularity recipe in a named folder (the example above) 
+An instance currently must be instantiated from a container built
+from a Singularity recipe in a named folder (the example above)
 alongside the singularity-compose.yml:
 
 ```
