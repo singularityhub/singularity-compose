@@ -24,6 +24,10 @@ jobs:
           which singularity
           sudo cp /usr/local/bin/singularity /usr/bin/singularity
           pytest -xs scompose/tests/test_*.py
+          pytest -sv scompose/tests/test_depends_on.py
+          pytest -sv scompose/tests/test_client.py
+          pytest -sv scompose/tests/test_utils.py
+          pytest -sv scompose/tests/test_config.py
 
   formatting:
     runs-on: ubuntu-latest
