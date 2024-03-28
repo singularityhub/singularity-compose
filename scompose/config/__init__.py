@@ -1,6 +1,6 @@
 """
 
-Copyright (C) 2019-2022 Vanessa Sochat.
+Copyright (C) 2019-2024 Vanessa Sochat.
 
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
@@ -27,7 +27,7 @@ def merge_config(file_list):
 
             # read yaml file
             yaml_files.append(read_yaml(f, quiet=True))
-        except:  # ParserError
+        except Exception:  # ParserError
             bot.exit("Cannot parse %s, invalid yaml." % f)
 
     # merge/override yaml properties where applicable

@@ -1,6 +1,6 @@
 """
 
-Copyright (C) 2021-2022 Vanessa Sochat.
+Copyright (C) 2021-2024 Vanessa Sochat.
 
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
@@ -8,10 +8,11 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """
 
-from scompose.logger import bot
+import yaml
+
 from scompose.config import merge_config
 from scompose.config.schema import validate_config
-import yaml
+from scompose.logger import bot
 
 
 def main(args, parser, extra):

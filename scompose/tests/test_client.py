@@ -1,21 +1,21 @@
 #!/usr/bin/python
 
-# Copyright (C) 2019-2022 Vanessa Sochat.
+# Copyright (C) 2019-2024 Vanessa Sochat.
 
 # This Source Code Form is subject to the terms of the
 # Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 # with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import os
+from time import sleep
+
+import requests
+
 from scompose.project import Project
 from scompose.utils import run_command
-from time import sleep
-import requests
-import pytest
-import os
 
 
 def test_commands(tmp_path):
-
     tmpdir = os.path.join(tmp_path, "repo")
     repo = "https://github.com/singularityhub/singularity-compose-examples"
 

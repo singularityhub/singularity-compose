@@ -8,26 +8,36 @@ on:
     branches_ignore: []
 
 jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: singularityhub/install-singularity@main
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest semver pytest-runner requests
+          pip install .[all]
+
+      - name: Run unit tests
+        run: pytest -xs scompose/tests/test_*.py
+
   formatting:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Setup black environment
         run: conda create --quiet --name black
 
-      - name: Check formatting with black
-        run: |
-          export PATH="/usr/share/miniconda/bin:$PATH"
-          source activate black
-          pip install black
-          black --check scompose
+      - name: Check Spelling
+        uses: crate-ci/typos@7ad296c72fa8265059cc03d1eda562fbdfcd6df2 # v1.9.0
+        with:
+          files: ./docs/getting_started/ ./docs/index.rst
 
-      - name: Check imports with pyflakes
+      - name: Lint and format Python code
         run: |
           export PATH="/usr/share/miniconda/bin:$PATH"
           source activate black
-          pip install pyflakes==2.4.0
-          pyflakes scompose/utils
-          # Will have some issues
-          pyflakes scompose/client scompose/project scompose/config || true
+          pip install -r .github/dev-requirements.txt
+          pre-commit run --all-files

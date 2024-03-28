@@ -1,6 +1,6 @@
 """
 
-Copyright (C) 2019-2022 Vanessa Sochat.
+Copyright (C) 2019-2024 Vanessa Sochat.
 
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
@@ -8,15 +8,15 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """
 
-from scompose.logger import bot
-from scompose.utils import get_userhome
-from spython.main import get_client
-
-import shlex
 import os
 import platform
 import re
-import time
+import shlex
+
+from spython.main import get_client
+
+from scompose.logger import bot
+from scompose.utils import get_userhome
 
 
 class Instance:
@@ -34,7 +34,6 @@ class Instance:
     """
 
     def __init__(self, name, replica_number, working_dir, sudo=False, params=None):
-
         if not params:
             params = {}
 
@@ -106,7 +105,6 @@ class Instance:
 
         # build the container on the host from a context
         if "build" in params:
-
             if "context" not in params["build"]:
                 bot.exit("build.context section missing for %s" % self.name)
 
@@ -125,7 +123,6 @@ class Instance:
 
         # An image can be pulled instead
         elif "image" in params:
-
             # If going to pull an image, the context is a folder of same name
             self.context = self.name
 
@@ -330,7 +327,6 @@ class Instance:
         # Case 1: Given an image
         if self.image is not None:
             if not os.path.exists(self.image):
-
                 # Can we pull it?
                 if re.search("(docker|library|shub|http?s)[://]", self.image):
                     bot.info("Pulling %s" % self.image)
@@ -343,7 +339,6 @@ class Instance:
 
         # Case 2: Given a recipe
         elif self.recipe is not None:
-
             # Change directory to the context
             context = os.path.abspath(self.context)
             os.chdir(context)
@@ -372,7 +367,7 @@ class Instance:
                 for line in stream:
                     print(line)
 
-            except:
+            except Exception:
                 build = "sudo singularity build %s %s" % (
                     os.path.basename(sif_binary),
                     self.recipe,
@@ -396,7 +391,6 @@ class Instance:
         if "build" in self.params:
             if "options" in self.params["build"]:
                 for option in self.params["build"]["options"]:
-
                     # if the option is a string, it's a boolean flag
                     if isinstance(option, str):
                         options.append("--%s" % option)
@@ -499,7 +493,7 @@ class Instance:
                 else:
                     self.client._run_command(["sudo", "rm", logfile], quiet=True)
                     self.client._run_command(["sudo", "touch", logfile], quiet=True)
-            except:
+            except Exception:
                 pass
 
     def _get_log_folder(self):
@@ -544,7 +538,7 @@ class Instance:
                     print(result)
                     bot.newline()
 
-            except:
+            except Exception:
                 pass
 
     # Create and Delete
@@ -579,7 +573,6 @@ class Instance:
 
         # Finally, create the instance
         if not self.exists():
-
             bot.info("Creating %s" % self.get_replica_name())
 
             # Command options
@@ -621,7 +614,6 @@ class Instance:
 
             # If the user has exec defined, exec to it
             if self.exec_args:
-
                 # Show the command to the user
                 commands = "%s %s %s" % (
                     " ".join(self.exec_opts),
@@ -641,7 +633,6 @@ class Instance:
 
             # If the user has run defined, finish with the run
             if "run" in self.params:
-
                 run_args = self.run_args or ""
 
                 # Show the command to the user
