@@ -339,11 +339,10 @@ class Instance:
 
         # Case 2: Given a recipe
         elif self.recipe is not None:
-            # Change directory to the context
-            print(f"Context is {self.context}")
+            # Change directory to the context if it exists
             context = os.path.abspath(self.context)
-            print(f"Context is {context}")
-            os.chdir(context)
+            if os.path.exists(context):
+                os.chdir(context)
 
             # The recipe is expected to exist in the context folder
             if not os.path.exists(self.recipe):
