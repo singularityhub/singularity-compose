@@ -1,4 +1,4 @@
-name: CI
+name: singularity-compose ci
 
 on:
   push:
@@ -20,7 +20,9 @@ jobs:
           pip install .[all]
 
       - name: Run unit tests
-        run: pytest -xs scompose/tests/test_*.py
+        run: |
+          which singularity
+          pytest -xs scompose/tests/test_*.py
 
   formatting:
     runs-on: ubuntu-latest
@@ -33,7 +35,7 @@ jobs:
       - name: Check Spelling
         uses: crate-ci/typos@7ad296c72fa8265059cc03d1eda562fbdfcd6df2 # v1.9.0
         with:
-          files: ./docs/getting_started/ ./docs/index.rst
+          files: ./docs/*.md ./docs/*/*.md ./README.md .docs/*.rst .docs/*/*.rst
 
       - name: Lint and format Python code
         run: |
