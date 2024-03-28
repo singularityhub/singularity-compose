@@ -453,7 +453,6 @@ class Project:
     def create(
         self, names=None, writable_tmpfs=True, bridge="10.22.0.0/16", no_resolv=False
     ):
-
         """
         Call the create function, which defaults to the command instance.create()
         """
@@ -466,7 +465,6 @@ class Project:
         bridge="10.22.0.0/16",
         no_resolv=False,
     ):
-
         """
         Call the up function, instance.up().
 
@@ -476,6 +474,7 @@ class Project:
             names,
             command="up",
             writable_tmpfs=writable_tmpfs,
+            bridge=bridge,
             no_resolv=no_resolv,
         )
 
@@ -487,7 +486,6 @@ class Project:
         bridge="10.22.0.0/16",
         no_resolv=False,
     ):
-
         """
         Create one or more instances.
 
