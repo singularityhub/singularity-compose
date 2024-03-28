@@ -476,6 +476,7 @@ class Project:
             names,
             command="up",
             writable_tmpfs=writable_tmpfs,
+            bridge=bridge,
             no_resolv=no_resolv,
         )
 
