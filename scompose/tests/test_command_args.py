@@ -1,18 +1,17 @@
 #!/usr/bin/python
 
-# Copyright (C) 2019-2022 Vanessa Sochat.
+# Copyright (C) 2019-2024 Vanessa Sochat.
 
 # This Source Code Form is subject to the terms of the
 # Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
 # with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import os
+import shutil
+from time import sleep
+
 from scompose.logger import bot
 from scompose.project import Project
-from scompose.utils import run_command
-from time import sleep
-import shutil
-import pytest
-import os
 
 here = os.path.dirname(os.path.abspath(__file__))
 
@@ -38,6 +37,8 @@ def test_command_args(tmp_path):
     # Loading project validates config
     project = Project()
 
+    print(os.getcwd())
+    print(os.listdir())
     print("Testing build")
     project.build()
 

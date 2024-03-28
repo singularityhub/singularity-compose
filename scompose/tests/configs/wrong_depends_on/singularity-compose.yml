@@ -14,4 +14,3 @@ instances:
     build:
       context: .
       recipe: Singularity.third
-

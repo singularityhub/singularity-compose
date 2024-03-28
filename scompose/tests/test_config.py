@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# Copyright (C) 2017-2022 Vanessa Sochat.
+# Copyright (C) 2017-2024 Vanessa Sochat.
 
 # This Source Code Form is subject to the terms of the
 # Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
@@ -43,8 +43,8 @@ def test_merge():
 
 def test_deep_merge():
     print("Testing utils._deep_merge")
-    from scompose.utils import read_yaml
     from scompose.config import _deep_merge
+    from scompose.utils import read_yaml
 
     config_override = os.path.join(here, "configs", "config_merge")
 

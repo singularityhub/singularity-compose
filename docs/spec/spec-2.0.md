@@ -23,7 +23,7 @@ instances:
       options:
         - fakeroot
     exec:
-      options: 
+      options:
         - "env-file=myvars.env"
       command: printenv SUPERHERO
   alp2:
@@ -89,7 +89,7 @@ network configuration at `/usr/local/etc/singularity/network/40_fakeroot.conflis
         }
     ]
 }
-``` 
+```
 
 If you don't want to make these changes, then you won't be able to use fakeroot
 as a network (start) option (you might still be able to use it as a build option).
@@ -98,25 +98,25 @@ as a network (start) option (you might still be able to use it as a build option
 
 ### Allocate IP Address
 
-By default `singularity-compose` will allocate an IP address for every instance in 
+By default `singularity-compose` will allocate an IP address for every instance in
 the listed yaml file. Binding an IP address to a process requires `sudo` so in certain
 scenarios in which access to a privileged user isn't an option, you might want to tell
-`singularity-compose` not to allocate an IP address, that way you can run instances 
-without `sudo`. 
+`singularity-compose` not to allocate an IP address, that way you can run instances
+without `sudo`.
 
-The example below will run a container that exposes the port `5432` to the host. 
+The example below will run a container that exposes the port `5432` to the host.
 
 ```yaml
   instance1:
     ...
-    network:      
+    network:
       allocate_ip: true | false
     ports:
       - 5432:5432
 ```
 
-**Observation:** In recent versions of the Singularity CLI, there is the need for tweaking the 
-`/etc/singularity/singularity.conf` to allow `fakeroot` to bind to ports otherwise 
+**Observation:** In recent versions of the Singularity CLI, there is the need for tweaking the
+`/etc/singularity/singularity.conf` to allow `fakeroot` to bind to ports otherwise
 an error will be thrown at container execution similar to this:
 
 ```
@@ -145,7 +145,7 @@ The example below will disable the network features:
 ```yaml
   instance1:
     ...
-    network:      
+    network:
       enable: true | false
 ```
 
@@ -154,7 +154,7 @@ The example below will disable the network features:
 
 Startscript options generally include those for networking, and any other flags
 that you want to provide. The previous "command" option is deprecated, and moved to be under the "start"
-group as "args," since we are technically providing arguments to the start script. 
+group as "args," since we are technically providing arguments to the start script.
 As an example in the configuration above, we are starting with options
 for `--fakeroot`:
 
@@ -176,18 +176,18 @@ By default `singularity-compose` will launch a single replica of each instance l
 If your use-case requires multiple instances of the exact same configuration, you can use `deploy->replicas`
 option.
 
-The example below will run 2 container instances with the same instance configuration. 
+The example below will run 2 container instances with the same instance configuration.
 
 ```yaml
   instance:
     ...
-    deploy:      
-      replicas: 2    
+    deploy:
+      replicas: 2
 ```
 
 ## Environment
 
-While Singularity compose doesn't currently have support for an environment 
+While Singularity compose doesn't currently have support for an environment
 section, it's easy to add custom environments by way of binding an environment
 file to the instance! For example:
 
@@ -219,7 +219,7 @@ then you can do the following:
 
 ```yaml
     exec:
-      options: 
+      options:
         - "env-file=myvars.env"
       command: printenv MYNAME
 ```
@@ -244,12 +244,12 @@ And if you want args or options, you can again add them:
   alp1:
     run:
       args: "arg1 arg2 arg3"
-      options: 
+      options:
         - "env-file=myvars.env"
 ```
 
 As of version 0.1.17, you can also ask the run command to be placed in the background.
-Here is an example that starts a notebook and then still is able to execute a start adn run command:
+Here is an example that starts a notebook and then still is able to execute a start and run command:
 
 ```yaml
 version: "2.0"
@@ -275,8 +275,8 @@ the other.
 
 ## Instance
 
-An instance currently must be instantiated from a container built 
-from a Singularity recipe in a named folder (the example above) 
+An instance currently must be instantiated from a container built
+from a Singularity recipe in a named folder (the example above)
 alongside the singularity-compose.yml:
 
 ```

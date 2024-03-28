@@ -4,7 +4,7 @@
 [![DOI](https://zenodo.org/badge/188852712.svg)](https://zenodo.org/badge/latestdoi/188852712)
 
 This is a simple orchestration library for Singularity containers, akin to
-Docker Compose. See the [specification](https://singularityhub.github.io/singularity-compose/#/spec/spec-1.0) 
+Docker Compose. See the [specification](https://singularityhub.github.io/singularity-compose/#/spec/spec-1.0)
 and the [documentation](https://singularityhub.github.io/singularity-compose) for
 details, or more examples below.
 

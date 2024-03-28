@@ -1,6 +1,6 @@
 """
 
-Copyright (C) 2019-2022 Vanessa Sochat.
+Copyright (C) 2019-2024 Vanessa Sochat.
 
 This Source Code Form is subject to the terms of the
 Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed
@@ -13,9 +13,9 @@ import json
 import os
 import pwd
 import sys
-import yaml
+from subprocess import PIPE, STDOUT, Popen
 
-from subprocess import Popen, PIPE, STDOUT
+import yaml
 
 
 def get_installdir():
