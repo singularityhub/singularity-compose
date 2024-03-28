@@ -20,14 +20,14 @@ def test_command_args(tmp_path):
     bot.clear()  ## Clear previously logged messages
 
     cmd_args = os.path.join(here, "configs", "cmd_args")
-    for filename in os.listdir(cmd_args):
-        source = os.path.join(cmd_args, filename)
-        dest = os.path.join(tmp_path, filename)
-        print("Copying %s to %s" % (filename, dest))
-        shutil.copyfile(source, dest)
+    #for filename in os.listdir(cmd_args):
+    #    source = os.path.join(cmd_args, filename)
+    #    dest = os.path.join(tmp_path, filename)
+    #    print("Copying %s to %s" % (filename, dest))
+    #    shutil.copyfile(source, dest)
 
     # Test the simple apache example
-    os.chdir(tmp_path)
+    os.chdir(cmd_args)
 
     # Check for required files
     assert "singularity-compose.yml" in os.listdir()
@@ -42,7 +42,7 @@ def test_command_args(tmp_path):
     print("Testing build")
     project.build()
 
-    assert "echo.sif" in os.listdir(tmp_path)
+    assert "echo.sif" in os.listdir(cmd_args)
 
     print("Testing view config")
     project.view_config()

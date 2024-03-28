@@ -171,13 +171,17 @@ class Instance:
             self.network[key] = self.network.get(key, True)
 
     def set_ports(self, params):
-        """set ports from the recipe to be used"""
+        """
+        set ports from the recipe to be used
+        """
         self.ports = params.get("ports", [])
 
     # Commands
 
     def set_start(self, params):
-        """set arguments to the startscript"""
+        """
+        set arguments to the startscript
+        """
         start = params.get("start", {})
         self.args = start.get("args", "")
         self.start_opts = [
@@ -186,7 +190,9 @@ class Instance:
         ]
 
     def set_exec(self, params):
-        """set arguments for exec"""
+        """
+        set arguments for exec
+        """
         exec_group = params.get("exec", {})
         self.exec_args = exec_group.get("command", "")
         if "|" in self.exec_args:
@@ -194,7 +200,9 @@ class Instance:
         self.exec_opts = self._get_command_opts(exec_group.get("options", []))
 
     def set_run(self, params):
-        """set arguments for run"""
+        """
+        set arguments for run
+        """
         run_group = params.get("run", {}) or {}
         self.run_args = run_group.get("args")
         if self.run_args and "|" in self.run_args:
@@ -341,8 +349,7 @@ class Instance:
         elif self.recipe is not None:
             # Change directory to the context if it exists
             context = os.path.abspath(self.context)
-            if os.path.exists(context):
-                os.chdir(context)
+            os.chdir(context)
 
             # The recipe is expected to exist in the context folder
             if not os.path.exists(self.recipe):
