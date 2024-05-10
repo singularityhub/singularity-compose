@@ -226,8 +226,13 @@ class Instance:
         # Fakeroot means not needing sudo
         fakeroot = "--fakeroot" in self.start_opts or "-f" in self.start_opts
 
+        # Do we have a custom type?
+        network_type = self.network.get("type")
+        if network_type is not None:
+            ports += ["--network", network_type]
+
         # If not sudo or fakeroot, we need --network none
-        if not self.sudo and not fakeroot:
+        elif not self.sudo and not fakeroot:
             ports += ["--network", "none"]
 
         for pair in self.ports:
