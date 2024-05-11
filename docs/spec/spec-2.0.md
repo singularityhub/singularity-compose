@@ -156,7 +156,17 @@ If you want to add your own customized string of network types for `--network`, 
 ```yaml
   instance1:
     ...
-    type: bridge
+    network:
+      type: bridge
+```
+
+You might also want `--network=fakeroot`:
+
+```yaml
+  instance1:
+    ...
+    network:
+      type: fakeroot
 ```
 
 
