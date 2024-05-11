@@ -2,6 +2,8 @@
 
 The following commands are currently supported. Remember, you must be in the
 present working directory of the compose file to reference the correct instances.
+Along with the below, you can find more details and examples for singularity-compose.yaml
+syntax under the [current spec](spec/spec-2.0.md)
 
 ## check
 

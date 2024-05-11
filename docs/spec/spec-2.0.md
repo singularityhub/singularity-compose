@@ -149,6 +149,26 @@ The example below will disable the network features:
       enable: true | false
 ```
 
+### Custom Network
+
+If you want to add your own customized string of network types for `--network`, just do that:
+
+```yaml
+  instance1:
+    ...
+    network:
+      type: bridge
+```
+
+You might also want `--network=fakeroot`:
+
+```yaml
+  instance1:
+    ...
+    network:
+      type: fakeroot
+```
+
 
 ## Start Group
 
